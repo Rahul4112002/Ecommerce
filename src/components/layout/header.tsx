@@ -3,11 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { 
-  Search, 
-  ShoppingCart, 
-  User, 
-  Heart, 
+import {
+  Search,
+  ShoppingCart,
+  User,
+  Heart,
   Menu,
   LogOut,
   Package,
@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { SearchBar } from "@/components/search/search-bar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,16 +39,8 @@ const categories = [
 
 export function Header() {
   const { data: session } = useSession();
-  const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const cartItemsCount = useCartStore((state) => state.getTotalItems());
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      window.location.href = `/products?search=${encodeURIComponent(searchQuery)}`;
-    }
-  };
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
@@ -73,18 +66,9 @@ export function Header() {
           </Link>
 
           {/* Search Bar - Desktop */}
-          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-8">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                type="search"
-                placeholder="Search for frames..."
-                className="pl-10 pr-4"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </form>
+          <div className="hidden md:flex flex-1 max-w-md mx-8">
+            <SearchBar />
+          </div>
 
           {/* Right Icons */}
           <div className="flex items-center space-x-4">
@@ -180,23 +164,12 @@ export function Header() {
 
       {/* Mobile Search - Below header on mobile */}
       <div className="md:hidden px-4 pb-3">
-        <form onSubmit={handleSearch}>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input
-              type="search"
-              placeholder="Search for frames..."
-              className="pl-10 pr-4"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-        </form>
+        <SearchBar />
       </div>
 
       {/* Mobile Navigation */}
-      <MobileNav 
-        isOpen={mobileMenuOpen} 
+      <MobileNav
+        isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
         categories={categories}
       />

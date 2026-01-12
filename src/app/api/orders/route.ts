@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { createOrderSchema } from "@/lib/order-validations";
 import { Prisma } from "@prisma/client";
+import { sendOrderConfirmation } from "@/lib/email";
 
 // Generate unique order number
 function generateOrderNumber(): string {
@@ -287,6 +288,7 @@ export async function POST(request: NextRequest) {
                     },
                 },
                 include: {
+                    address: true, // Include address for email
                     items: {
                         include: {
                             product: { select: { name: true } },
@@ -319,6 +321,14 @@ export async function POST(request: NextRequest) {
 
             return newOrder;
         });
+
+        // Send confirmation email
+        try {
+            await sendOrderConfirmation(order, session.user);
+        } catch (emailError) {
+            console.error("Failed to send order confirmation email:", emailError);
+            // Don't fail the request if email fails
+        }
 
         return NextResponse.json({
             order: {

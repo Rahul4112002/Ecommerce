@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { WishlistButton } from "@/components/wishlist-button";
 import { Separator } from "@/components/ui/separator";
-import { Heart, ShoppingCart, Share2, Truck, Shield, RotateCcw, MessageCircle } from "lucide-react";
+import { ShoppingCart, Share2, Truck, Shield, RotateCcw, MessageCircle } from "lucide-react";
 import { useCartStore } from "@/lib/store/cart-store";
 import { toast } from "sonner";
 import { formatPrice } from "@/lib/helpers";
@@ -48,12 +49,12 @@ interface ProductInfoProps {
 export function ProductInfo({ product }: ProductInfoProps) {
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0] || null);
   const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  
+
+
   const addItem = useCartStore((state) => state.addItem);
 
   const currentPrice = selectedVariant?.price || product.price;
-  const discount = product.comparePrice 
+  const discount = product.comparePrice
     ? Math.round(((product.comparePrice - currentPrice) / product.comparePrice) * 100)
     : 0;
 
@@ -125,7 +126,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
           <p className="text-sm text-muted-foreground mb-1">{product.brand.name}</p>
         )}
         <h1 className="text-2xl md:text-3xl font-bold">{product.name}</h1>
-        
+
         {/* Rating */}
         {product.reviewCount > 0 && (
           <div className="flex items-center gap-2 mt-2">
@@ -170,11 +171,10 @@ export function ProductInfo({ product }: ProductInfoProps) {
                 key={variant.id}
                 onClick={() => setSelectedVariant(variant)}
                 disabled={variant.stock === 0}
-                className={`relative w-10 h-10 rounded-full border-2 transition-all ${
-                  selectedVariant?.id === variant.id
-                    ? "border-primary scale-110"
-                    : "border-gray-300 hover:border-gray-400"
-                } ${variant.stock === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`relative w-10 h-10 rounded-full border-2 transition-all ${selectedVariant?.id === variant.id
+                  ? "border-primary scale-110"
+                  : "border-gray-300 hover:border-gray-400"
+                  } ${variant.stock === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
                 style={{ backgroundColor: variant.colorCode }}
                 title={`${variant.color}${variant.stock === 0 ? " (Out of Stock)" : ""}`}
               >
@@ -251,15 +251,11 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
       {/* Wishlist & Share */}
       <div className="flex gap-3">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="gap-2"
-          onClick={() => setIsWishlisted(!isWishlisted)}
-        >
-          <Heart className={`w-4 h-4 ${isWishlisted ? "fill-red-500 text-red-500" : ""}`} />
-          {isWishlisted ? "Wishlisted" : "Add to Wishlist"}
-        </Button>
+        <WishlistButton
+          productId={product.id}
+          variant="full"
+          className="flex-1"
+        />
         <Button variant="ghost" size="sm" className="gap-2" onClick={handleShare}>
           <Share2 className="w-4 h-4" />
           Share

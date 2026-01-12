@@ -25,65 +25,82 @@ import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 
 async function getDashboardStats() {
-  const [
-    totalProducts,
-    totalOrders,
-    totalUsers,
-    totalRevenue,
-    pendingOrders,
-    recentOrders,
-    lowStockProducts,
-    recentUsers,
-  ] = await Promise.all([
-    db.product.count(),
-    db.order.count(),
-    db.user.count(),
-    db.order.aggregate({
-      _sum: { total: true },
-      where: { status: { in: ["DELIVERED", "SHIPPED", "PROCESSING"] } },
-    }),
-    db.order.count({ where: { status: "PENDING" } }),
-    db.order.findMany({
-      take: 5,
-      orderBy: { createdAt: "desc" },
-      include: {
-        user: { select: { name: true, email: true } },
-        items: { include: { product: { select: { name: true } } } },
-      },
-    }),
-    db.product.findMany({
-      where: { stock: { lte: 10 } },
-      take: 5,
-      orderBy: { stock: "asc" },
-      select: { id: true, name: true, stock: true, slug: true },
-    }),
-    db.user.findMany({
-      take: 5,
-      orderBy: { createdAt: "desc" },
-      select: { id: true, name: true, email: true, createdAt: true, image: true },
-    }),
-  ]);
+  try {
+    const [
+      totalProducts,
+      totalOrders,
+      totalUsers,
+      totalRevenue,
+      pendingOrders,
+      recentOrders,
+      lowStockProducts,
+      recentUsers,
+    ] = await Promise.all([
+      db.product.count(),
+      db.order.count(),
+      db.user.count(),
+      db.order.aggregate({
+        _sum: { total: true },
+        where: { status: { in: ["DELIVERED", "SHIPPED", "PROCESSING"] } },
+      }),
+      db.order.count({ where: { status: "PENDING" } }),
+      db.order.findMany({
+        take: 5,
+        orderBy: { createdAt: "desc" },
+        include: {
+          user: { select: { name: true, email: true } },
+          items: { include: { product: { select: { name: true } } } },
+        },
+      }),
+      db.product.findMany({
+        where: { stock: { lte: 10 } },
+        take: 5,
+        orderBy: { stock: "asc" },
+        select: { id: true, name: true, stock: true, slug: true },
+      }),
+      db.user.findMany({
+        take: 5,
+        orderBy: { createdAt: "desc" },
+        select: { id: true, name: true, email: true, createdAt: true, image: true },
+      }),
+    ]);
 
-  // Calculate month-over-month growth (mock data for demo)
-  const lastMonthOrders = await db.order.count({
-    where: {
-      createdAt: {
-        gte: new Date(new Date().setMonth(new Date().getMonth() - 1)),
+    // Calculate month-over-month growth (mock data for demo)
+    const lastMonthOrders = await db.order.count({
+      where: {
+        createdAt: {
+          gte: new Date(new Date().setMonth(new Date().getMonth() - 1)),
+        },
       },
-    },
-  });
+    });
 
-  return {
-    totalProducts,
-    totalOrders,
-    totalUsers,
-    totalRevenue: totalRevenue._sum.total?.toNumber() || 0,
-    pendingOrders,
-    recentOrders,
-    lowStockProducts,
-    recentUsers,
-    orderGrowth: lastMonthOrders > 0 ? 12.5 : 0, // Mock growth percentage
-  };
+    return {
+      totalProducts,
+      totalOrders,
+      totalUsers,
+      totalRevenue: totalRevenue._sum.total?.toNumber() || 0,
+      pendingOrders,
+      recentOrders,
+      lowStockProducts,
+      recentUsers,
+      orderGrowth: lastMonthOrders > 0 ? 12.5 : 0, // Mock growth percentage
+      isError: false,
+    };
+  } catch (error) {
+    console.error("Dashboard stats error:", error);
+    return {
+      totalProducts: 0,
+      totalOrders: 0,
+      totalUsers: 0,
+      totalRevenue: 0,
+      pendingOrders: 0,
+      recentOrders: [],
+      lowStockProducts: [],
+      recentUsers: [],
+      orderGrowth: 0,
+      isError: true,
+    };
+  }
 }
 
 const statusColors: Record<string, string> = {
@@ -104,6 +121,23 @@ const statusIcons: Record<string, React.ReactNode> = {
 
 export default async function AdminDashboard() {
   const stats = await getDashboardStats();
+
+  if (stats.isError) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center p-8 bg-dashed bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+        <XCircle className="w-16 h-16 text-red-400 mb-4" />
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          Database Connection Error
+        </h2>
+        <p className="text-gray-500 max-w-md text-center">
+          Could not connect to the database server. Please check your internet connection, database configuration, or restart the server.
+        </p>
+        <Button variant="outline" className="mt-6" asChild>
+          <Link href="/admin">Retry</Link>
+        </Button>
+      </div>
+    );
+  }
 
   const statCards = [
     {
@@ -320,13 +354,13 @@ export default async function AdminDashboard() {
                   className="flex flex-col items-center p-4 rounded-lg bg-gray-50 text-center"
                 >
                   <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
-                    {user.name?.charAt(0) || user.email.charAt(0).toUpperCase()}
+                    {user.name?.charAt(0) || user.email?.charAt(0).toUpperCase() || "U"}
                   </div>
                   <p className="font-medium mt-2 truncate w-full">
                     {user.name || "User"}
                   </p>
                   <p className="text-xs text-muted-foreground truncate w-full">
-                    {user.email}
+                    {user.email || "No email"}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
                     {formatDistanceToNow(user.createdAt, { addSuffix: true })}

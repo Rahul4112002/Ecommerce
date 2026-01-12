@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Loader2, ImageIcon, X } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 type BannerFormData = {
   title: string;
@@ -96,59 +97,25 @@ export function BannerForm({ initialData }: BannerFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Image Preview */}
+      {/* Image Upload */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Banner Image
         </label>
-        <div className="relative h-48 bg-gray-100 rounded-lg overflow-hidden border-2 border-dashed border-gray-300">
-          {imagePreview ? (
-            <>
-              <img
-                src={imagePreview}
-                alt="Banner preview"
-                className="w-full h-full object-cover"
-                onError={() => setImagePreview("")}
-              />
-              <button
-                type="button"
-                onClick={() => handleImageUrlChange("")}
-                className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </>
-          ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center text-gray-400">
-              <ImageIcon className="h-12 w-12 mb-2" />
-              <p className="text-sm">Enter image URL below</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Image URL */}
-      <div>
-        <label
-          htmlFor="image"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Image URL
-        </label>
-        <input
-          {...register("image")}
-          type="url"
-          id="image"
-          placeholder="https://example.com/banner.jpg"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-          onChange={(e) => handleImageUrlChange(e.target.value)}
+        <ImageUpload
+          value={watchedImageUrl ? [watchedImageUrl] : []}
+          disabled={isSubmitting}
+          onChange={(url) => handleImageUrlChange(url)}
+          onRemove={() => handleImageUrlChange("")}
         />
+        <input type="hidden" {...register("image")} />
         {errors.image && (
           <p className="mt-1 text-sm text-red-600">{errors.image.message}</p>
         )}
-        <p className="mt-1 text-xs text-gray-500">
-          Recommended size: 1920x600 pixels
-        </p>
+      </div>
+        {errors.image && (
+          <p className="mt-1 text-sm text-red-600">{errors.image.message}</p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -245,41 +212,41 @@ export function BannerForm({ initialData }: BannerFormProps) {
 
 
 
-      {/* Active Status */}
-      <div className="flex items-center gap-3">
-        <input
-          {...register("isActive")}
-          type="checkbox"
-          id="isActive"
-          className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-        />
-        <label htmlFor="isActive" className="text-sm font-medium text-gray-700">
-          Active (visible on website)
-        </label>
-      </div>
+      {/* Active Status */ }
+  <div className="flex items-center gap-3">
+    <input
+      {...register("isActive")}
+      type="checkbox"
+      id="isActive"
+      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+    />
+    <label htmlFor="isActive" className="text-sm font-medium text-gray-700">
+      Active (visible on website)
+    </label>
+  </div>
 
-      {/* Form Actions */}
-      <div className="flex items-center justify-end gap-4 pt-4 border-t">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
-        >
-          {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
-          {isSubmitting
-            ? "Saving..."
-            : initialData
-              ? "Update Banner"
-              : "Create Banner"}
-        </button>
-      </div>
-    </form>
+  {/* Form Actions */ }
+  <div className="flex items-center justify-end gap-4 pt-4 border-t">
+    <button
+      type="button"
+      onClick={() => router.back()}
+      className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+    >
+      Cancel
+    </button>
+    <button
+      type="submit"
+      disabled={isSubmitting}
+      className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+    >
+      {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
+      {isSubmitting
+        ? "Saving..."
+        : initialData
+          ? "Update Banner"
+          : "Create Banner"}
+    </button>
+  </div>
+    </form >
   );
 }

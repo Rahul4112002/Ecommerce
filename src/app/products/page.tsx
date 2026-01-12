@@ -22,22 +22,22 @@ interface SearchParams {
 
 async function getProducts(searchParams: SearchParams) {
   const params = new URLSearchParams();
-  
+
   Object.entries(searchParams).forEach(([key, value]) => {
     if (value) params.set(key, value);
   });
 
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-  
+
   try {
     const res = await fetch(`${baseUrl}/api/products?${params.toString()}`, {
       cache: "no-store",
     });
-    
+
     if (!res.ok) {
       throw new Error("Failed to fetch products");
     }
-    
+
     return res.json();
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -75,9 +75,9 @@ export default async function ProductsPage({
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold">
-            {params.category 
+            {params.category
               ? params.category.charAt(0).toUpperCase() + params.category.slice(1).replace(/-/g, " ")
-              : params.search 
+              : params.search
                 ? `Search results for "${params.search}"`
                 : "All Eyeframes"
             }
@@ -91,7 +91,7 @@ export default async function ProductsPage({
       <div className="container mx-auto px-4 py-8">
         <div className="flex gap-8">
           {/* Filter Sidebar */}
-            <Suspense fallback={<Skeleton className="w-64 h-150" />}>
+          <Suspense fallback={<Skeleton className="w-64 h-150" />}>
             <FilterSidebar />
           </Suspense>
 
@@ -104,7 +104,7 @@ export default async function ProductsPage({
                   <FilterSidebar />
                 </Suspense>
               </div>
-              
+
               <div className="flex items-center gap-4 ml-auto">
                 <Suspense fallback={<Skeleton className="w-45 h-10" />}>
                   <SortSelect />
@@ -120,6 +120,7 @@ export default async function ProductsPage({
                     {products.map((product: { id: string; name: string; slug: string; price: number; comparePrice: number | null; image: string | null; images?: string[]; isFeatured: boolean; colors?: { code: string }[]; shape: string }) => (
                       <ProductCard
                         key={product.id}
+                        id={product.id}
                         name={product.name}
                         slug={product.slug}
                         price={product.price}
@@ -133,7 +134,7 @@ export default async function ProductsPage({
                     ))}
                   </div>
 
-                  <Pagination 
+                  <Pagination
                     currentPage={pagination.page}
                     totalPages={pagination.totalPages}
                     total={pagination.total}
@@ -146,7 +147,7 @@ export default async function ProductsPage({
                   <p className="text-muted-foreground mb-4">
                     Try adjusting your filters or search terms
                   </p>
-                  <Button 
+                  <Button
                     variant="outline"
                     onClick={() => window.location.href = "/products"}
                   >

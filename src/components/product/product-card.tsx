@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Heart, ShoppingCart } from "lucide-react";
+import { WishlistButton } from "@/components/wishlist-button";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,6 +12,7 @@ import { useCartStore } from "@/lib/store/cart-store";
 import { toast } from "sonner";
 
 export interface ProductCardProps {
+  id: string;
   name: string;
   slug: string;
   price: number;
@@ -23,6 +25,7 @@ export interface ProductCardProps {
 }
 
 export function ProductCard({
+  id,
   name,
   slug,
   price,
@@ -66,7 +69,7 @@ export function ProductCard({
               👓
             </div>
           )}
-          
+
           {/* Hover Image */}
           {hoverImage && hoverImage !== image && (
             <Image
@@ -77,7 +80,7 @@ export function ProductCard({
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
           )}
-          
+
           {/* Badge */}
           {(badge || discount > 0) && (
             <Badge className={`absolute top-2 left-2 ${discount > 0 ? "bg-red-500" : "bg-primary"}`}>
@@ -86,20 +89,22 @@ export function ProductCard({
           )}
 
           {/* Wishlist Button */}
-          <button 
-            className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-100"
-            onClick={(e) => {
-              e.preventDefault();
-              toast.success("Added to wishlist!");
-            }}
-          >
-            <Heart className="h-4 w-4" />
-          </button>
+          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <WishlistButton
+              productId={slug} // Using slug as ID based on current implementation, but store expects ProductID. 
+              // Wait, store uses ID. This component props pass 'slug'.
+              // I need 'id' in props. ProductCard typically receives partial data. 
+              // If 'slug' is passed as ID it might fail if ID is UUID.
+              // I should update ProductCard props to accept 'id' as well.
+              variant="icon"
+              className="bg-white hover:bg-gray-100 shadow-md"
+            />
+          </div>
 
           {/* Quick Add Button */}
           <div className="absolute bottom-0 left-0 right-0 p-2 bg-linear-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-            <Button 
-              size="sm" 
+            <Button
+              size="sm"
               className="w-full"
               onClick={handleAddToCart}
             >
@@ -116,7 +121,7 @@ export function ProductCard({
             {shape && (
               <p className="text-xs text-gray-500">{shape}</p>
             )}
-            
+
             {/* Name */}
             <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
               {name}

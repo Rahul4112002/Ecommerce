@@ -27,8 +27,8 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, Plus, X, ImagePlus } from "lucide-react";
-import Image from "next/image";
+import { Loader2 } from "lucide-react";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 const productSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -72,8 +72,6 @@ interface ProductFormProps {
 export function ProductForm({ categories, brands, initialData }: ProductFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [images, setImages] = useState<string[]>(initialData?.images || []);
-  const [newImageUrl, setNewImageUrl] = useState("");
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema) as any,
@@ -106,24 +104,12 @@ export function ProductForm({ categories, brands, initialData }: ProductFormProp
       .replace(/(^-|-$)+/g, "");
   };
 
-  const addImage = () => {
-    if (newImageUrl && !images.includes(newImageUrl)) {
-      setImages([...images, newImageUrl]);
-      setNewImageUrl("");
-    }
-  };
-
-  const removeImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
-  };
-
   const onSubmit = async (data: ProductFormValues) => {
     setLoading(true);
     try {
       const payload = {
         ...data,
         comparePrice: data.comparePrice || null,
-        images,
       };
 
       const url = initialData
@@ -413,53 +399,28 @@ export function ProductForm({ categories, brands, initialData }: ProductFormProp
               <CardHeader>
                 <CardTitle>Product Images</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="Enter image URL"
-                    value={newImageUrl}
-                    onChange={(e) => setNewImageUrl(e.target.value)}
-                  />
-                  <Button type="button" onClick={addImage}>
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                {images.length > 0 ? (
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {images.map((url, index) => (
-                      <div key={index} className="relative group">
-                        <div className="aspect-square relative rounded-lg overflow-hidden border">
-                          <Image
-                            src={url}
-                            alt={`Product image ${index + 1}`}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => removeImage(index)}
-                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                        {index === 0 && (
-                          <span className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                            Main
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="border-2 border-dashed rounded-lg p-8 text-center">
-                    <ImagePlus className="h-10 w-10 mx-auto text-muted-foreground" />
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Add image URLs to showcase your product
-                    </p>
-                  </div>
-                )}
+              <CardContent>
+                <FormField
+                  control={form.control}
+                  name="images"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <ImageUpload
+                          value={field.value || []}
+                          disabled={loading}
+                          onChange={(url) => field.onChange([...(field.value || []), url])}
+                          onRemove={(url) =>
+                            field.onChange(
+                              (field.value || []).filter((current) => current !== url)
+                            )
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </CardContent>
             </Card>
           </div>

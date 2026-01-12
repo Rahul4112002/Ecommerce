@@ -13,16 +13,16 @@ interface ProductPageProps {
 
 async function getProduct(slug: string) {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-  
+
   try {
     const res = await fetch(`${baseUrl}/api/products/${slug}`, {
       cache: "no-store",
     });
-    
+
     if (!res.ok) {
       return null;
     }
-    
+
     return res.json();
   } catch (error) {
     console.error("Error fetching product:", error);
@@ -33,11 +33,11 @@ async function getProduct(slug: string) {
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   const data = await getProduct(slug);
-  
+
   if (!data?.product) {
     return { title: "Product Not Found" };
   }
-  
+
   return {
     title: `${data.product.name} - EyeFrames Store`,
     description: data.product.description || `Buy ${data.product.name} at the best price`,
@@ -64,11 +64,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <div className="bg-white rounded-lg shadow-sm p-6 md:p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {/* Gallery */}
-            <ProductGallery 
-              images={product.images} 
-              productName={product.name} 
+            <ProductGallery
+              images={product.images}
+              productName={product.name}
             />
-            
+
             {/* Info */}
             <ProductInfo product={product} />
           </div>
@@ -78,26 +78,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <div className="bg-white rounded-lg shadow-sm p-6 md:p-8 mt-8">
           <Tabs defaultValue="description" className="w-full">
             <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent">
-              <TabsTrigger 
+              <TabsTrigger
                 value="description"
                 className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
               >
                 Description
               </TabsTrigger>
-              <TabsTrigger 
+              <TabsTrigger
                 value="reviews"
                 className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
               >
                 Reviews ({product.reviewCount})
               </TabsTrigger>
-              <TabsTrigger 
+              <TabsTrigger
                 value="shipping"
                 className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
               >
                 Shipping & Returns
               </TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="description" className="mt-6">
               {product.description ? (
                 <div className="prose max-w-none">
@@ -107,15 +107,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <p className="text-muted-foreground">No description available.</p>
               )}
             </TabsContent>
-            
+
             <TabsContent value="reviews" className="mt-6">
-              <ProductReviews 
+              <ProductReviews
+                productId={product.id}
                 reviews={product.reviews}
                 avgRating={product.avgRating}
                 reviewCount={product.reviewCount}
               />
             </TabsContent>
-            
+
             <TabsContent value="shipping" className="mt-6">
               <div className="space-y-6">
                 <div>
@@ -128,9 +129,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <li>We ship to all major cities in India</li>
                   </ul>
                 </div>
-                
+
                 <Separator />
-                
+
                 <div>
                   <h3 className="font-semibold text-lg mb-2">Return Policy</h3>
                   <ul className="list-disc list-inside text-muted-foreground space-y-1">
@@ -140,9 +141,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <li>For defective products, contact us within 24 hours of delivery</li>
                   </ul>
                 </div>
-                
+
                 <Separator />
-                
+
                 <div>
                   <h3 className="font-semibold text-lg mb-2">Warranty</h3>
                   <ul className="list-disc list-inside text-muted-foreground space-y-1">
@@ -164,6 +165,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {relatedProducts.map((relatedProduct: { id: string; name: string; slug: string; price: number; comparePrice: number | null; image: string | null; colors?: { code: string }[]; shape: string }) => (
                 <ProductCard
                   key={relatedProduct.id}
+                  id={relatedProduct.id}
                   name={relatedProduct.name}
                   slug={relatedProduct.slug}
                   price={relatedProduct.price}

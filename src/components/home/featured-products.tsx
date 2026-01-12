@@ -57,7 +57,7 @@ interface FeaturedProductsProps {
   viewAllLink?: string;
 }
 
-export function FeaturedProducts({ 
+export function FeaturedProducts({
   title = "Bestsellers",
   subtitle = "Our most popular frames loved by customers",
   viewAllLink = "/products?sort=popular"
@@ -82,8 +82,9 @@ export function FeaturedProducts({
         {/* Products Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {sampleProducts.map((product) => (
-            <ProductCard 
+            <ProductCard
               key={product.id}
+              id={product.id}
               name={product.name}
               slug={product.slug}
               price={product.price}

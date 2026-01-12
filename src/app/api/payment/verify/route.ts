@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import crypto from "crypto";
+import { sendOrderConfirmation } from "@/lib/email";
 
 // Generate unique order number
 function generateOrderNumber(): string {
@@ -165,6 +166,14 @@ export async function POST(request: NextRequest) {
                         },
                     },
                 },
+                include: {
+                    address: true,
+                    items: {
+                        include: {
+                            product: { select: { name: true } },
+                        },
+                    },
+                },
             });
 
             // Update stock
@@ -191,6 +200,13 @@ export async function POST(request: NextRequest) {
 
             return newOrder;
         });
+
+        // Send confirmation email
+        try {
+            await sendOrderConfirmation(order, session.user);
+        } catch (emailError) {
+            console.error("Failed to send order confirmation email:", emailError);
+        }
 
         return NextResponse.json({
             success: true,
