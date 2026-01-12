@@ -113,10 +113,7 @@ export function BannerForm({ initialData }: BannerFormProps) {
           <p className="mt-1 text-sm text-red-600">{errors.image.message}</p>
         )}
       </div>
-        {errors.image && (
-          <p className="mt-1 text-sm text-red-600">{errors.image.message}</p>
-        )}
-      </div>
+
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Title */}
@@ -212,41 +209,41 @@ export function BannerForm({ initialData }: BannerFormProps) {
 
 
 
-      {/* Active Status */ }
-  <div className="flex items-center gap-3">
-    <input
-      {...register("isActive")}
-      type="checkbox"
-      id="isActive"
-      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-    />
-    <label htmlFor="isActive" className="text-sm font-medium text-gray-700">
-      Active (visible on website)
-    </label>
-  </div>
+      {/* Active Status */}
+      <div className="flex items-center gap-3">
+        <input
+          {...register("isActive")}
+          type="checkbox"
+          id="isActive"
+          className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+        />
+        <label htmlFor="isActive" className="text-sm font-medium text-gray-700">
+          Active (visible on website)
+        </label>
+      </div>
 
-  {/* Form Actions */ }
-  <div className="flex items-center justify-end gap-4 pt-4 border-t">
-    <button
-      type="button"
-      onClick={() => router.back()}
-      className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-    >
-      Cancel
-    </button>
-    <button
-      type="submit"
-      disabled={isSubmitting}
-      className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
-    >
-      {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
-      {isSubmitting
-        ? "Saving..."
-        : initialData
-          ? "Update Banner"
-          : "Create Banner"}
-    </button>
-  </div>
+      {/* Form Actions */}
+      <div className="flex items-center justify-end gap-4 pt-4 border-t">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+        >
+          {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
+          {isSubmitting
+            ? "Saving..."
+            : initialData
+              ? "Update Banner"
+              : "Create Banner"}
+        </button>
+      </div>
     </form >
   );
 }
