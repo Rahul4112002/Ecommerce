@@ -45,7 +45,21 @@ export default function SettingsPage() {
 
         setLoading(true);
         try {
-            // TODO: Implement password change API
+            const res = await fetch("/api/user/password", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    currentPassword: passwordData.currentPassword,
+                    newPassword: passwordData.newPassword,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || "Failed to change password");
+            }
+
             toast.success("Password changed successfully");
             setPasswordData({
                 currentPassword: "",
@@ -53,15 +67,28 @@ export default function SettingsPage() {
                 confirmPassword: "",
             });
         } catch (error) {
-            toast.error("Failed to change password");
+            toast.error(error instanceof Error ? error.message : "Failed to change password");
         } finally {
             setLoading(false);
         }
     };
 
     const handleDeleteAccount = async () => {
-        // TODO: Implement account deletion
-        toast.error("Account deletion is not available yet");
+        try {
+            const res = await fetch("/api/user/delete", {
+                method: "DELETE",
+            });
+
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error || "Failed to delete account");
+            }
+
+            toast.success("Account deleted successfully");
+            await signOut({ callbackUrl: "/" });
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : "Failed to delete account");
+        }
     };
 
     return (

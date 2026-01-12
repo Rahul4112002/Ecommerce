@@ -34,11 +34,11 @@ async function getReportsData() {
   });
 
   const currentRevenue = currentPeriodOrders.reduce(
-    (sum, order) => sum + order.total,
+    (sum, order) => sum + Number(order.total),
     0
   );
   const previousRevenue = previousPeriodOrders.reduce(
-    (sum, order) => sum + order.total,
+    (sum, order) => sum + Number(order.total),
     0
   );
   const revenueChange =
@@ -90,7 +90,7 @@ async function getReportsData() {
     });
     dailyRevenue.push({
       date: format(date, "MMM d"),
-      revenue: dayOrders.reduce((sum, o) => sum + o.total, 0),
+      revenue: dayOrders.reduce((sum, o) => sum + Number(o.total), 0),
       orders: dayOrders.length,
     });
   }
@@ -112,7 +112,7 @@ async function getReportsData() {
       return {
         ...item,
         name: product?.name || "Unknown Product",
-        image: product?.images?.[0] || null,
+        image: product?.images?.[0]?.url || null,
         revenue: item._sum.price || 0,
         quantity: item._sum.quantity || 0,
       };
@@ -145,7 +145,7 @@ async function getReportsData() {
     if (!acc[categoryName]) {
       acc[categoryName] = { revenue: 0, quantity: 0 };
     }
-    acc[categoryName].revenue += item.price * item.quantity;
+    acc[categoryName].revenue += Number(item.price) * item.quantity;
     acc[categoryName].quantity += item.quantity;
     return acc;
   }, {} as Record<string, { revenue: number; quantity: number }>);
@@ -234,9 +234,8 @@ export default async function ReportsPage() {
                 <stat.icon className="h-6 w-6" />
               </div>
               <div
-                className={`flex items-center gap-1 text-sm ${
-                  stat.change >= 0 ? "text-green-600" : "text-red-600"
-                }`}
+                className={`flex items-center gap-1 text-sm ${stat.change >= 0 ? "text-green-600" : "text-red-600"
+                  }`}
               >
                 {stat.change >= 0 ? (
                   <TrendingUp className="h-4 w-4" />
@@ -298,9 +297,8 @@ export default async function ReportsPage() {
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-3 h-3 rounded-full ${
-                      statusColors[status.status] || "bg-gray-500"
-                    }`}
+                    className={`w-3 h-3 rounded-full ${statusColors[status.status] || "bg-gray-500"
+                      }`}
                   />
                   <span className="text-gray-700 capitalize">
                     {status.status.toLowerCase()}

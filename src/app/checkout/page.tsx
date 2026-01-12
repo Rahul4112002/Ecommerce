@@ -73,7 +73,17 @@ export default function CheckoutPage() {
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [showAddressForm, setShowAddressForm] = useState(false);
-    const [newAddress, setNewAddress] = useState({
+    const [newAddress, setNewAddress] = useState<{
+        name: string;
+        phone: string;
+        address: string;
+        landmark: string;
+        city: string;
+        state: string;
+        pincode: string;
+        type: "HOME" | "OFFICE" | "OTHER";
+        isDefault: boolean;
+    }>({
         name: "",
         phone: "",
         address: "",
@@ -81,7 +91,7 @@ export default function CheckoutPage() {
         city: "",
         state: "",
         pincode: "",
-        type: "HOME" as const,
+        type: "HOME",
         isDefault: false,
     });
 
@@ -466,15 +476,15 @@ export default function CheckoutPage() {
                                                 key={addr.id}
                                                 onClick={() => setSelectedAddressId(addr.id)}
                                                 className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedAddressId === addr.id
-                                                        ? "border-primary bg-primary/5 ring-1 ring-primary"
-                                                        : "border-gray-200 hover:border-gray-300"
+                                                    ? "border-primary bg-primary/5 ring-1 ring-primary"
+                                                    : "border-gray-200 hover:border-gray-300"
                                                     }`}
                                             >
                                                 <div className="flex items-start gap-3">
                                                     <div
                                                         className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedAddressId === addr.id
-                                                                ? "border-primary bg-primary"
-                                                                : "border-gray-300"
+                                                            ? "border-primary bg-primary"
+                                                            : "border-gray-300"
                                                             }`}
                                                     >
                                                         {selectedAddressId === addr.id && (
@@ -522,15 +532,15 @@ export default function CheckoutPage() {
                                 <div
                                     onClick={() => setPaymentMethod("COD")}
                                     className={`p-4 border rounded-lg cursor-pointer transition-all ${paymentMethod === "COD"
-                                            ? "border-primary bg-primary/5 ring-1 ring-primary"
-                                            : "border-gray-200 hover:border-gray-300"
+                                        ? "border-primary bg-primary/5 ring-1 ring-primary"
+                                        : "border-gray-200 hover:border-gray-300"
                                         }`}
                                 >
                                     <div className="flex items-center gap-3">
                                         <div
                                             className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === "COD"
-                                                    ? "border-primary bg-primary"
-                                                    : "border-gray-300"
+                                                ? "border-primary bg-primary"
+                                                : "border-gray-300"
                                                 }`}
                                         >
                                             {paymentMethod === "COD" && (
@@ -549,15 +559,15 @@ export default function CheckoutPage() {
                                 <div
                                     onClick={() => setPaymentMethod("RAZORPAY")}
                                     className={`p-4 border rounded-lg cursor-pointer transition-all ${paymentMethod === "RAZORPAY"
-                                            ? "border-primary bg-primary/5 ring-1 ring-primary"
-                                            : "border-gray-200 hover:border-gray-300"
+                                        ? "border-primary bg-primary/5 ring-1 ring-primary"
+                                        : "border-gray-200 hover:border-gray-300"
                                         }`}
                                 >
                                     <div className="flex items-center gap-3">
                                         <div
                                             className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === "RAZORPAY"
-                                                    ? "border-primary bg-primary"
-                                                    : "border-gray-300"
+                                                ? "border-primary bg-primary"
+                                                : "border-gray-300"
                                                 }`}
                                         >
                                             {paymentMethod === "RAZORPAY" && (

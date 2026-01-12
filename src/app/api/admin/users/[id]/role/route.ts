@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { z } from "zod";
 
 const roleSchema = z.object({
-  role: z.enum(["USER", "ADMIN"]),
+  role: z.enum(["CUSTOMER", "ADMIN"]),
 });
 
 export async function PATCH(
@@ -14,7 +14,7 @@ export async function PATCH(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session || session.user?.role !== "ADMIN") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -41,7 +41,7 @@ export async function PATCH(
     console.error("Update user role error:", error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: error.errors[0].message },
+        { error: error.issues[0].message },
         { status: 400 }
       );
     }

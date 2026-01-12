@@ -31,7 +31,7 @@ export async function GET(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session || session.user?.role !== "ADMIN") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -68,7 +68,7 @@ export async function PUT(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session || session.user?.role !== "ADMIN") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -109,12 +109,12 @@ export async function PUT(
           brandId: data.brandId || null,
           images: images
             ? {
-                create: images.map((url, index) => ({
-                  url,
-                  alt: data.name,
-                  position: index,
-                })),
-              }
+              create: images.map((url, index) => ({
+                url,
+                alt: data.name,
+                position: index,
+              })),
+            }
             : undefined,
         },
         include: { images: true },
@@ -126,7 +126,7 @@ export async function PUT(
     console.error("Update product error:", error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: error.errors[0].message },
+        { error: error.issues[0].message },
         { status: 400 }
       );
     }
@@ -143,7 +143,7 @@ export async function DELETE(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session || session.user?.role !== "ADMIN") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

@@ -76,7 +76,7 @@ export function ProductForm({ categories, brands, initialData }: ProductFormProp
   const [newImageUrl, setNewImageUrl] = useState("");
 
   const form = useForm<ProductFormValues>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(productSchema) as any,
     defaultValues: initialData || {
       name: "",
       slug: "",
@@ -129,7 +129,7 @@ export function ProductForm({ categories, brands, initialData }: ProductFormProp
       const url = initialData
         ? `/api/admin/products/${initialData.id}`
         : "/api/admin/products";
-      
+
       const res = await fetch(url, {
         method: initialData ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },

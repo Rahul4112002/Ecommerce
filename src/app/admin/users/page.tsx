@@ -46,7 +46,7 @@ export default async function UsersPage() {
   const stats = {
     total: users.length,
     admins: users.filter((u) => u.role === "ADMIN").length,
-    customers: users.filter((u) => u.role === "USER").length,
+    customers: users.filter((u) => u.role === "CUSTOMER").length,
   };
 
   return (
@@ -117,7 +117,7 @@ export default async function UsersPage() {
                         <Avatar className="h-8 w-8">
                           <AvatarImage src={user.image || ""} />
                           <AvatarFallback>
-                            {user.name?.charAt(0) || user.email.charAt(0).toUpperCase()}
+                            {user.name?.charAt(0) || user.email?.charAt(0).toUpperCase() || "U"}
                           </AvatarFallback>
                         </Avatar>
                         <span className="font-medium">
@@ -125,7 +125,7 @@ export default async function UsersPage() {
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.email || "No email"}</TableCell>
                     <TableCell>{user.phone || "-"}</TableCell>
                     <TableCell>
                       <Badge variant="secondary">{user._count.orders}</Badge>

@@ -54,7 +54,7 @@ export function CouponForm({ initialData }: CouponFormProps) {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<CouponFormValues>({
-    resolver: zodResolver(couponSchema),
+    resolver: zodResolver(couponSchema) as any,
     defaultValues: initialData || {
       code: "",
       description: "",
@@ -85,7 +85,7 @@ export function CouponForm({ initialData }: CouponFormProps) {
       const url = initialData
         ? `/api/admin/coupons/${initialData.id}`
         : "/api/admin/coupons";
-      
+
       const res = await fetch(url, {
         method: initialData ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
