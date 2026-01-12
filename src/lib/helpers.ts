@@ -78,7 +78,28 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
   };
 }
 
-// Build query string from object
+// Format date
+export function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat("en-IN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(date);
+}
+
+// Format relative time
+export function formatRelativeTime(date: Date): string {
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  
+  if (days === 0) return "Today";
+  if (days === 1) return "Yesterday";
+  if (days < 7) return `${days} days ago`;
+  if (days < 30) return `${Math.floor(days / 7)} weeks ago`;
+  if (days < 365) return `${Math.floor(days / 30)} months ago`;
+  return `${Math.floor(days / 365)} years ago`;
+}// Build query string from object
 export function buildQueryString(
   params: Record<string, string | number | boolean | undefined>
 ): string {

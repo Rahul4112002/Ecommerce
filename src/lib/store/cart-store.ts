@@ -18,8 +18,8 @@ interface CartStore {
   
   // Actions
   addItem: (item: Omit<CartItem, "id">) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  removeItem: (productId: string, variantId?: string) => void;
+  updateQuantity: (productId: string, variantId: string | undefined, quantity: number) => void;
   clearCart: () => void;
   openCart: () => void;
   closeCart: () => void;
@@ -57,18 +57,24 @@ export const useCartStore = create<CartStore>()(
         }
       },
 
-      removeItem: (id) => {
-        set({ items: get().items.filter((item) => item.id !== id) });
+      removeItem: (productId, variantId) => {
+        set({ 
+          items: get().items.filter(
+            (item) => !(item.productId === productId && item.variantId === variantId)
+          ) 
+        });
       },
 
-      updateQuantity: (id, quantity) => {
+      updateQuantity: (productId, variantId, quantity) => {
         if (quantity <= 0) {
-          get().removeItem(id);
+          get().removeItem(productId, variantId);
           return;
         }
         set({
           items: get().items.map((item) =>
-            item.id === id ? { ...item, quantity } : item
+            item.productId === productId && item.variantId === variantId 
+              ? { ...item, quantity } 
+              : item
           ),
         });
       },
