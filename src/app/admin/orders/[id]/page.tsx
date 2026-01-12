@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Package, User, MapPin, CreditCard, Truck } from "lucide-react";
 import { format } from "date-fns";
 import { OrderStatusSelect } from "../status-select";
+import { RefundButton } from "./refund-button";
 
 async function getOrder(id: string) {
   return db.order.findUnique({
@@ -26,10 +27,15 @@ async function getOrder(id: string) {
           product: {
             include: { images: { take: 1 } },
           },
+          variant: true,
         },
       },
       address: true,
       coupon: true,
+      tracking: {
+        orderBy: { createdAt: "desc" },
+        take: 1,
+      },
     },
   });
 }
@@ -68,7 +74,10 @@ export default async function OrderDetailPage({
             Placed on {format(order.createdAt, "PPP 'at' p")}
           </p>
         </div>
-        <OrderStatusSelect orderId={order.id} currentStatus={order.status} />
+        <div className="flex items-center gap-2">
+          <RefundButton orderId={order.id} />
+          <OrderStatusSelect orderId={order.id} currentStatus={order.status} />
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -112,7 +121,7 @@ export default async function OrderDetailPage({
                       </p>
                       {item.variant && (
                         <p className="text-sm text-muted-foreground">
-                          Variant: {item.variant}
+                          Variant: {item.variant.color}
                         </p>
                       )}
                     </div>
@@ -141,14 +150,14 @@ export default async function OrderDetailPage({
               </CardHeader>
               <CardContent>
                 <div className="space-y-1">
-                  <p className="font-medium">{order.address.fullName}</p>
+                  <p className="font-medium">{order.address.name}</p>
                   <p className="text-muted-foreground">{order.address.phone}</p>
                   <p className="text-muted-foreground">
-                    {order.address.addressLine1}
+                    {order.address.address}
                   </p>
-                  {order.address.addressLine2 && (
+                  {order.address.landmark && (
                     <p className="text-muted-foreground">
-                      {order.address.addressLine2}
+                      {order.address.landmark}
                     </p>
                   )}
                   <p className="text-muted-foreground">
@@ -235,15 +244,12 @@ export default async function OrderDetailPage({
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Shipping</span>
                 <span>
-                  {order.shipping.toNumber() === 0
+                  {order.shippingCharge.toNumber() === 0
                     ? "Free"
-                    : `₹${order.shipping.toNumber().toLocaleString("en-IN")}`}
+                    : `₹${order.shippingCharge.toNumber().toLocaleString("en-IN")}`}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Tax</span>
-                <span>₹{order.tax.toNumber().toLocaleString("en-IN")}</span>
-              </div>
+
               <Separator />
               <div className="flex justify-between text-lg font-bold">
                 <span>Total</span>
@@ -253,17 +259,22 @@ export default async function OrderDetailPage({
           </Card>
 
           {/* Tracking Info */}
-          {order.trackingNumber && (
+          {order.tracking.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Truck className="h-5 w-5" />
-                  Tracking
+                  Latest Update
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <p className="text-sm text-muted-foreground">Tracking Number</p>
-                <p className="font-mono">{order.trackingNumber}</p>
+                <p className="font-medium">{order.tracking[0].status}</p>
+                {order.tracking[0].message && (
+                  <p className="text-sm text-muted-foreground">{order.tracking[0].message}</p>
+                )}
+                <p className="text-xs text-muted-foreground">
+                  {format(order.tracking[0].createdAt, "MMM d, h:mm a")}
+                </p>
               </CardContent>
             </Card>
           )}

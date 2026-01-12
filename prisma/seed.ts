@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Starting seed...");
 
+  /*
   // Create Admin User
   const adminPassword = await hash("admin123", 12);
   const admin = await prisma.user.upsert({
@@ -33,6 +34,12 @@ async function main() {
     },
   });
   console.log("✅ Test user created");
+  */
+  console.log("ℹ️ User seeding skipped (Commented out).");
+
+  // Placeholder users for reference in loop below if needed, though loop is also commented out
+  const admin = { id: 'placeholder' };
+  const user = { id: 'placeholder' };
 
   // Create Categories
   const categories = await Promise.all([
@@ -426,63 +433,66 @@ async function main() {
     },
   ];
 
+  /*
   for (const productData of products) {
-    const category = categories.find((c) => c.slug === productData.categorySlug);
-    const brand = brands.find((b) => b.slug === productData.brandSlug);
+  const category = categories.find((c) => c.slug === productData.categorySlug);
+  const brand = brands.find((b) => b.slug === productData.brandSlug);
 
-    const product = await prisma.product.upsert({
-      where: { slug: productData.slug },
-      update: {},
-      create: {
-        name: productData.name,
-        slug: productData.slug,
-        description: productData.description,
-        price: productData.price,
-        comparePrice: productData.comparePrice,
-        sku: productData.sku,
-        stock: productData.stock,
-        isFeatured: productData.isFeatured,
-        categoryId: category?.id,
-        brandId: brand?.id,
-      },
-    });
+  const product = await prisma.product.upsert({
+    where: { slug: productData.slug },
+    update: {},
+    create: {
+      name: productData.name,
+      slug: productData.slug,
+      description: productData.description,
+      price: productData.price,
+      comparePrice: productData.comparePrice,
+      sku: productData.sku,
+      stock: productData.stock,
+      isFeatured: productData.isFeatured,
+      categoryId: category?.id,
+      brandId: brand?.id,
+    },
+  });
 
-    // Create attributes
-    await prisma.frameAttribute.upsert({
-      where: { productId: product.id },
-      update: {},
-      create: {
+  // Create attributes
+  await prisma.frameAttribute.upsert({
+    where: { productId: product.id },
+    update: {},
+    create: {
+      productId: product.id,
+      ...productData.attributes,
+    },
+  });
+
+  // Create images
+  for (let i = 0; i < productData.images.length; i++) {
+    await prisma.productImage.create({
+      data: {
         productId: product.id,
-        ...productData.attributes,
+        url: productData.images[i].url,
+        alt: productData.images[i].alt,
+        position: i,
       },
     });
-
-    // Create images
-    for (let i = 0; i < productData.images.length; i++) {
-      await prisma.productImage.create({
-        data: {
-          productId: product.id,
-          url: productData.images[i].url,
-          alt: productData.images[i].alt,
-          position: i,
-        },
-      });
-    }
-
-    // Create variants
-    for (const variant of productData.variants) {
-      await prisma.productVariant.create({
-        data: {
-          productId: product.id,
-          color: variant.color,
-          colorCode: variant.colorCode,
-          stock: variant.stock,
-        },
-      });
-    }
-
-    console.log(`✅ Product created: ${productData.name}`);
   }
+
+  // Create variants
+  for (const variant of productData.variants) {
+    await prisma.productVariant.create({
+      data: {
+        productId: product.id,
+        color: variant.color,
+        colorCode: variant.colorCode,
+        stock: variant.stock,
+      },
+    });
+  }
+
+  console.log(`✅ Product created: ${productData.name}`);
+}
+*/
+  console.log("ℹ️ Product seeding skipped (Commented out).");
 
   // Create sample reviews (one review per user per product)
   const allProducts = await prisma.product.findMany();
@@ -494,8 +504,9 @@ async function main() {
     { title: "Very satisfied", comment: "Perfect fit and great look. Will buy again.", rating: 5 },
   ];
 
-  const users = [admin, user];
+  // const users = [admin, user];
 
+  /*
   // Each user reviews different products to avoid unique constraint
   for (let i = 0; i < Math.min(allProducts.length, 6); i++) {
     const product = allProducts[i];
@@ -514,6 +525,8 @@ async function main() {
     });
   }
   console.log("✅ Reviews created");
+  */
+  console.log("ℹ️ Reviews seeding skipped.");
 
   // Create Coupons
   await prisma.coupon.upsert({

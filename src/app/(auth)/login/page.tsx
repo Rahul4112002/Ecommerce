@@ -18,7 +18,7 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
@@ -70,7 +70,7 @@ export default function LoginPage() {
             Login to your account to continue shopping
           </CardDescription>
         </CardHeader>
-        
+
         <CardContent className="space-y-4">
           {error && (
             <div className="bg-red-50 text-red-600 text-sm p-3 rounded-md">
@@ -123,6 +123,8 @@ export default function LoginPage() {
                 <p className="text-red-500 text-sm">{errors.password.message}</p>
               )}
             </div>
+
+
 
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (

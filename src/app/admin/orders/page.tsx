@@ -20,6 +20,7 @@ import {
 import { Eye, Clock, Package, Truck, CheckCircle, XCircle } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { OrderStatusSelect } from "./status-select";
+import { ExportButton } from "./export-button";
 
 async function getOrders() {
   return db.order.findMany({
@@ -73,11 +74,14 @@ export default async function OrdersPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold">Orders</h1>
-        <p className="text-muted-foreground">
-          Manage and track customer orders
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Orders</h1>
+          <p className="text-muted-foreground">
+            Manage and track customer orders
+          </p>
+        </div>
+        <ExportButton />
       </div>
 
       {/* Stats */}
