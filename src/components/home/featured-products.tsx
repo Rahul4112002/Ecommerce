@@ -63,20 +63,22 @@ export function FeaturedProducts({
   viewAllLink = "/products?sort=popular"
 }: FeaturedProductsProps) {
   return (
-    <section className="py-12 md:py-16 bg-gray-50">
+    <section className="py-16 md:py-20 bg-gradient-to-b from-gray-950 to-black">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-10">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">{title}</h2>
-            <p className="text-gray-600">{subtitle}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-2 text-white">
+              {title.split(' ')[0]} <span className="text-gold">{title.split(' ').slice(1).join(' ') || title}</span>
+            </h2>
+            <p className="text-gray-400">{subtitle}</p>
           </div>
-          <Link href={viewAllLink} className="hidden md:block">
-            <Button variant="outline">
+          <Button variant="outline" className="hidden md:flex border-gold/50 text-gold hover:bg-gold/10 hover:border-gold" asChild>
+            <Link href={viewAllLink}>
               View All
               <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
 
         {/* Products Grid */}
@@ -98,12 +100,12 @@ export function FeaturedProducts({
 
         {/* Mobile View All */}
         <div className="mt-8 text-center md:hidden">
-          <Link href={viewAllLink}>
-            <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full border-gold/50 text-gold hover:bg-gold/10 hover:border-gold" asChild>
+            <Link href={viewAllLink}>
               View All Products
               <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

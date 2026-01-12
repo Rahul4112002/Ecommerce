@@ -1,5 +1,4 @@
 import { Star, Quote } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 
 const testimonials = [
   {
@@ -38,12 +37,17 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-12 md:py-16">
+    <section className="py-16 md:py-20 bg-black">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">What Our Customers Say</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+        <div className="text-center mb-12">
+          <span className="inline-block px-4 py-1 rounded-full border border-gold/30 text-gold text-sm font-medium mb-4">
+            Customer Reviews
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+            What Our <span className="text-gold">Customers</span> Say
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">
             Join thousands of happy customers who found their perfect frames with us
           </p>
         </div>
@@ -51,58 +55,60 @@ export function TestimonialsSection() {
         {/* Testimonials Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {testimonials.map((testimonial) => (
-            <Card key={testimonial.id} className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                {/* Quote Icon */}
-                <Quote className="h-8 w-8 text-primary/20 mb-4" />
-                
-                {/* Rating */}
-                <div className="flex gap-1 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-4 w-4 ${
-                        i < testimonial.rating
-                          ? "text-yellow-400 fill-yellow-400"
-                          : "text-gray-300"
+            <div
+              key={testimonial.id}
+              className="group bg-gradient-to-br from-gray-900 to-gray-950 border border-gray-800 hover:border-gold/40 rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-gold/5"
+            >
+              {/* Quote Icon */}
+              <Quote className="h-8 w-8 text-gold/30 mb-4" />
+
+              {/* Rating */}
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`h-4 w-4 ${i < testimonial.rating
+                        ? "text-gold fill-gold"
+                        : "text-gray-600"
                       }`}
-                    />
-                  ))}
-                </div>
+                  />
+                ))}
+              </div>
 
-                {/* Comment */}
-                <p className="text-gray-600 text-sm mb-4 line-clamp-4">
-                  &quot;{testimonial.comment}&quot;
-                </p>
+              {/* Comment */}
+              <p className="text-gray-300 text-sm mb-6 line-clamp-4 leading-relaxed">
+                &quot;{testimonial.comment}&quot;
+              </p>
 
-                {/* Author */}
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-semibold text-sm">
-                    {testimonial.avatar}
-                  </div>
-                  <div>
-                    <p className="font-medium text-sm">{testimonial.name}</p>
-                    <p className="text-xs text-gray-500">{testimonial.location}</p>
-                  </div>
+              {/* Author */}
+              <div className="flex items-center gap-3 pt-4 border-t border-gray-800">
+                <div className="w-10 h-10 bg-gradient-to-br from-gold to-gold-dark text-black rounded-full flex items-center justify-center font-bold text-sm">
+                  {testimonial.avatar}
                 </div>
-              </CardContent>
-            </Card>
+                <div>
+                  <p className="font-semibold text-sm text-white">{testimonial.name}</p>
+                  <p className="text-xs text-gray-500">{testimonial.location}</p>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
 
         {/* Trust Badges */}
-        <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-gray-400">
+        <div className="mt-16 flex flex-wrap items-center justify-center gap-12">
           <div className="text-center">
-            <p className="text-3xl font-bold text-gray-800">10,000+</p>
-            <p className="text-sm">Happy Customers</p>
+            <p className="text-4xl font-bold text-gold">10,000+</p>
+            <p className="text-sm text-gray-500 mt-1">Happy Customers</p>
           </div>
+          <div className="h-12 w-px bg-gray-800 hidden md:block" />
           <div className="text-center">
-            <p className="text-3xl font-bold text-gray-800">4.8/5</p>
-            <p className="text-sm">Average Rating</p>
+            <p className="text-4xl font-bold text-gold">4.8/5</p>
+            <p className="text-sm text-gray-500 mt-1">Average Rating</p>
           </div>
+          <div className="h-12 w-px bg-gray-800 hidden md:block" />
           <div className="text-center">
-            <p className="text-3xl font-bold text-gray-800">500+</p>
-            <p className="text-sm">5-Star Reviews</p>
+            <p className="text-4xl font-bold text-gold">500+</p>
+            <p className="text-sm text-gray-500 mt-1">5-Star Reviews</p>
           </div>
         </div>
       </div>

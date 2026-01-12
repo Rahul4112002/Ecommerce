@@ -6,7 +6,6 @@ import { Heart, ShoppingCart } from "lucide-react";
 import { WishlistButton } from "@/components/wishlist-button";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { formatPrice, calculateDiscount } from "@/lib/helpers";
 import { useCartStore } from "@/lib/store/cart-store";
 import { toast } from "sonner";
@@ -52,9 +51,9 @@ export function ProductCard({
   };
 
   return (
-    <Card className="group overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <div className="group bg-gradient-to-br from-gray-900 to-gray-950 border border-gray-800 hover:border-gold/40 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-gold/10">
       <Link href={`/products/${slug}`}>
-        <div className="relative aspect-square bg-gray-100 overflow-hidden">
+        <div className="relative aspect-square bg-gray-900 overflow-hidden">
           {/* Product Image */}
           {image && image !== "/placeholder-product.jpg" ? (
             <Image
@@ -65,7 +64,7 @@ export function ProductCard({
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-6xl bg-linear-to-br from-gray-50 to-gray-100">
+            <div className="w-full h-full flex items-center justify-center text-6xl bg-gradient-to-br from-gray-800 to-gray-900">
               👓
             </div>
           )}
@@ -83,29 +82,25 @@ export function ProductCard({
 
           {/* Badge */}
           {(badge || discount > 0) && (
-            <Badge className={`absolute top-2 left-2 ${discount > 0 ? "bg-red-500" : "bg-primary"}`}>
+            <Badge className={`absolute top-2 left-2 sm:top-3 sm:left-3 text-[10px] sm:text-xs ${discount > 0 ? "bg-red-500 text-white" : "bg-gold text-black font-semibold"}`}>
               {discount > 0 ? `${discount}% OFF` : badge}
             </Badge>
           )}
 
           {/* Wishlist Button */}
-          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
             <WishlistButton
-              productId={slug} // Using slug as ID based on current implementation, but store expects ProductID. 
-              // Wait, store uses ID. This component props pass 'slug'.
-              // I need 'id' in props. ProductCard typically receives partial data. 
-              // If 'slug' is passed as ID it might fail if ID is UUID.
-              // I should update ProductCard props to accept 'id' as well.
+              productId={slug}
               variant="icon"
-              className="bg-white hover:bg-gray-100 shadow-md"
+              className="bg-gray-900/80 hover:bg-gray-800 text-white border border-gray-700 shadow-lg"
             />
           </div>
 
           {/* Quick Add Button */}
-          <div className="absolute bottom-0 left-0 right-0 p-2 bg-linear-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
             <Button
               size="sm"
-              className="w-full"
+              className="w-full bg-gold hover:bg-gold-light text-black font-semibold"
               onClick={handleAddToCart}
             >
               <ShoppingCart className="mr-2 h-4 w-4" />
@@ -114,24 +109,24 @@ export function ProductCard({
           </div>
         </div>
 
-        <CardContent className="p-3">
+        <div className="p-3 sm:p-4">
           {/* Product Info */}
-          <div className="space-y-1">
+          <div className="space-y-1 sm:space-y-2">
             {/* Shape */}
             {shape && (
-              <p className="text-xs text-gray-500">{shape}</p>
+              <p className="text-[10px] sm:text-xs text-gold/70 font-medium uppercase tracking-wider">{shape}</p>
             )}
 
             {/* Name */}
-            <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
+            <h3 className="font-semibold text-xs sm:text-sm text-white group-hover:text-gold transition-colors line-clamp-2">
               {name}
             </h3>
 
             {/* Price */}
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-lg">{formatPrice(price)}</span>
+            <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
+              <span className="font-bold text-sm sm:text-base md:text-lg text-gold">{formatPrice(price)}</span>
               {originalPrice && (
-                <span className="text-sm text-gray-400 line-through">
+                <span className="text-xs sm:text-sm text-gray-500 line-through">
                   {formatPrice(originalPrice)}
                 </span>
               )}
@@ -139,11 +134,11 @@ export function ProductCard({
 
             {/* Color Options */}
             {colors && colors.length > 0 && (
-              <div className="flex gap-1 pt-1">
+              <div className="flex gap-1 sm:gap-1.5 pt-1">
                 {colors.slice(0, 4).map((color, index) => (
                   <div
                     key={index}
-                    className="w-4 h-4 rounded-full border border-gray-200"
+                    className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-gray-700"
                     style={{ backgroundColor: color }}
                   />
                 ))}
@@ -153,8 +148,8 @@ export function ProductCard({
               </div>
             )}
           </div>
-        </CardContent>
+        </div>
       </Link>
-    </Card>
+    </div>
   );
 }

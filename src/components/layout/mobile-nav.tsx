@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
-import { X, ChevronRight, User, Heart, Package, LogOut } from "lucide-react";
+import { X, ChevronRight, User, Heart, Package, LogOut, Glasses } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -19,9 +20,23 @@ export function MobileNav({ isOpen, onClose, categories }: MobileNavProps) {
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent side="left" className="w-[300px] sm:w-[350px] p-0">
-        <SheetHeader className="p-4 border-b">
+        <SheetHeader className="p-4 border-b border-gold/20">
           <div className="flex items-center justify-between">
-            <SheetTitle className="text-xl font-bold">👓 EyeFrames</SheetTitle>
+            <SheetTitle className="flex items-center gap-2">
+              {/* Icon Mark */}
+              <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-br from-gold via-gold-light to-gold border border-gold/50">
+                <Glasses className="w-5 h-5 text-black" />
+              </div>
+              {/* Brand Text */}
+              <div className="flex flex-col">
+                <span className="text-xl font-bold font-heading tracking-wide bg-gradient-to-r from-gold via-gold-light to-gold bg-clip-text text-transparent">
+                  LeeHit
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500 -mt-0.5">
+                  Eyewear
+                </span>
+              </div>
+            </SheetTitle>
             <button onClick={onClose}>
               <X className="h-5 w-5" />
             </button>
@@ -30,7 +45,7 @@ export function MobileNav({ isOpen, onClose, categories }: MobileNavProps) {
 
         <div className="flex flex-col h-full">
           {/* User Section */}
-          <div className="p-4 bg-gray-50">
+          <div className="p-4 bg-secondary">
             {session ? (
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-semibold">
@@ -45,12 +60,16 @@ export function MobileNav({ isOpen, onClose, categories }: MobileNavProps) {
               <div className="space-y-2">
                 <p className="text-sm text-gray-600">Login for best experience</p>
                 <div className="flex space-x-2">
-                  <Link href="/login" onClick={onClose}>
-                    <Button size="sm">Login</Button>
-                  </Link>
-                  <Link href="/register" onClick={onClose}>
-                    <Button size="sm" variant="outline">Sign Up</Button>
-                  </Link>
+                  <Button size="sm" asChild>
+                    <Link href="/login" onClick={onClose}>
+                      Login
+                    </Link>
+                  </Button>
+                  <Button size="sm" variant="outline" asChild>
+                    <Link href="/register" onClick={onClose}>
+                      Sign Up
+                    </Link>
+                  </Button>
                 </div>
               </div>
             )}

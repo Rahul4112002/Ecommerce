@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Outfit, Playfair_Display } from "next/font/google"; // Added fonts
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Header, Footer } from "@/components/layout";
@@ -10,13 +10,23 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+});
+
 export const metadata: Metadata = {
   title: {
-    default: "EyeFrames - Premium Eyewear Store",
-    template: "%s | EyeFrames",
+    default: "LeeHit Eyewear - Premium Eyewear Store",
+    template: "%s | LeeHit Eyewear",
   },
   description: "Shop premium quality eyeframes for men, women, and kids. Wide collection of stylish frames at affordable prices with free shipping.",
-  keywords: ["eyeframes", "glasses", "eyewear", "spectacles", "sunglasses", "frames"],
+  keywords: ["eyeframes", "glasses", "eyewear", "spectacles", "sunglasses", "frames", "leehit"],
 };
 
 export default function RootLayout({
@@ -26,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
+      <body className={`${inter.variable} ${outfit.variable} ${playfair.variable} font-sans antialiased`} suppressHydrationWarning>
         <Providers>
           <div className="flex min-h-screen flex-col">
             <Header />

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import {
   Search,
@@ -11,13 +12,16 @@ import {
   Menu,
   LogOut,
   Package,
-  Settings
+  Settings,
+  Truck,
+  Glasses
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { SearchBar } from "@/components/search/search-bar";
+// Theme toggle removed - dark mode only
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,10 +47,11 @@ export function Header() {
   const cartItemsCount = useCartStore((state) => state.getTotalItems());
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-gold/20">
       {/* Top Bar - Announcement */}
-      <div className="bg-primary text-primary-foreground text-center py-2 text-sm">
-        🎉 Free Shipping on orders above ₹999 | Use code: FIRST10 for 10% off
+      <div className="bg-gradient-to-r from-gold-dark via-gold to-gold-dark text-black text-center py-2 text-sm font-medium flex items-center justify-center gap-2">
+        <Truck className="h-4 w-4" />
+        Free Shipping on orders above ₹999 | Use code: FIRST10 for 10% off
       </div>
 
       {/* Main Header */}
@@ -61,8 +66,20 @@ export function Header() {
           </button>
 
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-primary">👓 EyeFrames</span>
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
+            {/* Icon Mark */}
+            <div className="relative flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-gradient-to-br from-gold via-gold-light to-gold border border-gold/50 shadow-lg shadow-gold/20 group-hover:shadow-gold/40 transition-all">
+              <Glasses className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
+            </div>
+            {/* Brand Text - visible on all screens with responsive sizing */}
+            <div className="flex flex-col">
+              <span className="text-lg sm:text-xl md:text-2xl font-bold font-heading tracking-wide bg-gradient-to-r from-gold via-gold-light to-gold bg-clip-text text-transparent">
+                LeeHit
+              </span>
+              <span className="text-[8px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-[0.25em] text-gray-400 -mt-0.5">
+                Eyewear
+              </span>
+            </div>
           </Link>
 
           {/* Search Bar - Desktop */}
@@ -71,7 +88,8 @@ export function Header() {
           </div>
 
           {/* Right Icons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
+
             {/* Wishlist */}
             <Link href="/wishlist" className="hidden sm:block">
               <Button variant="ghost" size="icon">
@@ -102,7 +120,7 @@ export function Header() {
                 <DropdownMenuContent align="end" className="w-56">
                   <div className="px-2 py-1.5">
                     <p className="text-sm font-medium">{session.user?.name}</p>
-                    <p className="text-xs text-gray-500">{session.user?.email}</p>
+                    <p className="text-xs text-muted-foreground">{session.user?.email}</p>
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
@@ -154,7 +172,7 @@ export function Header() {
             <Link
               key={category.name}
               href={category.href}
-              className="text-sm font-medium text-gray-700 hover:text-primary transition-colors"
+              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
             >
               {category.name}
             </Link>

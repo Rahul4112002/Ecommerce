@@ -67,8 +67,8 @@ export default function SettingsPage() {
 
   // Store settings state
   const [storeSettings, setStoreSettings] = useState({
-    storeName: "EyeFrames Store",
-    email: "contact@eyeframes.com",
+    storeName: "LeeHit Eyewear",
+    email: "contact@leehit.com",
     phone: "+91 98765 43210",
     address: "123 Fashion Street, Mumbai, India",
     currency: "INR",
@@ -394,11 +394,10 @@ export default function SettingsPage() {
             </div>
             <div className="flex items-center gap-3">
               <span
-                className={`px-3 py-1 text-sm rounded-full ${
-                  template.status === "Active"
+                className={`px-3 py-1 text-sm rounded-full ${template.status === "Active"
                     ? "bg-green-100 text-green-800"
                     : "bg-gray-100 text-gray-800"
-                }`}
+                  }`}
               >
                 {template.status}
               </span>
@@ -493,11 +492,10 @@ export default function SettingsPage() {
               <button
                 key={section.id}
                 onClick={() => setActiveSection(section.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-left ${
-                  activeSection === section.id
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-left ${activeSection === section.id
                     ? "bg-indigo-50 text-indigo-700"
                     : "text-gray-700 hover:bg-gray-50"
-                }`}
+                  }`}
               >
                 <section.icon className="h-5 w-5" />
                 <span className="font-medium">{section.title}</span>

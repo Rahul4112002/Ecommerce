@@ -37,6 +37,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-gold: var(--gold);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -46,80 +47,188 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
+/* Luxury Dark Theme - Black, Grey, Gold */
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+
+  /* Gold accent color */
+  --gold: #D4AF37;
+  --gold-light: #F4D160;
+  --gold-dark: #B8860B;
+
+  /* Dark theme as default */
+  --background: #0A0A0A;
+  --foreground: #FAFAFA;
+
+  --card: #141414;
+  --card-foreground: #FAFAFA;
+
+  --popover: #1A1A1A;
+  --popover-foreground: #FAFAFA;
+
+  /* Primary = Gold for luxury feel */
+  --primary: #D4AF37;
+  --primary-foreground: #0A0A0A;
+
+  /* Secondary = Dark grey */
+  --secondary: #1F1F1F;
+  --secondary-foreground: #FAFAFA;
+
+  --muted: #262626;
+  --muted-foreground: #A3A3A3;
+
+  /* Accent = Gold */
+  --accent: #D4AF37;
+  --accent-foreground: #0A0A0A;
+
+  --destructive: #EF4444;
+
+  /* Borders and inputs with gold tint */
+  --border: #2A2A2A;
+  --input: #1F1F1F;
+  --ring: #D4AF37;
+
+  /* Charts with gold palette */
+  --chart-1: #D4AF37;
+  --chart-2: #B8860B;
+  --chart-3: #F4D160;
+  --chart-4: #8B7355;
+  --chart-5: #CD853F;
+
+  /* Sidebar */
+  --sidebar: #0F0F0F;
+  --sidebar-foreground: #FAFAFA;
+  --sidebar-primary: #D4AF37;
+  --sidebar-primary-foreground: #0A0A0A;
+  --sidebar-accent: #1A1A1A;
+  --sidebar-accent-foreground: #FAFAFA;
+  --sidebar-border: #2A2A2A;
+  --sidebar-ring: #D4AF37;
 }
 
+/* Dark class (same as root for consistency) */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: #0A0A0A;
+  --foreground: #FAFAFA;
+  --card: #141414;
+  --card-foreground: #FAFAFA;
+  --popover: #1A1A1A;
+  --popover-foreground: #FAFAFA;
+  --primary: #D4AF37;
+  --primary-foreground: #0A0A0A;
+  --secondary: #1F1F1F;
+  --secondary-foreground: #FAFAFA;
+  --muted: #262626;
+  --muted-foreground: #A3A3A3;
+  --accent: #D4AF37;
+  --accent-foreground: #0A0A0A;
+  --destructive: #EF4444;
+  --border: #2A2A2A;
+  --input: #1F1F1F;
+  --ring: #D4AF37;
+  --chart-1: #D4AF37;
+  --chart-2: #B8860B;
+  --chart-3: #F4D160;
+  --chart-4: #8B7355;
+  --chart-5: #CD853F;
+  --sidebar: #0F0F0F;
+  --sidebar-foreground: #FAFAFA;
+  --sidebar-primary: #D4AF37;
+  --sidebar-primary-foreground: #0A0A0A;
+  --sidebar-accent: #1A1A1A;
+  --sidebar-accent-foreground: #FAFAFA;
+  --sidebar-border: #2A2A2A;
+  --sidebar-ring: #D4AF37;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Custom gold gradient utilities */
+.text-gold {
+  color: #D4AF37;
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #F4D160 50%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.border-gold {
+  border-color: #D4AF37;
+}
+
+.bg-gold {
+  background-color: #D4AF37;
+}
+
+.bg-gradient-dark {
+  background: linear-gradient(180deg, #0A0A0A 0%, #141414 100%);
+}
+
+.bg-gradient-card {
+  background: linear-gradient(145deg, #1A1A1A 0%, #0F0F0F 100%);
+}
+
+/* Gold glow effect for buttons and highlights */
+.glow-gold {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.hover\:glow-gold:hover {
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+}
+
+/* Premium animations */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
+  }
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(300%);
   }
 }
