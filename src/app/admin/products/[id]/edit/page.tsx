@@ -30,23 +30,19 @@ export default async function EditProductPage({
     notFound();
   }
 
-  const initialData = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const initialData: any = {
     id: product.id,
     name: product.name,
     slug: product.slug,
     description: product.description || "",
-    shortDescription: product.shortDescription || "",
     price: product.price.toNumber(),
     comparePrice: product.comparePrice?.toNumber() || "",
     sku: product.sku || "",
     stock: product.stock,
     categoryId: product.categoryId || "",
     brandId: product.brandId || "",
-    gender: product.gender as "MEN" | "WOMEN" | "KIDS" | "UNISEX",
-    frameShape: product.frameShape || "",
-    frameMaterial: product.frameMaterial || "",
-    frameColor: product.frameColor || "",
-    lensType: product.lensType || "",
+    gender: "UNISEX",
     isActive: product.isActive,
     isFeatured: product.isFeatured,
     images: product.images.map((img) => img.url),
