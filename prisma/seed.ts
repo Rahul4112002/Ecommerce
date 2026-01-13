@@ -6,33 +6,63 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Starting seed...");
 
-  // Create Admin User
-  const adminPassword = await hash("admin123", 12);
+  // ===== SINGLE ADMIN POLICY =====
+  // Demote ALL existing admin users to CUSTOMER (except our official admin)
+  await prisma.user.updateMany({
+    where: {
+      role: Role.ADMIN,
+      email: { not: "admin@leehit.com" }
+    },
+    data: { role: Role.CUSTOMER }
+  });
+  console.log("⚠️ All other admin users demoted to CUSTOMER");
+
+  // Delete old admin@eyeframes.com user if exists
+  try {
+    await prisma.user.delete({
+      where: { email: "admin@eyeframes.com" }
+    });
+    console.log("🗑️ Old admin@eyeframes.com deleted");
+  } catch {
+    // User doesn't exist, ignore
+  }
+
+  // Create/Update Single Admin User for LeeHit Eyewear
+  // ONLY ONE admin user - credentials matching brand name
+  const adminPassword = await hash("LeeHit@2026", 12);
   const admin = await prisma.user.upsert({
-    where: { email: "admin@eyeframes.com" },
-    update: {},
+    where: { email: "admin@leehit.com" },
+    update: {
+      password: adminPassword,
+      name: "LeeHit Admin",
+      role: Role.ADMIN, // Ensure role is ADMIN
+    },
     create: {
-      email: "admin@eyeframes.com",
-      name: "Admin User",
+      email: "admin@leehit.com",
+      name: "LeeHit Admin",
       password: adminPassword,
       role: Role.ADMIN,
     },
   });
-  console.log("✅ Admin user created");
+  console.log("✅ LeeHit Admin user created/updated");
+  console.log("═══════════════════════════════════════");
+  console.log("📧 Admin Email: admin@leehit.com");
+  console.log("🔑 Admin Password: LeeHit@2026");
+  console.log("═══════════════════════════════════════");
 
-  // Create Test User
-  const userPassword = await hash("user123", 12);
+  // Create Sample Customer (not admin)
+  const userPassword = await hash("customer123", 12);
   const user = await prisma.user.upsert({
-    where: { email: "user@example.com" },
+    where: { email: "customer@example.com" },
     update: {},
     create: {
-      email: "user@example.com",
-      name: "Test User",
+      email: "customer@example.com",
+      name: "Sample Customer",
       password: userPassword,
       role: Role.CUSTOMER,
     },
   });
-  console.log("✅ Test user created");
+  console.log("✅ Sample customer created");
 
   // Create Categories
   const categories = await Promise.all([
