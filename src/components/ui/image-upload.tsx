@@ -59,7 +59,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
                 onSuccess={onUpload}
                 uploadPreset="eyeframes_upload" // This needs to be configured in Cloudinary Dashboard
             >
-                {({ open }) => {
+                {({ open }: { open: any }) => {
                     const onClick = () => {
                         open();
                     };
