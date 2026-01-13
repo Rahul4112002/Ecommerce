@@ -3,10 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import Razorpay from "razorpay";
 
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID!,
-    key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
+
 
 export async function POST(request: NextRequest) {
     try {
@@ -27,6 +24,19 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             );
         }
+
+        if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+            console.error("Razorpay keys are missing");
+            return NextResponse.json(
+                { error: "Payment configuration missing" },
+                { status: 500 }
+            );
+        }
+
+        const razorpay = new Razorpay({
+            key_id: process.env.RAZORPAY_KEY_ID,
+            key_secret: process.env.RAZORPAY_KEY_SECRET,
+        });
 
         // Create Razorpay order
         const razorpayOrder = await razorpay.orders.create({
