@@ -25,7 +25,12 @@ interface ProductReviewsProps {
 
 export function ProductReviews({ productId, reviews, avgRating, reviewCount }: ProductReviewsProps) {
 
-  // ... existing code ...
+  const ratingCounts = Array.from({ length: 5 }, (_, i) => {
+    const star = 5 - i;
+    const count = reviews.filter((r) => r.rating === star).length;
+    const percentage = reviewCount > 0 ? (count / reviewCount) * 100 : 0;
+    return { rating: star, count, percentage };
+  });
 
   return (
     <div className="space-y-8">
