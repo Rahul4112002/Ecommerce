@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Starting seed...");
 
-  /*
   // Create Admin User
   const adminPassword = await hash("admin123", 12);
   const admin = await prisma.user.upsert({
@@ -34,12 +33,6 @@ async function main() {
     },
   });
   console.log("✅ Test user created");
-  */
-  console.log("ℹ️ User seeding skipped (Commented out).");
-
-  // Placeholder users for reference in loop below if needed, though loop is also commented out
-  const admin = { id: 'placeholder' };
-  const user = { id: 'placeholder' };
 
   // Create Categories
   const categories = await Promise.all([
