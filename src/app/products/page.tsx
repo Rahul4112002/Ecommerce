@@ -153,100 +153,93 @@ async function getProducts(searchParams: SearchParams) {
 
 function ProductsLoading() {
   return (
-    & lt;div className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" & gt;
-  {
-    Array.from({ length: 9 }).map((_, i) =& gt; (
-        & lt;div key = { i } className = "space-y-3" & gt;
-          & lt;Skeleton className = "h-64 w-full rounded-lg" /& gt;
-          & lt;Skeleton className = "h-4 w-3/4" /& gt;
-          & lt;Skeleton className = "h-4 w-1/2" /& gt;
-          & lt;Skeleton className = "h-6 w-1/4" /& gt;
-        & lt;/div&gt;
-      ))
-  }
-    & lt;/div&gt;
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {Array.from({ length: 9 }).map((_, i) => (
+        <div key={i} className="space-y-3">
+          <Skeleton className="h-64 w-full rounded-lg" />
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-4 w-1/2" />
+          <Skeleton className="h-6 w-1/4" />
+        </div>
+      ))}
+    </div>
   );
 }
 
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise & lt;SearchParams&gt;;
+  searchParams: Promise<SearchParams>;
 }) {
   const params = await searchParams;
   const { products, pagination } = await getProducts(params);
 
   return (
-    & lt;div className = "min-h-screen bg-gray-50" & gt;
-      & lt;div className = "container mx-auto px-4 py-8" & gt;
-        & lt;div className = "flex items-center justify-between mb-6" & gt;
-          & lt;h1 className = "text-2xl font-bold" & gt;All Eyeglasses & lt;/h1&gt;
-          & lt;p className = "text-muted-foreground" & gt;
-  { pagination.total } products found
-    & lt;/p&gt;
-        & lt;/div&gt;
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">All Eyeglasses</h1>
+          <p className="text-muted-foreground">
+            {pagination.total} products found
+          </p>
+        </div>
 
-        & lt;div className = "flex gap-8" & gt;
-  {/* Filter Sidebar */ }
-          & lt;div className = "hidden md:block w-64 shrink-0" & gt;
-            & lt;Suspense fallback = {& lt;Skeleton className = "w-64 h-[500px]" /& gt;
-}& gt;
-              & lt; FilterSidebar /& gt;
-            & lt;/Suspense&gt;
-          & lt;/div&gt;
+        <div className="flex gap-8">
+          {/* Filter Sidebar */}
+          <div className="hidden md:block w-64 shrink-0">
+            <Suspense fallback={<Skeleton className="w-64 h-[500px]" />}>
+              <FilterSidebar />
+            </Suspense>
+          </div>
 
-{/* Products Grid */ }
-          & lt;div className = "flex-1" & gt;
-{/* Sort */ }
-            & lt;div className = "flex justify-between items-center mb-6" & gt;
-              & lt; div /& gt;
-              & lt;Suspense fallback = {& lt;Skeleton className = "w-40 h-10" /& gt;}& gt;
-                & lt; SortSelect /& gt;
-              & lt;/Suspense&gt;
-            & lt;/div&gt;
+          {/* Products Grid */}
+          <div className="flex-1">
+            {/* Sort */}
+            <div className="flex justify-between items-center mb-6">
+              <div />
+              <Suspense fallback={<Skeleton className="w-40 h-10" />}>
+                <SortSelect />
+              </Suspense>
+            </div>
 
-            & lt;Suspense fallback = {& lt; ProductsLoading /& gt;}& gt;
-{
-  products.length & gt; 0 ? (
-                & lt;& gt;
-                  & lt;div className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" & gt;
-  {
-    products.map((product) =& gt; (
-                      & lt; ProductCard
-    key = { product.id }
-    id = { product.id }
-    name = { product.name }
-    slug = { product.slug }
-    price = { product.price }
-    originalPrice = { product.comparePrice }
-    image = { product.image || "/placeholder-product.jpg" }
-    colors = { product.colors?.map((c) =& gt; c.code) || []
-  }
-  shape = { product.shape || "" }
-    /& gt;
-                    ))
-}
-                  & lt;/div&gt;
-                  & lt; Pagination
-currentPage = { pagination.page }
-totalPages = { pagination.totalPages }
-total = { pagination.total }
-  /& gt;
-                & lt;/&gt;
+            <Suspense fallback={<ProductsLoading />}>
+              {products.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {products.map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        id={product.id}
+                        name={product.name}
+                        slug={product.slug}
+                        price={product.price}
+                        originalPrice={product.comparePrice}
+                        image={product.image || "/placeholder-product.jpg"}
+                        colors={product.colors?.map((c) => c.code) || []}
+                        shape={product.shape || ""}
+                      />
+                    ))}
+                  </div>
+                  <Pagination
+                    currentPage={pagination.page}
+                    totalPages={pagination.totalPages}
+                    total={pagination.total}
+                  />
+                </>
               ) : (
-                & lt;div className = "text-center py-16" & gt;
-                  & lt;div className = "text-6xl mb-4" & gt;👓& lt;/div&gt;
-                  & lt;h3 className = "text-xl font-semibold mb-2" & gt;No products found & lt;/h3&gt;
-                  & lt;p className = "text-muted-foreground mb-4" & gt;
+                <div className="text-center py-16">
+                  <div className="text-6xl mb-4">👓</div>
+                  <h3 className="text-xl font-semibold mb-2">No products found</h3>
+                  <p className="text-muted-foreground mb-4">
                     Try adjusting your filters or search terms
-  & lt;/p&gt;
-                  & lt; ClearFiltersButton /& gt;
-                & lt;/div&gt;
+                  </p>
+                  <ClearFiltersButton />
+                </div>
               )}
-            & lt;/Suspense&gt;
-          & lt;/div&gt;
-        & lt;/div&gt;
-      & lt;/div&gt;
-    & lt;/div&gt;
+            </Suspense>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

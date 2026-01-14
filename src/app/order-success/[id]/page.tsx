@@ -51,7 +51,7 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-12">
                 <div className="max-w-2xl mx-auto">
                     {/* Success Header */}
@@ -68,7 +68,7 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                     </div>
 
                     {/* Order Info Card */}
-                    <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <div className="bg-card rounded-lg shadow-sm p-6 mb-6 border border-border">
                         <div className="flex items-center justify-between mb-4">
                             <div>
                                 <p className="text-sm text-muted-foreground">Order Number</p>
@@ -198,8 +198,8 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                                     <span className="text-muted-foreground">Status</span>
                                     <span
                                         className={`font-medium ${order.paymentStatus === "PAID"
-                                                ? "text-green-600"
-                                                : "text-yellow-600"
+                                            ? "text-green-600"
+                                            : "text-yellow-600"
                                             }`}
                                     >
                                         {order.paymentStatus === "PAID" ? "Paid" : "Pending"}

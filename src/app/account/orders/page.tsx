@@ -77,7 +77,7 @@ export default function OrdersPage() {
         return (
             <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
-                    <div key={i} className="bg-white rounded-lg shadow-sm p-6">
+                    <div key={i} className="bg-card rounded-lg shadow-sm p-6 border border-border">
                         <Skeleton className="h-6 w-48 mb-4" />
                         <Skeleton className="h-20 w-full" />
                     </div>
@@ -88,7 +88,7 @@ export default function OrdersPage() {
 
     if (orders.length === 0) {
         return (
-            <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+            <div className="bg-card rounded-lg shadow-sm p-12 text-center border border-border">
                 <ShoppingBag className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <h2 className="text-xl font-semibold mb-2">No orders yet</h2>
                 <p className="text-muted-foreground mb-6">
@@ -113,10 +113,10 @@ export default function OrdersPage() {
             {orders.map((order) => (
                 <div
                     key={order.id}
-                    className="bg-white rounded-lg shadow-sm overflow-hidden"
+                    className="bg-card rounded-lg shadow-sm overflow-hidden border border-border"
                 >
                     {/* Order Header */}
-                    <div className="bg-gray-50 px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+                    <div className="bg-secondary px-6 py-4 flex flex-wrap items-center justify-between gap-4">
                         <div className="flex items-center gap-6">
                             <div>
                                 <p className="text-sm text-muted-foreground">Order Number</p>
@@ -201,7 +201,7 @@ export default function OrdersPage() {
                     </div>
 
                     {/* Order Footer */}
-                    <div className="px-6 py-3 bg-gray-50 border-t flex justify-between items-center">
+                    <div className="px-6 py-3 bg-secondary border-t border-border flex justify-between items-center">
                         <div className="text-sm">
                             <span className="text-muted-foreground">Payment: </span>
                             <span className="font-medium">

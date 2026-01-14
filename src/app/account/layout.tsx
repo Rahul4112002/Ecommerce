@@ -39,14 +39,14 @@ export default async function AccountLayout({ children }: AccountLayoutProps) {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold mb-8">My Account</h1>
 
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Sidebar */}
                     <aside className="lg:col-span-1">
-                        <div className="bg-white rounded-lg shadow-sm p-6">
+                        <div className="bg-card rounded-lg shadow-sm p-6 border border-border">
                             {/* User Info */}
                             <div className="flex items-center gap-3 mb-6 pb-6 border-b">
                                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">

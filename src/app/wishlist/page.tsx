@@ -109,7 +109,7 @@ export default function WishlistPage() {
             </h1>
 
             {items.length === 0 ? (
-                <div className="text-center py-20 bg-gray-50 rounded-lg">
+                <div className="text-center py-20 bg-card rounded-lg border border-border">
                     <Heart className="w-12 h-12 mx-auto text-gray-300 mb-4" />
                     <h2 className="text-xl font-medium mb-2">Your wishlist is empty</h2>
                     <p className="text-muted-foreground mb-6">

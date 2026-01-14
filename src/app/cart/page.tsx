@@ -28,7 +28,7 @@ export default function CartPage() {
       toast.error("Please enter a coupon code");
       return;
     }
-    
+
     // Simple coupon logic - can be extended with API
     if (couponCode.toUpperCase() === "FIRST10") {
       setDiscount(subtotal * 0.1);
@@ -54,7 +54,7 @@ export default function CartPage() {
     const itemsList = items
       .map((item) => `• ${item.name}${item.color ? ` (${item.color})` : ""} x ${item.quantity} - ${formatPrice(item.price * item.quantity)}`)
       .join("\n");
-    
+
     const message = encodeURIComponent(
       `Hi! I'd like to place an order:\n\n` +
       `${itemsList}\n\n` +
@@ -64,7 +64,7 @@ export default function CartPage() {
       `*Total: ${formatPrice(total)}*\n\n` +
       `Please confirm my order.`
     );
-    
+
     window.open(`https://wa.me/919999999999?text=${message}`, "_blank");
   };
 
@@ -87,7 +87,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
 
@@ -95,7 +95,7 @@ export default function CartPage() {
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             {/* Header */}
-            <div className="bg-white rounded-lg shadow-sm p-4 hidden md:grid grid-cols-12 gap-4 font-semibold text-sm text-muted-foreground">
+            <div className="bg-card rounded-lg shadow-sm p-4 hidden md:grid grid-cols-12 gap-4 font-semibold text-sm text-muted-foreground border border-border">
               <div className="col-span-6">Product</div>
               <div className="col-span-2 text-center">Price</div>
               <div className="col-span-2 text-center">Quantity</div>
@@ -104,7 +104,7 @@ export default function CartPage() {
 
             {/* Items */}
             {items.map((item) => (
-              <CartItemRow 
+              <CartItemRow
                 key={`${item.productId}-${item.variantId}`}
                 item={item}
                 onUpdateQuantity={updateQuantity}
@@ -114,8 +114,8 @@ export default function CartPage() {
 
             {/* Clear Cart */}
             <div className="flex justify-between items-center pt-4">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 className="text-destructive hover:text-destructive"
                 onClick={() => {
                   clearCart();
@@ -133,9 +133,9 @@ export default function CartPage() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm p-6 sticky top-24">
+            <div className="bg-card rounded-lg shadow-sm p-6 sticky top-24 border border-border">
               <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-              
+
               {/* Coupon */}
               <div className="mb-6">
                 <label className="text-sm font-medium mb-2 block">Have a coupon?</label>
@@ -145,9 +145,9 @@ export default function CartPage() {
                       <Tag className="w-4 h-4 text-green-600" />
                       <span className="font-medium text-green-700">{appliedCoupon}</span>
                     </div>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={handleRemoveCoupon}
                       className="text-red-500 hover:text-red-600 h-auto p-1"
                     >
@@ -180,19 +180,19 @@ export default function CartPage() {
                   <span className="text-muted-foreground">Subtotal ({getTotalItems()} items)</span>
                   <span>{formatPrice(subtotal)}</span>
                 </div>
-                
+
                 {discount > 0 && (
                   <div className="flex justify-between text-green-600">
                     <span>Discount</span>
                     <span>-{formatPrice(discount)}</span>
                   </div>
                 )}
-                
+
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Shipping</span>
                   <span>{shipping === 0 ? <span className="text-green-600">FREE</span> : formatPrice(shipping)}</span>
                 </div>
-                
+
                 {shipping > 0 && (
                   <p className="text-xs text-muted-foreground">
                     Add {formatPrice(999 - subtotal)} more for free shipping
@@ -200,7 +200,7 @@ export default function CartPage() {
                 )}
 
                 <Separator />
-                
+
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
                   <span>{formatPrice(total)}</span>
@@ -209,17 +209,17 @@ export default function CartPage() {
 
               {/* Checkout Buttons */}
               <div className="mt-6 space-y-3">
-                <Button 
-                  className="w-full" 
+                <Button
+                  className="w-full"
                   size="lg"
                   onClick={() => router.push("/checkout")}
                 >
                   Proceed to Checkout
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
-                
-                <Button 
-                  variant="outline" 
+
+                <Button
+                  variant="outline"
                   className="w-full gap-2 border-green-500 text-green-600 hover:bg-green-50"
                   size="lg"
                   onClick={handleWhatsAppOrder}
@@ -242,11 +242,11 @@ export default function CartPage() {
   );
 }
 
-function CartItemRow({ 
-  item, 
-  onUpdateQuantity, 
-  onRemove 
-}: { 
+function CartItemRow({
+  item,
+  onUpdateQuantity,
+  onRemove
+}: {
   item: CartItem;
   onUpdateQuantity: (productId: string, variantId: string | undefined, quantity: number) => void;
   onRemove: (productId: string, variantId: string | undefined) => void;
@@ -265,7 +265,7 @@ function CartItemRow({
             />
           </div>
           <div className="flex-1 min-w-0">
-            <Link 
+            <Link
               href={`/products/${item.productId}`}
               className="font-medium hover:text-primary line-clamp-2"
             >
