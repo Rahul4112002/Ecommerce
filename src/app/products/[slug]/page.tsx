@@ -263,7 +263,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="mt-12">
             <h2 className="text-2xl font-bold mb-6">You May Also Like</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((relatedProduct: { id: string; name: string; slug: string; price: number; comparePrice: number | null; image: string | null; colors?: { code: string }[]; shape: string }) => (
+              {relatedProducts.map((relatedProduct) => (
                 <ProductCard
                   key={relatedProduct.id}
                   id={relatedProduct.id}
@@ -273,7 +273,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   originalPrice={relatedProduct.comparePrice}
                   image={relatedProduct.image || "/placeholder-product.jpg"}
                   colors={relatedProduct.colors?.map((c) => c.code) || []}
-                  shape={relatedProduct.shape}
+                  shape={relatedProduct.shape || ""}
                 />
               ))}
             </div>
