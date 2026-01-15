@@ -1,98 +1,80 @@
 import Link from "next/link";
-import { ArrowRight, Truck, RotateCcw, ShieldCheck, MessageCircle, Glasses, Sparkles } from "lucide-react";
+import { ArrowRight, Truck, RotateCcw, ShieldCheck, MessageCircle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function HeroSection() {
   return (
     <section className="relative">
-      {/* Main Hero Banner - Luxury Black & Gold */}
-      <div className="relative bg-black overflow-hidden">
-        {/* Decorative gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
+      {/* Main Hero Banner - Video Background */}
+      <div className="relative bg-black overflow-hidden min-h-[500px] sm:min-h-[550px] md:min-h-[650px] lg:min-h-[700px]">
+        {/* Video Background */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/A_premium_matteblack_1080p_202601151252.mp4" type="video/mp4" />
+        </video>
+
+        {/* Dark overlay to ensure text is visible - reduced for brighter video */}
+        <div className="absolute inset-0 bg-black/40" />
+
+        {/* Gradient overlay for premium look */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-gold/10 via-transparent to-transparent" />
 
-        {/* Subtle pattern overlay */}
-        <div className="absolute inset-0 opacity-5" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-        }} />
-
-        <div className="container mx-auto px-4 py-12 sm:py-16 md:py-24 lg:py-28 relative z-10">
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div className="space-y-8">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/30 bg-gold/5">
-                <Sparkles className="h-4 w-4 text-gold" />
-                <span className="text-sm font-medium text-gold">Premium Collection 2026</span>
-              </div>
-
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white">
-                Find Your Perfect
-                <span className="block text-gold mt-1 sm:mt-2">Frames</span>
-              </h1>
-
-              <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-md">
-                Premium quality frames for every style and budget.
-                Shop from our wide collection of designer eyewear.
-              </p>
-
-              <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="bg-gold hover:bg-gold-light text-black font-semibold shadow-lg shadow-gold/25 hover:shadow-gold/40 transition-all" asChild>
-                  <Link href="/products">
-                    Shop Now
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline" className="border-gold/50 text-gold hover:bg-gold/10 hover:border-gold" asChild>
-                  <Link href="/products?sort=newest">
-                    New Arrivals
-                  </Link>
-                </Button>
-              </div>
-
-              {/* Stats */}
-              <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 pt-4">
-                <div className="text-center">
-                  <p className="text-2xl sm:text-3xl font-bold text-gold">500+</p>
-                  <p className="text-xs sm:text-sm text-gray-500">Frame Styles</p>
-                </div>
-                <div className="border-l border-gray-700 pl-4 sm:pl-6 md:pl-8 text-center">
-                  <p className="text-2xl sm:text-3xl font-bold text-gold">10K+</p>
-                  <p className="text-xs sm:text-sm text-gray-500">Happy Customers</p>
-                </div>
-                <div className="border-l border-gray-700 pl-4 sm:pl-6 md:pl-8 text-center">
-                  <p className="text-2xl sm:text-3xl font-bold text-gold">4.8★</p>
-                  <p className="text-xs sm:text-sm text-gray-500">Average Rating</p>
-                </div>
-              </div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-20 lg:py-28 relative z-10 flex items-center justify-center min-h-[400px] sm:min-h-[450px] md:min-h-[550px] lg:min-h-[600px]">
+          <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl px-2">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-gold/30 bg-gold/5">
+              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-gold" />
+              <span className="text-xs sm:text-sm font-medium text-gold">Premium Collection 2026</span>
             </div>
 
-            {/* Hero Image - Clean Premium Glasses */}
-            <div className="hidden md:flex justify-center items-center">
-              <div className="relative">
-                {/* Very subtle outer glow */}
-                <div className="absolute inset-0 w-64 h-64 rounded-full bg-gold/10 blur-2xl" />
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight text-white">
+              Find Your Perfect <span className="text-gold">Frames</span>
+            </h1>
 
-                {/* Glasses with floating animation */}
-                <div className="relative animate-[float_6s_ease-in-out_infinite]">
-                  {/* Subtle background glow */}
-                  <div className="absolute inset-0 blur-xl bg-gold/5 rounded-full scale-110" />
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto italic font-light tracking-wide animate-[fadeInUp_1s_ease-out_forwards] opacity-0 px-2 sm:px-0" style={{ animationDelay: '0.3s' }}>
+              <span className="bg-gradient-to-r from-amber-200 via-gold to-amber-300 bg-clip-text text-transparent">
+                Premium quality frames for every style and budget.
+              </span>
+              <br className="hidden sm:block" />
+              <span className="sm:hidden"> </span>
+              <span className="text-gray-300/90">
+                Shop from our wide collection of designer eyewear.
+              </span>
+            </p>
 
-                  {/* The glasses icon - larger, with gold outline */}
-                  <Glasses
-                    className="relative h-48 w-48 lg:h-56 lg:w-56 text-gold drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]"
-                    strokeWidth={0.8}
-                  />
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4 sm:px-0">
+              <Button size="lg" className="w-full sm:w-auto bg-gold hover:bg-gold-light text-black font-semibold shadow-lg shadow-gold/25 hover:shadow-gold/40 transition-all text-sm sm:text-base" asChild>
+                <Link href="/products">
+                  Shop Now
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="w-full sm:w-auto border-gold/50 text-gold hover:bg-gold/10 hover:border-gold text-sm sm:text-base" asChild>
+                <Link href="/products?sort=newest">
+                  New Arrivals
+                </Link>
+              </Button>
+            </div>
 
-                  {/* Sparkles around glasses */}
-                  <Sparkles className="absolute -top-4 -right-4 h-6 w-6 text-gold animate-pulse" />
-                  <Sparkles className="absolute -top-4 -right-4 h-6 w-6 text-gold animate-pulse" />
-                  <Sparkles className="absolute -bottom-2 -left-6 h-5 w-5 text-gold/80 animate-[pulse_2s_ease-in-out_infinite_0.5s]" />
-                  <Sparkles className="absolute top-1/2 -right-8 h-4 w-4 text-gold/60 animate-[pulse_2.5s_ease-in-out_infinite_1s]" />
-                  <Sparkles className="absolute -top-4 -right-4 h-6 w-6 text-gold animate-pulse" />
-                  <Sparkles className="absolute -top-2 left-0 h-3 w-3 text-gold/70 animate-[pulse_3s_ease-in-out_infinite_0.3s]" />
-                  <Sparkles className="absolute -top-4 -right-4 h-6 w-6 text-gold animate-pulse" />
-                  <Sparkles className="absolute -top-4 -right-4 h-6 w-6 text-gold animate-pulse" />
-                </div>
+            {/* Stats */}
+            <div className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 lg:gap-8 pt-2 sm:pt-4 justify-center">
+              <div className="text-center px-2 sm:px-0">
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gold">500+</p>
+                <p className="text-[10px] sm:text-xs md:text-sm text-gray-500">Frame Styles</p>
+              </div>
+              <div className="border-l border-gray-700 pl-3 sm:pl-4 md:pl-6 lg:pl-8 text-center">
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gold">10K+</p>
+                <p className="text-[10px] sm:text-xs md:text-sm text-gray-500">Happy Customers</p>
+              </div>
+              <div className="border-l border-gray-700 pl-3 sm:pl-4 md:pl-6 lg:pl-8 text-center">
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gold">4.8★</p>
+                <p className="text-[10px] sm:text-xs md:text-sm text-gray-500">Average Rating</p>
               </div>
             </div>
           </div>
@@ -100,32 +82,32 @@ export function HeroSection() {
       </div>
 
       {/* Feature Highlights */}
-      <div className="bg-secondary border-y border-gold/10 py-5">
+      <div className="bg-secondary border-y border-gold/10 py-3 sm:py-4 md:py-5">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div className="flex items-center justify-center gap-3 py-2">
-              <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
-                <Truck className="h-5 w-5 text-gold" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 text-center">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 py-1 sm:py-2">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0">
+                <Truck className="h-4 w-4 sm:h-5 sm:w-5 text-gold" />
               </div>
-              <span className="text-sm font-medium text-gray-300">Free Shipping</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-300">Free Shipping</span>
             </div>
-            <div className="flex items-center justify-center gap-3 py-2">
-              <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
-                <RotateCcw className="h-5 w-5 text-gold" />
+            <div className="flex items-center justify-center gap-2 sm:gap-3 py-1 sm:py-2">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0">
+                <RotateCcw className="h-4 w-4 sm:h-5 sm:w-5 text-gold" />
               </div>
-              <span className="text-sm font-medium text-gray-300">Easy Returns</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-300">Easy Returns</span>
             </div>
-            <div className="flex items-center justify-center gap-3 py-2">
-              <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
-                <ShieldCheck className="h-5 w-5 text-gold" />
+            <div className="flex items-center justify-center gap-2 sm:gap-3 py-1 sm:py-2">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0">
+                <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5 text-gold" />
               </div>
-              <span className="text-sm font-medium text-gray-300">Secure Payment</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-300">Secure Payment</span>
             </div>
-            <div className="flex items-center justify-center gap-3 py-2">
-              <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
-                <MessageCircle className="h-5 w-5 text-gold" />
+            <div className="flex items-center justify-center gap-2 sm:gap-3 py-1 sm:py-2">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0">
+                <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 text-gold" />
               </div>
-              <span className="text-sm font-medium text-gray-300">24/7 Support</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-300">24/7 Support</span>
             </div>
           </div>
         </div>

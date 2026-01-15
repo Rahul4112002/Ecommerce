@@ -34,7 +34,7 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  
+
   const [filters, setFilters] = useState<Filters>({
     gender: searchParams.get("gender")?.split(",") || [],
     shape: searchParams.get("shape")?.split(",") || [],
@@ -51,51 +51,51 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
   // Update URL with filters
   const updateFilters = useCallback(() => {
     const params = new URLSearchParams(searchParams.toString());
-    
+
     // Gender
     if (filters.gender.length > 0) {
       params.set("gender", filters.gender.join(","));
     } else {
       params.delete("gender");
     }
-    
+
     // Shape
     if (filters.shape.length > 0) {
       params.set("shape", filters.shape.join(","));
     } else {
       params.delete("shape");
     }
-    
+
     // Material
     if (filters.material.length > 0) {
       params.set("material", filters.material.join(","));
     } else {
       params.delete("material");
     }
-    
+
     // Color
     if (filters.color.length > 0) {
       params.set("color", filters.color.join(","));
     } else {
       params.delete("color");
     }
-    
+
     // Price Range
     if (priceRange[0] > 0) {
       params.set("minPrice", priceRange[0].toString());
     } else {
       params.delete("minPrice");
     }
-    
+
     if (priceRange[1] < 10000) {
       params.set("maxPrice", priceRange[1].toString());
     } else {
       params.delete("maxPrice");
     }
-    
+
     // Reset to page 1 when filters change
     params.delete("page");
-    
+
     router.push(`${pathname}?${params.toString()}`);
   }, [filters, priceRange, pathname, router, searchParams]);
 
@@ -124,10 +124,10 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
   };
 
   // Active filter count
-  const activeFilterCount = 
-    filters.gender.length + 
-    filters.shape.length + 
-    filters.material.length + 
+  const activeFilterCount =
+    filters.gender.length +
+    filters.shape.length +
+    filters.material.length +
     filters.color.length +
     (priceRange[0] > 0 || priceRange[1] < 10000 ? 1 : 0);
 
@@ -136,10 +136,10 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
       {/* Active Filters Count & Clear */}
       {activeFilterCount > 0 && (
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm text-gray-400">
             {activeFilterCount} filter{activeFilterCount > 1 ? "s" : ""} active
           </span>
-          <Button variant="ghost" size="sm" onClick={clearAllFilters}>
+          <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-gold hover:text-gold-light hover:bg-gold/10">
             Clear All
           </Button>
         </div>
@@ -147,7 +147,7 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
 
       {/* Gender Filter */}
       <div>
-        <h3 className="font-semibold mb-3">Gender</h3>
+        <h3 className="font-semibold mb-3 text-gold">Gender</h3>
         <div className="space-y-2">
           {GENDERS.map((gender) => (
             <div key={gender.value} className="flex items-center space-x-2">
@@ -156,9 +156,9 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
                 checked={filters.gender.includes(gender.value)}
                 onCheckedChange={() => toggleFilter("gender", gender.value)}
               />
-              <Label 
+              <Label
                 htmlFor={`gender-${gender.value}`}
-                className="cursor-pointer text-sm"
+                className="cursor-pointer text-sm text-gray-300"
               >
                 {gender.label}
               </Label>
@@ -167,11 +167,11 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
         </div>
       </div>
 
-      <Separator />
+      <Separator className="bg-gold/20" />
 
       {/* Shape Filter */}
       <div>
-        <h3 className="font-semibold mb-3">Frame Shape</h3>
+        <h3 className="font-semibold mb-3 text-gold">Frame Shape</h3>
         <div className="space-y-2 max-h-48 overflow-y-auto">
           {FRAME_SHAPES.map((shape) => (
             <div key={shape.value} className="flex items-center space-x-2">
@@ -180,9 +180,9 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
                 checked={filters.shape.includes(shape.value)}
                 onCheckedChange={() => toggleFilter("shape", shape.value)}
               />
-              <Label 
+              <Label
                 htmlFor={`shape-${shape.value}`}
-                className="cursor-pointer text-sm"
+                className="cursor-pointer text-sm text-gray-300"
               >
                 {shape.label}
               </Label>
@@ -191,11 +191,11 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
         </div>
       </div>
 
-      <Separator />
+      <Separator className="bg-gold/20" />
 
       {/* Material Filter */}
       <div>
-        <h3 className="font-semibold mb-3">Frame Material</h3>
+        <h3 className="font-semibold mb-3 text-gold">Frame Material</h3>
         <div className="space-y-2">
           {FRAME_MATERIALS.map((material) => (
             <div key={material.value} className="flex items-center space-x-2">
@@ -204,9 +204,9 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
                 checked={filters.material.includes(material.value)}
                 onCheckedChange={() => toggleFilter("material", material.value)}
               />
-              <Label 
+              <Label
                 htmlFor={`material-${material.value}`}
-                className="cursor-pointer text-sm"
+                className="cursor-pointer text-sm text-gray-300"
               >
                 {material.label}
               </Label>
@@ -215,21 +215,20 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
         </div>
       </div>
 
-      <Separator />
+      <Separator className="bg-gold/20" />
 
       {/* Color Filter */}
       <div>
-        <h3 className="font-semibold mb-3">Frame Color</h3>
+        <h3 className="font-semibold mb-3 text-gold">Frame Color</h3>
         <div className="flex flex-wrap gap-2">
           {FRAME_COLORS.map((color) => (
             <button
               key={color.value}
               onClick={() => toggleFilter("color", color.value)}
-              className={`w-8 h-8 rounded-full border-2 transition-all ${
-                filters.color.includes(color.value)
-                  ? "border-primary scale-110"
-                  : "border-gray-300 hover:border-gray-400"
-              }`}
+              className={`w-8 h-8 rounded-full border-2 transition-all ${filters.color.includes(color.value)
+                  ? "border-gold scale-110 ring-2 ring-gold/50"
+                  : "border-gray-600 hover:border-gray-400"
+                }`}
               style={{ backgroundColor: color.code }}
               title={color.label}
             />
@@ -237,11 +236,11 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
         </div>
       </div>
 
-      <Separator />
+      <Separator className="bg-gold/20" />
 
       {/* Price Range Filter */}
       <div>
-        <h3 className="font-semibold mb-3">Price Range</h3>
+        <h3 className="font-semibold mb-3 text-gold">Price Range</h3>
         <div className="px-2">
           <Slider
             value={priceRange}
@@ -251,17 +250,17 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
             step={100}
             className="mb-4"
           />
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center justify-between text-sm text-gray-300">
             <span>₹{priceRange[0].toLocaleString()}</span>
             <span>₹{priceRange[1].toLocaleString()}</span>
           </div>
         </div>
       </div>
 
-      <Separator />
+      <Separator className="bg-gold/20" />
 
       {/* Apply Filters Button */}
-      <Button onClick={updateFilters} className="w-full">
+      <Button onClick={updateFilters} className="w-full bg-gold hover:bg-gold-light text-black font-semibold">
         Apply Filters
       </Button>
     </div>
@@ -271,8 +270,8 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
     <>
       {/* Desktop Sidebar */}
       <aside className={`hidden lg:block w-64 shrink-0 ${className}`}>
-        <div className="sticky top-24 bg-white rounded-lg border p-4">
-          <h2 className="font-bold text-lg mb-4">Filters</h2>
+        <div className="sticky top-24 bg-card rounded-lg border border-gold/20 p-4">
+          <h2 className="font-bold text-lg mb-4 text-gold">Filters</h2>
           {filterContent}
         </div>
       </aside>
@@ -281,19 +280,19 @@ export function FilterSidebar({ className }: FilterSidebarProps) {
       <div className="lg:hidden">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" size="sm" className="gap-2">
+            <Button variant="outline" size="sm" className="gap-2 border-gold/30 text-gray-300">
               <SlidersHorizontal className="w-4 h-4" />
               Filters
               {activeFilterCount > 0 && (
-                <span className="bg-primary text-white text-xs rounded-full px-1.5 py-0.5">
+                <span className="bg-gold text-black text-xs rounded-full px-1.5 py-0.5">
                   {activeFilterCount}
                 </span>
               )}
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-80 overflow-y-auto">
+          <SheetContent side="left" className="w-80 overflow-y-auto bg-card border-gold/20">
             <SheetHeader>
-              <SheetTitle>Filters</SheetTitle>
+              <SheetTitle className="text-gold">Filters</SheetTitle>
             </SheetHeader>
             <div className="mt-4">
               {filterContent}

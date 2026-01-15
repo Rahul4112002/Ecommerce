@@ -1,9 +1,8 @@
-import { 
-  HeroSection, 
-  CategoriesSection, 
-  FeaturedProducts, 
-  TestimonialsSection,
-  NewsletterSection 
+import {
+  HeroSection,
+  CategoriesSection,
+  FeaturedProducts,
+  TestimonialsSection
 } from "@/components/home";
 
 export default function HomePage() {
@@ -16,14 +15,14 @@ export default function HomePage() {
       <CategoriesSection />
 
       {/* Bestsellers */}
-      <FeaturedProducts 
+      <FeaturedProducts
         title="Bestsellers"
         subtitle="Our most popular frames loved by customers"
         viewAllLink="/products?sort=popular"
       />
 
       {/* New Arrivals */}
-      <FeaturedProducts 
+      <FeaturedProducts
         title="New Arrivals"
         subtitle="Check out our latest frame collections"
         viewAllLink="/products?sort=newest"
@@ -31,9 +30,6 @@ export default function HomePage() {
 
       {/* Customer Testimonials */}
       <TestimonialsSection />
-
-      {/* Newsletter Signup */}
-      <NewsletterSection />
     </>
   );
 }
