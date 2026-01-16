@@ -81,22 +81,27 @@ export function HomePageLoader({ children }: { children: React.ReactNode }) {
 
                 {/* Content */}
                 <div className="relative z-10 flex flex-col items-center">
-                    {/* Animated Logo */}
+                    {/* Animated Logo with Spinning Circle */}
                     <div className="relative">
-                        {/* Outer Ring */}
-                        <div className="absolute inset-0 w-28 h-28 sm:w-36 sm:h-36 rounded-full border-2 border-gold/20 animate-[spin_3s_linear_infinite]" />
-                        <div className="absolute inset-0 w-28 h-28 sm:w-36 sm:h-36 rounded-full border-t-2 border-gold animate-[spin_1.5s_linear_infinite]" />
+                        {/* Outer Spinning Circle - Main */}
+                        <div className="absolute inset-[-12px] w-[136px] h-[136px] sm:w-[168px] sm:h-[168px] rounded-full border-4 border-transparent border-t-gold border-r-gold/50 animate-[spin_1s_linear_infinite]" />
+
+                        {/* Second Spinning Circle - Counter */}
+                        <div className="absolute inset-[-6px] w-[124px] h-[124px] sm:w-[156px] sm:h-[156px] rounded-full border-2 border-transparent border-b-gold/60 border-l-gold/30 animate-[spin_1.5s_linear_infinite_reverse]" />
+
+                        {/* Static Outer Ring */}
+                        <div className="absolute inset-0 w-28 h-28 sm:w-36 sm:h-36 rounded-full border border-gold/20" />
 
                         {/* Logo Container */}
-                        <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-gold/20 to-gold/5 flex items-center justify-center backdrop-blur-sm">
-                            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-gold via-gold-light to-gold flex items-center justify-center shadow-xl shadow-gold/30 animate-pulse">
-                                <Glasses className="w-10 h-10 sm:w-12 sm:h-12 text-black" />
+                        <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-gold/10 to-transparent flex items-center justify-center backdrop-blur-sm">
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-gold via-gold-light to-gold flex items-center justify-center shadow-xl shadow-gold/40">
+                                <Glasses className="w-8 h-8 sm:w-10 sm:h-10 text-black" />
                             </div>
                         </div>
                     </div>
 
                     {/* Brand Name */}
-                    <div className="mt-8 text-center">
+                    <div className="mt-10 text-center">
                         <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-gold via-gold-light to-gold bg-clip-text text-transparent tracking-wide">
                             LeeHit
                         </h1>
@@ -105,23 +110,54 @@ export function HomePageLoader({ children }: { children: React.ReactNode }) {
                         </p>
                     </div>
 
-                    {/* Progress Bar */}
-                    <div className="mt-10 w-48 sm:w-64">
-                        <div className="h-0.5 bg-gray-800 rounded-full overflow-hidden">
-                            <div
-                                className="h-full bg-gradient-to-r from-gold to-gold-light transition-all duration-300 ease-out"
-                                style={{ width: `${progress}%` }}
+                    {/* Circular Progress Spinner */}
+                    <div className="mt-10 relative">
+                        <svg className="w-16 h-16 sm:w-20 sm:h-20" viewBox="0 0 100 100">
+                            {/* Background Circle */}
+                            <circle
+                                cx="50"
+                                cy="50"
+                                r="45"
+                                fill="none"
+                                stroke="#1a1a1a"
+                                strokeWidth="4"
                             />
+                            {/* Progress Circle */}
+                            <circle
+                                cx="50"
+                                cy="50"
+                                r="45"
+                                fill="none"
+                                stroke="url(#goldGradient)"
+                                strokeWidth="4"
+                                strokeLinecap="round"
+                                strokeDasharray={`${progress * 2.83} 283`}
+                                transform="rotate(-90 50 50)"
+                                className="transition-all duration-300 ease-out"
+                            />
+                            {/* Gradient Definition */}
+                            <defs>
+                                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stopColor="#D4AF37" />
+                                    <stop offset="100%" stopColor="#F4D03F" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        {/* Percentage Text */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-gold font-semibold text-sm sm:text-base">{Math.round(progress)}%</span>
                         </div>
-                        <p className="text-center text-gray-600 text-xs mt-3 tracking-wide">
-                            {progress < 100 ? 'Loading experience...' : 'Welcome!'}
-                        </p>
                     </div>
+
+                    {/* Loading Text */}
+                    <p className="mt-4 text-gray-500 text-xs tracking-wider">
+                        {progress < 100 ? 'Loading experience...' : 'Welcome!'}
+                    </p>
                 </div>
             </div>
 
             {/* Hidden content (preloading) */}
-            <div className="opacity-0 pointer-events-none">
+            <div className="opacity-0 pointer-events-none absolute">
                 {children}
             </div>
         </>
