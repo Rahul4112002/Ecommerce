@@ -3,6 +3,8 @@ import { Inter, Outfit, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
+import { NavigationLoader } from "@/components/ui/navigation-loader";
+import { Suspense } from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -37,6 +39,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${outfit.variable} ${playfair.variable} font-sans antialiased`} suppressHydrationWarning>
         <Providers>
+          <Suspense fallback={null}>
+            <NavigationLoader />
+          </Suspense>
           {children}
           <Toaster position="top-right" />
         </Providers>
