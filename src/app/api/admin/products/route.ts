@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { images, ...productData } = data;
+    const { images, shortDescription, ...productData } = data;
 
     const product = await db.product.create({
       data: {
