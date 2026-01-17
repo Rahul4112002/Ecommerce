@@ -76,10 +76,10 @@ export async function POST(req: NextRequest) {
         // Create frame attributes if any are provided
         attributes: (gender || frameShape || frameMaterial) ? {
           create: {
-            gender: gender || "UNISEX",
-            shape: frameShape || "ROUND",
-            material: frameMaterial || "METAL",
-            frameSize: "MEDIUM", // Default size
+            gender: (gender as "MEN" | "WOMEN" | "KIDS" | "UNISEX") || "UNISEX",
+            shape: (frameShape as "ROUND" | "SQUARE" | "RECTANGLE" | "AVIATOR" | "CAT_EYE" | "WAYFARER" | "OVAL" | "GEOMETRIC" | "CLUBMASTER") || "ROUND",
+            material: (frameMaterial as "METAL" | "PLASTIC" | "ACETATE" | "TR90" | "TITANIUM" | "WOOD" | "MIXED") || "METAL",
+            frameSize: "MEDIUM",
           }
         } : undefined,
       },
