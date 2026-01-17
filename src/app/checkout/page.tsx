@@ -347,7 +347,7 @@ export default function CheckoutPage() {
                     {/* Left Column - Address & Payment */}
                     <div className="lg:col-span-2 space-y-6">
                         {/* Delivery Address */}
-                        <div className="bg-white rounded-lg shadow-sm p-6">
+                        <div className="bg-card border border-border rounded-lg shadow-sm p-6">
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center gap-2">
                                     <MapPin className="w-5 h-5 text-primary" />
@@ -494,7 +494,7 @@ export default function CheckoutPage() {
                                                     <div className="flex-1">
                                                         <div className="flex items-center gap-2 mb-1">
                                                             <span className="font-medium">{addr.name}</span>
-                                                            <span className="text-xs bg-gray-100 px-2 py-0.5 rounded flex items-center gap-1">
+                                                            <span className="text-xs bg-muted px-2 py-0.5 rounded flex items-center gap-1">
                                                                 <Icon className="w-3 h-3" />
                                                                 {addr.type}
                                                             </span>
@@ -522,7 +522,7 @@ export default function CheckoutPage() {
                         </div>
 
                         {/* Payment Method */}
-                        <div className="bg-white rounded-lg shadow-sm p-6">
+                        <div className="bg-card border border-border rounded-lg shadow-sm p-6">
                             <div className="flex items-center gap-2 mb-4">
                                 <CreditCard className="w-5 h-5 text-primary" />
                                 <h2 className="text-xl font-semibold">Payment Method</h2>
@@ -588,7 +588,7 @@ export default function CheckoutPage() {
 
                     {/* Right Column - Order Summary */}
                     <div className="lg:col-span-1">
-                        <div className="bg-white rounded-lg shadow-sm p-6 sticky top-24">
+                        <div className="bg-card border border-border rounded-lg shadow-sm p-6 sticky top-24">
                             <h2 className="text-xl font-bold mb-4">Order Summary</h2>
 
                             {/* Items */}
@@ -598,7 +598,7 @@ export default function CheckoutPage() {
                                         key={`${item.productId}-${item.variantId}`}
                                         className="flex gap-3"
                                     >
-                                        <div className="relative w-16 h-16 bg-gray-100 rounded overflow-hidden shrink-0">
+                                        <div className="relative w-16 h-16 bg-background rounded overflow-hidden shrink-0">
                                             <Image
                                                 src={item.image}
                                                 alt={item.name}

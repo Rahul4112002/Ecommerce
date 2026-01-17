@@ -140,7 +140,7 @@ export default function CartPage() {
               <div className="mb-6">
                 <label className="text-sm font-medium mb-2 block">Have a coupon?</label>
                 {appliedCoupon ? (
-                  <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-md p-3">
+                  <div className="flex items-center justify-between bg-green-950/30 border border-green-800 rounded-md p-3">
                     <div className="flex items-center gap-2">
                       <Tag className="w-4 h-4 text-green-600" />
                       <span className="font-medium text-green-700">{appliedCoupon}</span>
@@ -252,11 +252,11 @@ function CartItemRow({
   onRemove: (productId: string, variantId: string | undefined) => void;
 }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4">
+    <div className="bg-card border border-border rounded-lg shadow-sm p-4">
       <div className="grid grid-cols-12 gap-4 items-center">
         {/* Product Info */}
         <div className="col-span-12 md:col-span-6 flex gap-4">
-          <div className="relative w-20 h-20 bg-gray-100 rounded-md overflow-hidden shrink-0">
+          <div className="relative w-20 h-20 bg-background rounded-md overflow-hidden shrink-0">
             <Image
               src={item.image}
               alt={item.name}
@@ -297,7 +297,7 @@ function CartItemRow({
           <div className="flex items-center border rounded-md">
             <button
               onClick={() => onUpdateQuantity(item.productId, item.variantId, item.quantity - 1)}
-              className="p-2 hover:bg-gray-100"
+              className="p-2 hover:bg-muted/50"
               disabled={item.quantity <= 1}
             >
               <Minus className="w-3 h-3" />
@@ -305,7 +305,7 @@ function CartItemRow({
             <span className="px-3 py-1 min-w-10 text-center">{item.quantity}</span>
             <button
               onClick={() => onUpdateQuantity(item.productId, item.variantId, item.quantity + 1)}
-              className="p-2 hover:bg-gray-100"
+              className="p-2 hover:bg-muted/50"
             >
               <Plus className="w-3 h-3" />
             </button>
