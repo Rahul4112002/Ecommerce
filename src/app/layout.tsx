@@ -23,11 +23,66 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: {
-    default: "LeeHit Eyewear - Premium Eyewear Store",
-    template: "%s | LeeHit Eyewear",
+    default: "Leehit Eyewear - Premium Eyeglasses & Sunglasses Online",
+    template: "%s | Leehit Eyewear",
   },
-  description: "Shop premium quality eyeframes for men, women, and kids. Wide collection of stylish frames at affordable prices with free shipping.",
-  keywords: ["eyeframes", "glasses", "eyewear", "spectacles", "sunglasses", "frames", "leehit"],
+  description: "Shop premium eyeglasses and sunglasses at Leehit Eyewear. Discover stylish frames for men and women with the latest designs. Free shipping across India.",
+  keywords: [
+    "Leehit Eyewear",
+    "Leehit",
+    "eyeglasses online",
+    "sunglasses",
+    "premium eyewear",
+    "eyeframes",
+    "glasses online India",
+    "spectacles",
+    "designer frames",
+    "men eyeglasses",
+    "women sunglasses"
+  ],
+  authors: [{ name: "Leehit Eyewear" }],
+  creator: "Leehit Eyewear",
+  publisher: "Leehit Eyewear",
+  metadataBase: new URL("https://leehiteyewear.live"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://leehiteyewear.live",
+    siteName: "Leehit Eyewear",
+    title: "Leehit Eyewear - Premium Eyeglasses & Sunglasses",
+    description: "Shop premium eyeglasses and sunglasses at Leehit Eyewear. Discover stylish frames for men and women.",
+    images: [
+      {
+        url: "/leehit-logo.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Leehit Eyewear Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Leehit Eyewear - Premium Eyeglasses & Sunglasses",
+    description: "Shop premium eyeglasses and sunglasses at Leehit Eyewear.",
+    images: ["/leehit-logo.jpeg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "5yyzdU0NBlNDN3h3neqYvgQEJI3AS8C-y7Y2UCHnnco",
+  },
 };
 
 export default function RootLayout({

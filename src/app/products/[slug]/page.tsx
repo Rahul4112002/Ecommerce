@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/product/product-card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/lib/db";
+import { generateProductSchema, generateBreadcrumbSchema } from "@/lib/seo";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -139,11 +140,45 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     return { title: "Product Not Found" };
   }
 
+  const { product } = data;
+  const productUrl = `/products/${product.slug}`;
+  const imageUrl = product.images[0]?.url || "/leehit-logo.jpeg";
+
   return {
-    title: `${data.product.name} - LeeHit Eyewear`,
-    description: data.product.description || `Buy ${data.product.name} at the best price`,
+    title: `${product.name} - Leehit Eyewear`,
+    description: product.description || `Buy ${product.name} at Leehit Eyewear. Premium quality eyewear with free shipping across India.`,
+    keywords: [
+      product.name,
+      "Leehit Eyewear",
+      product.brand?.name || "Leehit",
+      product.category?.name || "eyewear",
+      product.attributes?.gender || "",
+      "eyeglasses",
+      "sunglasses",
+    ].filter(Boolean),
+    alternates: {
+      canonical: `https://leehiteyewear.live${productUrl}`,
+    },
     openGraph: {
-      images: data.product.images[0]?.url ? [data.product.images[0].url] : [],
+      type: "website",
+      url: `https://leehiteyewear.live${productUrl}`,
+      title: `${product.name} - Leehit Eyewear`,
+      description: product.description || `Buy ${product.name} at Leehit Eyewear`,
+      siteName: "Leehit Eyewear",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: product.name,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.name} - Leehit Eyewear`,
+      description: product.description || `Buy ${product.name} at Leehit Eyewear`,
+      images: [imageUrl],
     },
   };
 }
@@ -158,8 +193,35 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const { product, relatedProducts } = data;
 
+  // Generate structured data for SEO
+  const productSchema = generateProductSchema({
+    id: product.id,
+    name: product.name,
+    description: product.description || `Premium ${product.name}`,
+    price: product.price,
+    image: product.images[0]?.url || "/leehit-logo.jpeg",
+    category: product.category?.name || "Eyewear",
+    inStock: product.stock > 0,
+  });
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Products", url: "/products" },
+    { name: product.category?.name || "Eyewear", url: `/products?category=${product.category?.slug}` },
+    { name: product.name, url: `/products/${product.slug}` },
+  ]);
+
   return (
     <div className="min-h-screen bg-background">
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <div className="container mx-auto px-4 py-8">
         {/* Product Main Section */}
         <div className="bg-card rounded-lg shadow-sm p-6 md:p-8 border border-border">
