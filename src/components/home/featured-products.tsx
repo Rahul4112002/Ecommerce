@@ -10,8 +10,19 @@ interface FeaturedProductsProps {
   viewAllLink?: string;
 }
 
-async function getProducts(sort: string) {
+// Fisher-Yates shuffle algorithm for random order
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+async function getProducts() {
   try {
+    // Fetch all active products
     const products = await db.product.findMany({
       where: { isActive: true },
       include: {
@@ -19,11 +30,10 @@ async function getProducts(sort: string) {
         attributes: true,
         variants: { take: 5 },
       },
-      orderBy: sort === "newest" ? { createdAt: "desc" } : { createdAt: "desc" },
-      take: 4,
     });
 
-    return products.map((product) => ({
+    // Map to the required format
+    const formattedProducts = products.map((product) => ({
       id: product.id,
       name: product.name,
       slug: product.slug,
@@ -33,6 +43,12 @@ async function getProducts(sort: string) {
       shape: product.attributes?.shape || "",
       colors: product.variants.map((v) => v.colorCode),
     }));
+
+    // Shuffle products randomly
+    const shuffled = shuffleArray(formattedProducts);
+
+    // Return first 4 random products
+    return shuffled.slice(0, 4);
   } catch (error) {
     console.error("Error fetching products:", error);
     return [];
@@ -44,8 +60,7 @@ export async function FeaturedProducts({
   subtitle = "Our most popular frames loved by customers",
   viewAllLink = "/products?sort=popular"
 }: FeaturedProductsProps) {
-  const sort = viewAllLink.includes("newest") ? "newest" : "popular";
-  const products = await getProducts(sort);
+  const products = await getProducts();
 
   return (
     <section className="py-16 md:py-20 bg-gradient-to-b from-gray-950 to-black">
