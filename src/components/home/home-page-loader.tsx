@@ -73,46 +73,46 @@ export function HomePageLoader({ children }: { children: React.ReactNode }) {
     return (
         <>
             {/* Loader Screen */}
-            <div className="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center">
-                {/* Background Glow */}
+            <div className="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center px-4">
+                {/* Background Glow - Responsive */}
                 <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gold/5 rounded-full blur-3xl" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] bg-gold/5 rounded-full blur-3xl" />
                 </div>
 
                 {/* Content */}
                 <div className="relative z-10 flex flex-col items-center">
-                    {/* Animated Logo with Spinning Circle */}
+                    {/* Animated Logo with Spinning Circle - Fully Responsive */}
                     <div className="relative">
                         {/* Outer Spinning Circle - Main */}
-                        <div className="absolute inset-[-12px] w-[136px] h-[136px] sm:w-[168px] sm:h-[168px] rounded-full border-4 border-transparent border-t-gold border-r-gold/50 animate-[spin_1s_linear_infinite]" />
+                        <div className="absolute inset-[-8px] sm:inset-[-10px] md:inset-[-12px] w-[96px] h-[96px] sm:w-[120px] sm:h-[120px] md:w-[144px] md:h-[144px] lg:w-[168px] lg:h-[168px] rounded-full border-[3px] sm:border-4 border-transparent border-t-gold border-r-gold/50 animate-[spin_1s_linear_infinite]" />
 
                         {/* Second Spinning Circle - Counter */}
-                        <div className="absolute inset-[-6px] w-[124px] h-[124px] sm:w-[156px] sm:h-[156px] rounded-full border-2 border-transparent border-b-gold/60 border-l-gold/30 animate-[spin_1.5s_linear_infinite_reverse]" />
+                        <div className="absolute inset-[-4px] sm:inset-[-5px] md:inset-[-6px] w-[88px] h-[88px] sm:w-[110px] sm:h-[110px] md:w-[132px] md:h-[132px] lg:w-[156px] lg:h-[156px] rounded-full border-2 border-transparent border-b-gold/60 border-l-gold/30 animate-[spin_1.5s_linear_infinite_reverse]" />
 
                         {/* Static Outer Ring */}
-                        <div className="absolute inset-0 w-28 h-28 sm:w-36 sm:h-36 rounded-full border border-gold/20" />
+                        <div className="absolute inset-0 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-36 lg:h-36 rounded-full border border-gold/20" />
 
                         {/* Logo Container */}
-                        <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-gold/10 to-transparent flex items-center justify-center backdrop-blur-sm">
-                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-gold via-gold-light to-gold flex items-center justify-center shadow-xl shadow-gold/40">
-                                <Glasses className="w-8 h-8 sm:w-10 sm:h-10 text-black" />
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-36 lg:h-36 rounded-full bg-gradient-to-br from-gold/10 to-transparent flex items-center justify-center backdrop-blur-sm">
+                            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-gold via-gold-light to-gold flex items-center justify-center shadow-xl shadow-gold/40">
+                                <Glasses className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 text-black" />
                             </div>
                         </div>
                     </div>
 
-                    {/* Brand Name */}
-                    <div className="mt-10 text-center">
-                        <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-gold via-gold-light to-gold bg-clip-text text-transparent tracking-wide">
+                    {/* Brand Name - Responsive */}
+                    <div className="mt-6 sm:mt-8 md:mt-10 text-center">
+                        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-gold via-gold-light to-gold bg-clip-text text-transparent tracking-wide">
                             LeeHit
                         </h1>
-                        <p className="text-[10px] sm:text-xs uppercase tracking-[0.35em] text-gray-500 mt-1">
+                        <p className="text-[8px] sm:text-[10px] md:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.35em] text-gray-500 mt-0.5 sm:mt-1">
                             Premium Eyewear
                         </p>
                     </div>
 
-                    {/* Circular Progress Spinner */}
-                    <div className="mt-10 relative">
-                        <svg className="w-16 h-16 sm:w-20 sm:h-20" viewBox="0 0 100 100">
+                    {/* Circular Progress Spinner - Responsive */}
+                    <div className="mt-6 sm:mt-8 md:mt-10 relative">
+                        <svg className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20" viewBox="0 0 100 100">
                             {/* Background Circle */}
                             <circle
                                 cx="50"
@@ -143,14 +143,14 @@ export function HomePageLoader({ children }: { children: React.ReactNode }) {
                                 </linearGradient>
                             </defs>
                         </svg>
-                        {/* Percentage Text */}
+                        {/* Percentage Text - Responsive */}
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-gold font-semibold text-sm sm:text-base">{Math.round(progress)}%</span>
+                            <span className="text-gold font-semibold text-xs sm:text-sm md:text-base">{Math.round(progress)}%</span>
                         </div>
                     </div>
 
-                    {/* Loading Text */}
-                    <p className="mt-4 text-gray-500 text-xs tracking-wider">
+                    {/* Loading Text - Responsive */}
+                    <p className="mt-3 sm:mt-4 text-gray-500 text-[10px] sm:text-xs tracking-wider">
                         {progress < 100 ? 'Loading experience...' : 'Welcome!'}
                     </p>
                 </div>
