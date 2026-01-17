@@ -104,7 +104,7 @@ export function AdminSidebar() {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed left-0 top-0 z-40 h-screen bg-gray-900 text-white transition-all duration-300",
+          "fixed left-0 top-0 z-50 h-screen bg-gray-900 text-white transition-all duration-300",
           isCollapsed ? "w-16" : "w-64",
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
@@ -114,7 +114,7 @@ export function AdminSidebar() {
           {!isCollapsed && (
             <Link href="/admin" className="flex items-center gap-2">
               <Eye className="h-8 w-8 text-primary" />
-              <span className="font-bold text-lg">EyeFrames</span>
+              <span className="font-bold text-lg">LeeHit</span>
             </Link>
           )}
           {isCollapsed && (
@@ -139,9 +139,9 @@ export function AdminSidebar() {
         {/* Navigation */}
         <nav className="flex-1 space-y-1 p-4">
           {sidebarLinks.map((link) => {
-            const isActive = pathname === link.href || 
+            const isActive = pathname === link.href ||
               (link.href !== "/admin" && pathname.startsWith(link.href));
-            
+
             return (
               <Link
                 key={link.href}

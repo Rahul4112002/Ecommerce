@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, Outfit, Playfair_Display } from "next/font/google"; // Added fonts
+import { Inter, Outfit, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
-import { Header, Footer } from "@/components/layout";
 import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
@@ -38,11 +37,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${outfit.variable} ${playfair.variable} font-sans antialiased`} suppressHydrationWarning>
         <Providers>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+          {children}
           <Toaster position="top-right" />
         </Providers>
       </body>

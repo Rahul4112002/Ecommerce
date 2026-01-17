@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Eye, Clock, Package, Truck, CheckCircle, XCircle } from "lucide-react";
+import { Eye, Clock, Package, Truck, CheckCircle, XCircle, ShoppingCart } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { OrderStatusSelect } from "./status-select";
 import { ExportButton } from "./export-button";
@@ -38,11 +38,11 @@ async function getOrders() {
 }
 
 const statusColors: Record<string, string> = {
-  PENDING: "bg-yellow-100 text-yellow-800",
-  PROCESSING: "bg-blue-100 text-blue-800",
-  SHIPPED: "bg-purple-100 text-purple-800",
-  DELIVERED: "bg-green-100 text-green-800",
-  CANCELLED: "bg-red-100 text-red-800",
+  PENDING: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+  PROCESSING: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  SHIPPED: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+  DELIVERED: "bg-green-500/20 text-green-400 border-green-500/30",
+  CANCELLED: "bg-red-500/20 text-red-400 border-red-500/30",
 };
 
 const statusIcons: Record<string, React.ReactNode> = {
@@ -54,10 +54,10 @@ const statusIcons: Record<string, React.ReactNode> = {
 };
 
 const paymentStatusColors: Record<string, string> = {
-  PENDING: "bg-yellow-100 text-yellow-800",
-  PAID: "bg-green-100 text-green-800",
-  FAILED: "bg-red-100 text-red-800",
-  REFUNDED: "bg-gray-100 text-gray-800",
+  PENDING: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+  PAID: "bg-green-500/20 text-green-400 border-green-500/30",
+  FAILED: "bg-red-500/20 text-red-400 border-red-500/30",
+  REFUNDED: "bg-gray-500/20 text-gray-400 border-gray-500/30",
 };
 
 export default async function OrdersPage() {
@@ -74,10 +74,10 @@ export default async function OrdersPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Orders</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Orders</h1>
+          <p className="text-gray-400">
             Manage and track customer orders
           </p>
         </div>
@@ -85,132 +85,170 @@ export default async function OrdersPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid gap-4 md:grid-cols-5">
-        <Card>
+      <div className="grid gap-4 grid-cols-2 md:grid-cols-5">
+        <Card className="bg-gradient-to-br from-gray-900 to-gray-950 border-gray-800">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{stats.total}</div>
-            <p className="text-sm text-muted-foreground">Total Orders</p>
+            <div className="text-2xl font-bold text-white">{stats.total}</div>
+            <p className="text-sm text-gray-400">Total Orders</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-gradient-to-br from-gray-900 to-gray-950 border-gray-800">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
-            <p className="text-sm text-muted-foreground">Pending</p>
+            <div className="text-2xl font-bold text-yellow-400">{stats.pending}</div>
+            <p className="text-sm text-gray-400">Pending</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-gradient-to-br from-gray-900 to-gray-950 border-gray-800">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-blue-600">{stats.processing}</div>
-            <p className="text-sm text-muted-foreground">Processing</p>
+            <div className="text-2xl font-bold text-blue-400">{stats.processing}</div>
+            <p className="text-sm text-gray-400">Processing</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-gradient-to-br from-gray-900 to-gray-950 border-gray-800">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-purple-600">{stats.shipped}</div>
-            <p className="text-sm text-muted-foreground">Shipped</p>
+            <div className="text-2xl font-bold text-purple-400">{stats.shipped}</div>
+            <p className="text-sm text-gray-400">Shipped</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-gradient-to-br from-gray-900 to-gray-950 border-gray-800 col-span-2 md:col-span-1">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-green-600">{stats.delivered}</div>
-            <p className="text-sm text-muted-foreground">Delivered</p>
+            <div className="text-2xl font-bold text-green-400">{stats.delivered}</div>
+            <p className="text-sm text-gray-400">Delivered</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Orders Table */}
-      <Card>
+      <Card className="bg-gradient-to-br from-gray-900 to-gray-950 border-gray-800">
         <CardHeader>
-          <CardTitle>All Orders</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-white">All Orders</CardTitle>
+          <CardDescription className="text-gray-400">
             View and manage customer orders
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Order ID</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Items</TableHead>
-                <TableHead>Total</TableHead>
-                <TableHead>Payment</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead className="w-[100px]">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {orders.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={8} className="text-center py-8">
-                    <p className="text-muted-foreground">No orders yet</p>
-                  </TableCell>
+          {/* Desktop Table View */}
+          <div className="hidden lg:block overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-gray-800 hover:bg-transparent">
+                  <TableHead className="text-gray-400">Order ID</TableHead>
+                  <TableHead className="text-gray-400">Customer</TableHead>
+                  <TableHead className="text-gray-400">Items</TableHead>
+                  <TableHead className="text-gray-400">Total</TableHead>
+                  <TableHead className="text-gray-400">Payment</TableHead>
+                  <TableHead className="text-gray-400">Status</TableHead>
+                  <TableHead className="text-gray-400">Date</TableHead>
+                  <TableHead className="text-gray-400 w-[100px]">Actions</TableHead>
                 </TableRow>
-              ) : (
-                orders.map((order) => (
-                  <TableRow key={order.id}>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">#{order.orderNumber}</p>
+              </TableHeader>
+              <TableBody>
+                {orders.length === 0 ? (
+                  <TableRow className="border-gray-800">
+                    <TableCell colSpan={8} className="text-center py-8">
+                      <div className="flex flex-col items-center gap-4">
+                        <ShoppingCart className="h-12 w-12 text-gray-600" />
+                        <p className="text-gray-400">No orders yet</p>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">{order.user.name || "Guest"}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {order.user.email}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="max-w-[200px]">
-                        <p className="truncate">
-                          {order.items.map((item) => item.product.name).join(", ")}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {order.items.length} item(s)
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <p className="font-medium">
-                        ₹{order.total.toNumber().toLocaleString("en-IN")}
-                      </p>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="secondary"
-                        className={paymentStatusColors[order.paymentStatus]}
-                      >
-                        {order.paymentStatus}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <OrderStatusSelect
-                        orderId={order.id}
-                        currentStatus={order.status}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <p className="text-sm">
-                        {formatDistanceToNow(order.createdAt, {
-                          addSuffix: true,
-                        })}
-                      </p>
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="ghost" size="icon" asChild>
-                        <Link href={`/admin/orders/${order.id}`}>
-                          <Eye className="h-4 w-4" />
-                        </Link>
-                      </Button>
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (
+                  orders.map((order) => (
+                    <TableRow key={order.id} className="border-gray-800 hover:bg-gray-800/50">
+                      <TableCell>
+                        <p className="font-medium text-white">#{order.orderNumber}</p>
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <p className="font-medium text-white">{order.user.name || "Guest"}</p>
+                          <p className="text-sm text-gray-400">{order.user.email}</p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="max-w-[200px]">
+                          <p className="truncate text-gray-300">
+                            {order.items.map((item) => item.product.name).join(", ")}
+                          </p>
+                          <p className="text-sm text-gray-500">{order.items.length} item(s)</p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <p className="font-medium text-gold">
+                          ₹{order.total.toNumber().toLocaleString("en-IN")}
+                        </p>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={paymentStatusColors[order.paymentStatus]}>
+                          {order.paymentStatus}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <OrderStatusSelect orderId={order.id} currentStatus={order.status} />
+                      </TableCell>
+                      <TableCell>
+                        <p className="text-sm text-gray-400">
+                          {formatDistanceToNow(order.createdAt, { addSuffix: true })}
+                        </p>
+                      </TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white hover:bg-gray-800" asChild>
+                          <Link href={`/admin/orders/${order.id}`}>
+                            <Eye className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* Mobile/Tablet Card View */}
+          <div className="lg:hidden space-y-4">
+            {orders.length === 0 ? (
+              <div className="flex flex-col items-center gap-4 py-8">
+                <ShoppingCart className="h-12 w-12 text-gray-600" />
+                <p className="text-gray-400">No orders yet</p>
+              </div>
+            ) : (
+              orders.map((order) => (
+                <div
+                  key={order.id}
+                  className="p-4 rounded-lg bg-gray-800/50 border border-gray-700 space-y-3"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="font-medium text-white">#{order.orderNumber}</p>
+                      <p className="text-sm text-gray-400">{order.user.name || order.user.email}</p>
+                    </div>
+                    <p className="font-bold text-gold">
+                      ₹{order.total.toNumber().toLocaleString("en-IN")}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge className={statusColors[order.status]}>
+                      {statusIcons[order.status]}
+                      <span className="ml-1">{order.status}</span>
+                    </Badge>
+                    <Badge className={paymentStatusColors[order.paymentStatus]}>
+                      {order.paymentStatus}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between pt-2 border-t border-gray-700">
+                    <p className="text-xs text-gray-500">
+                      {formatDistanceToNow(order.createdAt, { addSuffix: true })}
+                    </p>
+                    <Button variant="ghost" size="sm" className="text-gold hover:bg-gold/10" asChild>
+                      <Link href={`/admin/orders/${order.id}`}>
+                        View Details
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>

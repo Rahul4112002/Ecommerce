@@ -6,8 +6,10 @@ export const registerSchema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z
     .string()
-    .regex(/^[6-9]\d{9}$/, "Invalid Indian phone number")
-    .optional(),
+    .optional()
+    .refine((val) => !val || /^[6-9]\d{9}$/.test(val), {
+      message: "Invalid Indian phone number (10 digits starting with 6-9)",
+    }),
   password: z.string().min(6, "Password must be at least 6 characters"),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {

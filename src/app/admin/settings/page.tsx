@@ -9,8 +9,6 @@ import {
   Truck,
   Mail,
   Shield,
-  Palette,
-  Globe,
   Save,
   Loader2,
 } from "lucide-react";
@@ -68,9 +66,9 @@ export default function SettingsPage() {
   // Store settings state
   const [storeSettings, setStoreSettings] = useState({
     storeName: "LeeHit Eyewear",
-    email: "contact@leehit.com",
-    phone: "+91 98765 43210",
-    address: "123 Fashion Street, Mumbai, India",
+    email: "leehiteyewear@gmail.com",
+    phone: "+91 98334 41511",
+    address: "Mumbai, Maharashtra, India",
     currency: "INR",
     timezone: "Asia/Kolkata",
   });
@@ -95,64 +93,50 @@ export default function SettingsPage() {
 
   const handleSave = async () => {
     setIsSaving(true);
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
     toast.success("Settings saved successfully");
     setIsSaving(false);
   };
 
+  const inputClasses = "w-full px-4 py-2 border border-gray-700 bg-gray-800 text-white rounded-lg focus:ring-2 focus:ring-gold/50 focus:border-gold placeholder:text-gray-500";
+  const labelClasses = "block text-sm font-medium text-gray-300 mb-2";
+
   const renderStoreSettings = () => (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Store Name
-          </label>
+          <label className={labelClasses}>Store Name</label>
           <input
             type="text"
             value={storeSettings.storeName}
-            onChange={(e) =>
-              setStoreSettings({ ...storeSettings, storeName: e.target.value })
-            }
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            onChange={(e) => setStoreSettings({ ...storeSettings, storeName: e.target.value })}
+            className={inputClasses}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Contact Email
-          </label>
+          <label className={labelClasses}>Contact Email</label>
           <input
             type="email"
             value={storeSettings.email}
-            onChange={(e) =>
-              setStoreSettings({ ...storeSettings, email: e.target.value })
-            }
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            onChange={(e) => setStoreSettings({ ...storeSettings, email: e.target.value })}
+            className={inputClasses}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Phone Number
-          </label>
+          <label className={labelClasses}>Phone Number</label>
           <input
             type="tel"
             value={storeSettings.phone}
-            onChange={(e) =>
-              setStoreSettings({ ...storeSettings, phone: e.target.value })
-            }
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            onChange={(e) => setStoreSettings({ ...storeSettings, phone: e.target.value })}
+            className={inputClasses}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Currency
-          </label>
+          <label className={labelClasses}>Currency</label>
           <select
             value={storeSettings.currency}
-            onChange={(e) =>
-              setStoreSettings({ ...storeSettings, currency: e.target.value })
-            }
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            onChange={(e) => setStoreSettings({ ...storeSettings, currency: e.target.value })}
+            className={inputClasses}
           >
             <option value="INR">Indian Rupee (₹)</option>
             <option value="USD">US Dollar ($)</option>
@@ -162,28 +146,20 @@ export default function SettingsPage() {
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Store Address
-        </label>
+        <label className={labelClasses}>Store Address</label>
         <textarea
           value={storeSettings.address}
-          onChange={(e) =>
-            setStoreSettings({ ...storeSettings, address: e.target.value })
-          }
+          onChange={(e) => setStoreSettings({ ...storeSettings, address: e.target.value })}
           rows={3}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          className={inputClasses}
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Timezone
-        </label>
+        <label className={labelClasses}>Timezone</label>
         <select
           value={storeSettings.timezone}
-          onChange={(e) =>
-            setStoreSettings({ ...storeSettings, timezone: e.target.value })
-          }
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          onChange={(e) => setStoreSettings({ ...storeSettings, timezone: e.target.value })}
+          className={inputClasses}
         >
           <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
           <option value="America/New_York">America/New_York (EST)</option>
@@ -196,43 +172,32 @@ export default function SettingsPage() {
 
   const renderNotificationSettings = () => (
     <div className="space-y-4">
-      <p className="text-sm text-gray-600 mb-6">
+      <p className="text-sm text-gray-400 mb-6">
         Choose which notifications you want to receive
       </p>
       {Object.entries(notificationSettings).map(([key, value]) => (
-        <div
-          key={key}
-          className="flex items-center justify-between py-3 border-b border-gray-100"
-        >
+        <div key={key} className="flex items-center justify-between py-3 border-b border-gray-700">
           <div>
-            <p className="font-medium text-gray-900">
-              {key
-                .replace(/([A-Z])/g, " $1")
-                .replace(/^./, (str) => str.toUpperCase())}
+            <p className="font-medium text-white">
+              {key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-400">
               {key === "orderConfirmation" && "Notify when a new order is placed"}
               {key === "orderShipped" && "Notify when an order is shipped"}
               {key === "orderDelivered" && "Notify when an order is delivered"}
               {key === "lowStockAlert" && "Alert when product stock is low"}
               {key === "newUserSignup" && "Notify when a new user registers"}
-              {key === "newsletterSubscription" &&
-                "Notify on newsletter subscriptions"}
+              {key === "newsletterSubscription" && "Notify on newsletter subscriptions"}
             </p>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
               checked={value}
-              onChange={(e) =>
-                setNotificationSettings({
-                  ...notificationSettings,
-                  [key]: e.target.checked,
-                })
-              }
+              onChange={(e) => setNotificationSettings({ ...notificationSettings, [key]: e.target.checked })}
               className="sr-only peer"
             />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+            <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gold/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gold"></div>
           </label>
         </div>
       ))}
@@ -241,52 +206,37 @@ export default function SettingsPage() {
 
   const renderPaymentSettings = () => (
     <div className="space-y-6">
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-        <p className="text-sm text-yellow-800">
-          Payment gateway integration requires additional setup. Contact support
-          for assistance.
+      <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+        <p className="text-sm text-yellow-400">
+          Payment gateway integration requires additional setup. Configure Razorpay keys in environment variables.
         </p>
       </div>
       <div className="space-y-4">
-        <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+        <div className="flex items-center justify-between p-4 border border-gray-700 rounded-lg bg-gray-800/50">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-              <CreditCard className="h-6 w-6 text-blue-600" />
+            <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+              <CreditCard className="h-6 w-6 text-blue-400" />
             </div>
             <div>
-              <p className="font-medium text-gray-900">Razorpay</p>
-              <p className="text-sm text-gray-500">Accept UPI, cards & netbanking</p>
+              <p className="font-medium text-white">Razorpay</p>
+              <p className="text-sm text-gray-400">Accept UPI, cards & netbanking</p>
             </div>
           </div>
-          <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">
+          <span className="px-3 py-1 bg-green-500/20 text-green-400 border border-green-500/30 text-sm rounded-full">
             Active
           </span>
         </div>
-        <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+        <div className="flex items-center justify-between p-4 border border-gray-700 rounded-lg bg-gray-800/50">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-              <CreditCard className="h-6 w-6 text-purple-600" />
+            <div className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center">
+              <Truck className="h-6 w-6 text-gray-400" />
             </div>
             <div>
-              <p className="font-medium text-gray-900">PayPal</p>
-              <p className="text-sm text-gray-500">International payments</p>
+              <p className="font-medium text-white">Cash on Delivery</p>
+              <p className="text-sm text-gray-400">Pay when you receive</p>
             </div>
           </div>
-          <span className="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full">
-            Disabled
-          </span>
-        </div>
-        <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-              <Truck className="h-6 w-6 text-gray-600" />
-            </div>
-            <div>
-              <p className="font-medium text-gray-900">Cash on Delivery</p>
-              <p className="text-sm text-gray-500">Pay when you receive</p>
-            </div>
-          </div>
-          <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">
+          <span className="px-3 py-1 bg-green-500/20 text-green-400 border border-green-500/30 text-sm rounded-full">
             Active
           </span>
         </div>
@@ -298,70 +248,40 @@ export default function SettingsPage() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Free Shipping Threshold (₹)
-          </label>
+          <label className={labelClasses}>Free Shipping Threshold (₹)</label>
           <input
             type="number"
             value={shippingSettings.freeShippingThreshold}
-            onChange={(e) =>
-              setShippingSettings({
-                ...shippingSettings,
-                freeShippingThreshold: Number(e.target.value),
-              })
-            }
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            onChange={(e) => setShippingSettings({ ...shippingSettings, freeShippingThreshold: Number(e.target.value) })}
+            className={inputClasses}
           />
-          <p className="mt-1 text-xs text-gray-500">
-            Orders above this amount get free shipping
-          </p>
+          <p className="mt-1 text-xs text-gray-500">Orders above this amount get free shipping</p>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Standard Shipping Rate (₹)
-          </label>
+          <label className={labelClasses}>Standard Shipping Rate (₹)</label>
           <input
             type="number"
             value={shippingSettings.standardShippingRate}
-            onChange={(e) =>
-              setShippingSettings({
-                ...shippingSettings,
-                standardShippingRate: Number(e.target.value),
-              })
-            }
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            onChange={(e) => setShippingSettings({ ...shippingSettings, standardShippingRate: Number(e.target.value) })}
+            className={inputClasses}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Express Shipping Rate (₹)
-          </label>
+          <label className={labelClasses}>Express Shipping Rate (₹)</label>
           <input
             type="number"
             value={shippingSettings.expressShippingRate}
-            onChange={(e) =>
-              setShippingSettings({
-                ...shippingSettings,
-                expressShippingRate: Number(e.target.value),
-              })
-            }
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            onChange={(e) => setShippingSettings({ ...shippingSettings, expressShippingRate: Number(e.target.value) })}
+            className={inputClasses}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Estimated Delivery Time
-          </label>
+          <label className={labelClasses}>Estimated Delivery Time</label>
           <input
             type="text"
             value={shippingSettings.estimatedDelivery}
-            onChange={(e) =>
-              setShippingSettings({
-                ...shippingSettings,
-                estimatedDelivery: e.target.value,
-              })
-            }
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            onChange={(e) => setShippingSettings({ ...shippingSettings, estimatedDelivery: e.target.value })}
+            className={inputClasses}
           />
         </div>
       </div>
@@ -370,8 +290,8 @@ export default function SettingsPage() {
 
   const renderEmailSettings = () => (
     <div className="space-y-6">
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-sm text-blue-800">
+      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+        <p className="text-sm text-blue-400">
           Email templates are sent automatically based on order status changes.
         </p>
       </div>
@@ -384,26 +304,19 @@ export default function SettingsPage() {
           { name: "Welcome Email", status: "Active" },
           { name: "Abandoned Cart Reminder", status: "Disabled" },
         ].map((template) => (
-          <div
-            key={template.name}
-            className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
-          >
+          <div key={template.name} className="flex items-center justify-between p-4 border border-gray-700 rounded-lg bg-gray-800/50">
             <div className="flex items-center gap-4">
               <Mail className="h-5 w-5 text-gray-400" />
-              <span className="font-medium text-gray-900">{template.name}</span>
+              <span className="font-medium text-white">{template.name}</span>
             </div>
             <div className="flex items-center gap-3">
-              <span
-                className={`px-3 py-1 text-sm rounded-full ${template.status === "Active"
-                    ? "bg-green-100 text-green-800"
-                    : "bg-gray-100 text-gray-800"
-                  }`}
-              >
+              <span className={`px-3 py-1 text-sm rounded-full ${template.status === "Active"
+                  ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                  : "bg-gray-500/20 text-gray-400 border border-gray-500/30"
+                }`}>
                 {template.status}
               </span>
-              <button className="text-indigo-600 hover:text-indigo-700 text-sm font-medium">
-                Edit
-              </button>
+              <button className="text-gold hover:text-gold/80 text-sm font-medium">Edit</button>
             </div>
           </div>
         ))}
@@ -414,39 +327,33 @@ export default function SettingsPage() {
   const renderSecuritySettings = () => (
     <div className="space-y-6">
       <div className="space-y-4">
-        <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+        <div className="flex items-center justify-between p-4 border border-gray-700 rounded-lg bg-gray-800/50">
           <div>
-            <p className="font-medium text-gray-900">Two-Factor Authentication</p>
-            <p className="text-sm text-gray-500">
-              Add an extra layer of security to admin accounts
-            </p>
+            <p className="font-medium text-white">Two-Factor Authentication</p>
+            <p className="text-sm text-gray-400">Add an extra layer of security to admin accounts</p>
           </div>
-          <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm">
+          <button className="px-4 py-2 bg-gold text-black rounded-lg hover:bg-gold/90 transition-colors text-sm font-medium">
             Enable
           </button>
         </div>
-        <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+        <div className="flex items-center justify-between p-4 border border-gray-700 rounded-lg bg-gray-800/50">
           <div>
-            <p className="font-medium text-gray-900">Session Timeout</p>
-            <p className="text-sm text-gray-500">
-              Automatically log out after period of inactivity
-            </p>
+            <p className="font-medium text-white">Session Timeout</p>
+            <p className="text-sm text-gray-400">Automatically log out after period of inactivity</p>
           </div>
-          <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+          <select className="px-4 py-2 border border-gray-700 bg-gray-800 text-white rounded-lg focus:ring-2 focus:ring-gold/50 focus:border-gold">
             <option value="30">30 minutes</option>
             <option value="60">1 hour</option>
             <option value="120">2 hours</option>
             <option value="240">4 hours</option>
           </select>
         </div>
-        <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+        <div className="flex items-center justify-between p-4 border border-gray-700 rounded-lg bg-gray-800/50">
           <div>
-            <p className="font-medium text-gray-900">Password Requirements</p>
-            <p className="text-sm text-gray-500">
-              Minimum 8 characters with uppercase, lowercase, and numbers
-            </p>
+            <p className="font-medium text-white">Password Requirements</p>
+            <p className="text-sm text-gray-400">Minimum 8 characters with uppercase, lowercase, and numbers</p>
           </div>
-          <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">
+          <span className="px-3 py-1 bg-green-500/20 text-green-400 border border-green-500/30 text-sm rounded-full">
             Enforced
           </span>
         </div>
@@ -456,20 +363,13 @@ export default function SettingsPage() {
 
   const renderActiveSection = () => {
     switch (activeSection) {
-      case "store":
-        return renderStoreSettings();
-      case "notifications":
-        return renderNotificationSettings();
-      case "payments":
-        return renderPaymentSettings();
-      case "shipping":
-        return renderShippingSettings();
-      case "email":
-        return renderEmailSettings();
-      case "security":
-        return renderSecuritySettings();
-      default:
-        return renderStoreSettings();
+      case "store": return renderStoreSettings();
+      case "notifications": return renderNotificationSettings();
+      case "payments": return renderPaymentSettings();
+      case "shipping": return renderShippingSettings();
+      case "email": return renderEmailSettings();
+      case "security": return renderSecuritySettings();
+      default: return renderStoreSettings();
     }
   };
 
@@ -478,26 +378,26 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-600 mt-1">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white">Settings</h1>
+        <p className="text-gray-400 mt-1">
           Manage your store configuration and preferences
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Sidebar */}
+        {/* Sidebar - Scrollable on mobile */}
         <div className="lg:col-span-1">
-          <nav className="space-y-1">
+          <nav className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
             {sections.map((section) => (
               <button
                 key={section.id}
                 onClick={() => setActiveSection(section.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-left ${activeSection === section.id
-                    ? "bg-indigo-50 text-indigo-700"
-                    : "text-gray-700 hover:bg-gray-50"
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-left whitespace-nowrap ${activeSection === section.id
+                    ? "bg-gold/20 text-gold border border-gold/30"
+                    : "text-gray-400 hover:bg-gray-800 border border-transparent"
                   }`}
               >
-                <section.icon className="h-5 w-5" />
+                <section.icon className="h-5 w-5 flex-shrink-0" />
                 <span className="font-medium">{section.title}</span>
               </button>
             ))}
@@ -506,30 +406,22 @@ export default function SettingsPage() {
 
         {/* Content */}
         <div className="lg:col-span-3">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="mb-6 pb-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900">
-                {activeSectionData?.title}
-              </h2>
-              <p className="text-gray-600 text-sm mt-1">
-                {activeSectionData?.description}
-              </p>
+          <div className="bg-gradient-to-br from-gray-900 to-gray-950 rounded-xl border border-gray-800 p-6">
+            <div className="mb-6 pb-6 border-b border-gray-700">
+              <h2 className="text-xl font-semibold text-white">{activeSectionData?.title}</h2>
+              <p className="text-gray-400 text-sm mt-1">{activeSectionData?.description}</p>
             </div>
 
             {renderActiveSection()}
 
             {/* Save Button */}
-            <div className="mt-8 pt-6 border-t border-gray-200 flex justify-end">
+            <div className="mt-8 pt-6 border-t border-gray-700 flex justify-end">
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="flex items-center gap-2 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center gap-2 px-6 py-2 bg-gold text-black rounded-lg hover:bg-gold/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
               >
-                {isSaving ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Save className="h-4 w-4" />
-                )}
+                {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                 {isSaving ? "Saving..." : "Save Changes"}
               </button>
             </div>
