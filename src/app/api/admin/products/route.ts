@@ -48,7 +48,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { images, shortDescription, ...productData } = data;
+    const {
+      images,
+      shortDescription,
+      gender,
+      frameShape,
+      frameMaterial,
+      frameColor,
+      lensType,
+      ...productData
+    } = data;
 
     const product = await db.product.create({
       data: {
@@ -64,8 +73,20 @@ export async function POST(req: NextRequest) {
             })),
           }
           : undefined,
+        // Create frame attributes if any are provided
+        attributes: (gender || frameShape || frameMaterial) ? {
+          create: {
+            gender: gender || "UNISEX",
+            shape: frameShape || "ROUND",
+            material: frameMaterial || "METAL",
+            frameSize: "MEDIUM", // Default size
+          }
+        } : undefined,
       },
-      include: { images: true },
+      include: {
+        images: true,
+        attributes: true,
+      },
     });
 
     return NextResponse.json(product, { status: 201 });
