@@ -88,7 +88,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
       `Quantity: ${quantity}\n\n` +
       `Please provide more details about this product.`
     );
-    window.open(`https://wa.me/919999999999?text=${message}`, "_blank");
+    window.open(`https://wa.me/918828489397?text=${message}`, "_blank");
   };
 
   const handleShare = async () => {

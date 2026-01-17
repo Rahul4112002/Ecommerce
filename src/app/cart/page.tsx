@@ -65,7 +65,7 @@ export default function CartPage() {
       `Please confirm my order.`
     );
 
-    window.open(`https://wa.me/919999999999?text=${message}`, "_blank");
+    window.open(`https://wa.me/918828489397?text=${message}`, "_blank");
   };
 
   if (items.length === 0) {

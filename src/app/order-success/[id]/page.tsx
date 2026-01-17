@@ -233,8 +233,8 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                                 Contact Support
                             </Link>{" "}
                             or call us at{" "}
-                            <a href="tel:+919999999999" className="text-primary hover:underline">
-                                +91 99999 99999
+                            <a href="tel:+918828489397" className="text-primary hover:underline">
+                                +91 88284 89397
                             </a>
                         </p>
                     </div>
