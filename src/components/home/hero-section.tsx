@@ -13,7 +13,10 @@ export function HeroSection() {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover scale-110"
+          style={{
+            clipPath: 'inset(0 5% 5% 0)',
+          }}
         >
           <source src="/A_premium_matteblack_1080p_202601151252.mp4" type="video/mp4" />
         </video>
