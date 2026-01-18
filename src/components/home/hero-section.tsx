@@ -7,15 +7,20 @@ export function HeroSection() {
     <section className="relative">
       {/* Main Hero Banner - Video Background */}
       <div className="relative bg-black overflow-hidden min-h-[500px] sm:min-h-[550px] md:min-h-[650px] lg:min-h-[700px]">
-        {/* Video Background - scaled up to ensure full coverage */}
+        {/* Video Background - aggressively scaled to fill entire container */}
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover"
+          className="absolute top-0 left-0 w-full h-full object-cover"
           style={{
-            transform: 'translate(-50%, -50%) scale(1.2)',
+            minWidth: '100%',
+            minHeight: '100%',
+            width: 'auto',
+            height: 'auto',
+            objectFit: 'cover',
+            objectPosition: 'center center',
           }}
         >
           <source src="/A_premium_matteblack_1080p_202601151252.mp4" type="video/mp4" />
@@ -28,8 +33,8 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-gold/10 via-transparent to-transparent" />
 
-        {/* Watermark cover - bottom right corner with larger area */}
-        <div className="absolute bottom-0 right-0 w-40 h-24 sm:w-48 sm:h-20 bg-gradient-to-tl from-black via-black/90 to-transparent" />
+        {/* Watermark cover - larger gradient overlay */}
+        <div className="absolute bottom-0 right-0 w-32 h-20 sm:w-40 sm:h-16 bg-gradient-to-tl from-black via-black/95 to-transparent z-[1]" />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-20 lg:py-28 relative z-10 flex items-center justify-center min-h-[400px] sm:min-h-[450px] md:min-h-[550px] lg:min-h-[600px]">
           <div className="text-center space-y-4 sm:space-y-6 md:space-y-8 max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl px-2">
