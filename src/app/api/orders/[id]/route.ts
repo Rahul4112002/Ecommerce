@@ -176,7 +176,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
                 where: { id },
                 data: {
                     status: "CANCELLED",
-                    paymentStatus: order.paymentStatus === "PAID" ? "REFUND_PENDING" : "CANCELLED",
+                    // Keep payment status as is - if PAID, admin will handle refund later
+                    // PaymentStatus enum only has: PENDING, PAID, FAILED, REFUNDED
                 },
             });
 
