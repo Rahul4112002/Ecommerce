@@ -95,6 +95,20 @@ export default function CartPage() {
   };
 
   const handleWhatsAppOrder = () => {
+    // Check if user is logged in
+    if (!session?.user) {
+      toast.error("Please login to place an order");
+      router.push("/login?callbackUrl=/cart");
+      return;
+    }
+
+    // Check if user has saved address
+    if (!userAddress) {
+      toast.error("Please add a delivery address first");
+      router.push("/account/addresses?from=cart");
+      return;
+    }
+
     // Format order date
     const orderDate = new Date().toLocaleDateString("en-IN", {
       day: "numeric",
@@ -115,22 +129,19 @@ export default function CartPage() {
       .join("\n\n");
 
     // Customer details section
-    const customerInfo = session?.user
-      ? `👤 *Customer Details:*\n` +
-      `Name: ${session.user.name || "Not provided"}\n` +
-      `Email: ${session.user.email || "Not provided"}`
-      : "👤 *Customer:* Guest User";
+    const customerInfo = `👤 *Customer Details:*\n` +
+      `Name: ${session.user.name || userAddress.name}\n` +
+      `Email: ${session.user.email || "Not provided"}\n` +
+      `Phone: ${userAddress.phone}`;
 
     // Address section
-    const addressInfo = userAddress
-      ? `\n\n📍 *Delivery Address:*\n` +
+    const addressInfo = `\n\n📍 *Delivery Address:*\n` +
       `${userAddress.name}\n` +
       `📞 ${userAddress.phone}\n` +
       `${userAddress.address}${userAddress.landmark ? `, ${userAddress.landmark}` : ""}\n` +
-      `${userAddress.city}, ${userAddress.state} - ${userAddress.pincode}`
-      : "\n\n📍 *Delivery Address:* Not saved (Please ask customer)";
+      `${userAddress.city}, ${userAddress.state} - ${userAddress.pincode}`;
 
-    // Build complete message
+    // Build complete message with payment preference question
     const message = encodeURIComponent(
       `🛒 *NEW ORDER REQUEST*\n` +
       `━━━━━━━━━━━━━━━━━━\n` +
@@ -146,9 +157,13 @@ export default function CartPage() {
       `${discount > 0 ? `Discount: -${formatPrice(discount)} ✨\n` : ""}` +
       `Shipping: ${shipping === 0 ? "FREE 🎉" : formatPrice(shipping)}\n` +
       `*TOTAL: ${formatPrice(total)}*\n\n` +
-      `💳 *Payment Method:* Cash on Delivery (COD)\n\n` +
       `━━━━━━━━━━━━━━━━━━\n` +
-      `✅ Please confirm this order!`
+      `💳 *PAYMENT PREFERENCE:*\n` +
+      `Please reply with your choice:\n` +
+      `1️⃣ COD (Cash on Delivery)\n` +
+      `2️⃣ Online Payment (UPI/GPay)\n\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `✅ Please confirm this order with your payment choice!`
     );
 
     window.open(`https://wa.me/918828489397?text=${message}`, "_blank");

@@ -83,15 +83,13 @@ export function ProductInfo({ product }: ProductInfoProps) {
   };
 
   const handleWhatsAppOrder = () => {
-    const message = encodeURIComponent(
-      `Hi! I'm interested in ordering:\n\n` +
-      `*${product.name}*\n` +
-      `${selectedVariant ? `Color: ${selectedVariant.color}\n` : ""}` +
-      `Price: ${formatPrice(currentPrice)}\n` +
-      `Quantity: ${quantity}\n\n` +
-      `Please provide more details about this product.`
-    );
-    window.open(`https://wa.me/918828489397?text=${message}`, "_blank");
+    // Add product to cart first
+    handleAddToCart();
+    // Show message and redirect to cart for WhatsApp order (which has address validation)
+    toast.success("Product added to cart! Redirecting to complete your WhatsApp order...");
+    setTimeout(() => {
+      window.location.href = "/cart";
+    }, 1000);
   };
 
   const handleShare = async () => {
