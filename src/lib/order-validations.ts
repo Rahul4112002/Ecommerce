@@ -4,8 +4,8 @@ import { z } from "zod";
 export const createOrderSchema = z.object({
     addressId: z.string().min(1, "Address is required"),
     paymentMethod: z.enum(["COD", "RAZORPAY", "UPI"]),
-    couponCode: z.string().optional(),
-    notes: z.string().optional(),
+    couponCode: z.string().nullish(), // Allow null, undefined, or string
+    notes: z.string().nullish(), // Allow null, undefined, or string
 });
 
 // Order item for cart
