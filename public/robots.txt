@@ -1,9 +1,14 @@
+# *
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /api
+Disallow: /account
+Disallow: /checkout
+Disallow: /(auth)
 
-Disallow: /admin/
-Disallow: /api/
-Disallow: /account/
-Disallow: /checkout/
+# Host
+Host: https://leehiteyewear.live
 
+# Sitemaps
 Sitemap: https://leehiteyewear.live/sitemap.xml

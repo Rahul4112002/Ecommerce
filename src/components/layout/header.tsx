@@ -41,6 +41,7 @@ export function Header() {
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const cartItemsCount = useCartStore((state) => state.getTotalItems());
+  const isAdmin = session?.user?.role === "ADMIN";
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-gold/20">
@@ -87,24 +88,28 @@ export function Header() {
           {/* Right Icons */}
           <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3">
 
-            {/* Wishlist - Hidden on very small screens */}
-            <Link href="/wishlist" className="hidden sm:block">
-              <Button variant="ghost" size="icon" className="h-9 w-9 sm:h-10 sm:w-10">
-                <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
-              </Button>
-            </Link>
+            {/* Wishlist - Hidden for admin users */}
+            {!isAdmin && (
+              <Link href="/wishlist" className="hidden sm:block">
+                <Button variant="ghost" size="icon" className="h-9 w-9 sm:h-10 sm:w-10">
+                  <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
+                </Button>
+              </Link>
+            )}
 
-            {/* Cart */}
-            <Link href="/cart" className="relative">
-              <Button variant="ghost" size="icon" className="h-9 w-9 sm:h-10 sm:w-10">
-                <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
-                {cartItemsCount > 0 && (
-                  <Badge className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center p-0 text-[10px] sm:text-xs">
-                    {cartItemsCount > 9 ? '9+' : cartItemsCount}
-                  </Badge>
-                )}
-              </Button>
-            </Link>
+            {/* Cart - Hidden for admin users */}
+            {!isAdmin && (
+              <Link href="/cart" className="relative">
+                <Button variant="ghost" size="icon" className="h-9 w-9 sm:h-10 sm:w-10">
+                  <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
+                  {cartItemsCount > 0 && (
+                    <Badge className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center p-0 text-[10px] sm:text-xs">
+                      {cartItemsCount > 9 ? '9+' : cartItemsCount}
+                    </Badge>
+                  )}
+                </Button>
+              </Link>
+            )}
 
             {/* User Menu */}
             {session ? (

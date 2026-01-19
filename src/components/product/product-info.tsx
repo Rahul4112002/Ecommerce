@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { WishlistButton } from "@/components/wishlist-button";
 import { Separator } from "@/components/ui/separator";
-import { ShoppingCart, Share2, Truck, Shield, RotateCcw, MessageCircle } from "lucide-react";
+import { ShoppingCart, Share2, Truck, Shield, RotateCcw, MessageCircle, Settings } from "lucide-react";
 import { useCartStore } from "@/lib/store/cart-store";
 import { toast } from "sonner";
 import { formatPrice } from "@/lib/helpers";
@@ -47,8 +48,10 @@ interface ProductInfoProps {
 }
 
 export function ProductInfo({ product }: ProductInfoProps) {
+  const { data: session } = useSession();
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0] || null);
   const [quantity, setQuantity] = useState(1);
+  const isAdmin = session?.user?.role === "ADMIN";
 
 
   const addItem = useCartStore((state) => state.addItem);
@@ -216,51 +219,68 @@ export function ProductInfo({ product }: ProductInfoProps) {
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <Button
-          size="lg"
-          className="flex-1 gap-2"
-          onClick={handleAddToCart}
-          disabled={!inStock}
-        >
-          <ShoppingCart className="w-5 h-5" />
-          Add to Cart
-        </Button>
-        <Button
-          size="lg"
-          variant="secondary"
-          className="flex-1"
-          onClick={handleBuyNow}
-          disabled={!inStock}
-        >
-          Buy Now
-        </Button>
-      </div>
+      {/* Action Buttons - Hidden for admin */}
+      {!isAdmin ? (
+        <>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button
+              size="lg"
+              className="flex-1 gap-2"
+              onClick={handleAddToCart}
+              disabled={!inStock}
+            >
+              <ShoppingCart className="w-5 h-5" />
+              Add to Cart
+            </Button>
+            <Button
+              size="lg"
+              variant="secondary"
+              className="flex-1"
+              onClick={handleBuyNow}
+              disabled={!inStock}
+            >
+              Buy Now
+            </Button>
+          </div>
 
-      {/* WhatsApp Order */}
-      <Button
-        size="lg"
-        variant="outline"
-        className="w-full gap-2 border-green-500 text-green-600 hover:bg-green-50"
-        onClick={handleWhatsAppOrder}
-      >
-        <MessageCircle className="w-5 h-5" />
-        Order via WhatsApp
-      </Button>
+          {/* WhatsApp Order */}
+          <Button
+            size="lg"
+            variant="outline"
+            className="w-full gap-2 border-green-500 text-green-600 hover:bg-green-50"
+            onClick={handleWhatsAppOrder}
+          >
+            <MessageCircle className="w-5 h-5" />
+            Order via WhatsApp
+          </Button>
 
-      {/* Wishlist & Share */}
-      <div className="flex gap-3">
-        <WishlistButton
-          productId={product.id}
-          variant="full"
-          className="flex-1"
-        />
-        <Button variant="ghost" size="sm" className="gap-2" onClick={handleShare}>
-          <Share2 className="w-4 h-4" />
-          Share
-        </Button>
-      </div>
+          {/* Wishlist & Share */}
+          <div className="flex gap-3">
+            <WishlistButton
+              productId={product.id}
+              variant="full"
+              className="flex-1"
+            />
+            <Button variant="ghost" size="sm" className="gap-2" onClick={handleShare}>
+              <Share2 className="w-4 h-4" />
+              Share
+            </Button>
+          </div>
+        </>
+      ) : (
+        <div className="bg-gold/10 border border-gold/30 rounded-lg p-4">
+          <div className="flex items-center gap-3">
+            <Settings className="w-6 h-6 text-gold" />
+            <div>
+              <p className="font-semibold text-gold">Admin View Mode</p>
+              <p className="text-sm text-gray-400">Shopping features are disabled for admin users.</p>
+            </div>
+          </div>
+          <Button asChild className="w-full mt-3 bg-gold hover:bg-gold-light text-black">
+            <Link href="/admin/products">Manage Products</Link>
+          </Button>
+        </div>
+      )}
 
       <Separator />
 

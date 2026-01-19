@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { Heart, ShoppingCart } from "lucide-react";
 import { WishlistButton } from "@/components/wishlist-button";
 import { Button } from "@/components/ui/button";
@@ -35,8 +36,10 @@ export function ProductCard({
   shape,
   colors,
 }: ProductCardProps) {
+  const { data: session } = useSession();
   const addItem = useCartStore((state) => state.addItem);
   const discount = originalPrice ? calculateDiscount(price, originalPrice) : 0;
+  const isAdmin = session?.user?.role === "ADMIN";
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -87,26 +90,30 @@ export function ProductCard({
             </Badge>
           )}
 
-          {/* Wishlist Button */}
-          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-            <WishlistButton
-              productId={slug}
-              variant="icon"
-              className="bg-gray-900/80 hover:bg-gray-800 text-white border border-gray-700 shadow-lg"
-            />
-          </div>
+          {/* Wishlist Button - Hidden for admin */}
+          {!isAdmin && (
+            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+              <WishlistButton
+                productId={slug}
+                variant="icon"
+                className="bg-gray-900/80 hover:bg-gray-800 text-white border border-gray-700 shadow-lg"
+              />
+            </div>
+          )}
 
-          {/* Quick Add Button */}
-          <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-            <Button
-              size="sm"
-              className="w-full bg-gold hover:bg-gold-light text-black font-semibold"
-              onClick={handleAddToCart}
-            >
-              <ShoppingCart className="mr-2 h-4 w-4" />
-              Add to Cart
-            </Button>
-          </div>
+          {/* Quick Add Button - Hidden for admin */}
+          {!isAdmin && (
+            <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+              <Button
+                size="sm"
+                className="w-full bg-gold hover:bg-gold-light text-black font-semibold"
+                onClick={handleAddToCart}
+              >
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                Add to Cart
+              </Button>
+            </div>
+          )}
         </div>
 
         <div className="p-3 sm:p-4">

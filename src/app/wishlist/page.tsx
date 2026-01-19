@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -28,10 +29,19 @@ interface WishlistItem {
 
 export default function WishlistPage() {
     const { data: session, status } = useSession();
+    const router = useRouter();
     const [items, setItems] = useState<WishlistItem[]>([]);
     const [loading, setLoading] = useState(true);
     const { addItem } = useCartStore();
     const { toggleWishlist, fetchWishlist } = useWishlistStore();
+
+    // Redirect admin users to admin dashboard
+    useEffect(() => {
+        if (session?.user?.role === "ADMIN") {
+            toast.error("Admin users cannot access the wishlist");
+            router.push("/admin");
+        }
+    }, [session, router]);
 
     useEffect(() => {
         if (status === "authenticated") {

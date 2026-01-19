@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
-import { X, ChevronRight, User, Heart, Package, LogOut, Glasses } from "lucide-react";
+import { X, ChevronRight, User, Heart, Package, LogOut, Glasses, Settings } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -16,6 +16,7 @@ interface MobileNavProps {
 
 export function MobileNav({ isOpen, onClose, categories }: MobileNavProps) {
   const { data: session } = useSession();
+  const isAdmin = session?.user?.role === "ADMIN";
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
@@ -103,6 +104,16 @@ export function MobileNav({ isOpen, onClose, categories }: MobileNavProps) {
               <div className="p-4">
                 <h3 className="text-sm font-semibold text-gray-500 mb-3">MY ACCOUNT</h3>
                 <nav className="space-y-1">
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      onClick={onClose}
+                      className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 bg-gold/10 border border-gold/30"
+                    >
+                      <Settings className="h-5 w-5 text-gold" />
+                      <span className="font-medium text-gold">Admin Panel</span>
+                    </Link>
+                  )}
                   <Link
                     href="/account"
                     onClick={onClose}
@@ -119,14 +130,16 @@ export function MobileNav({ isOpen, onClose, categories }: MobileNavProps) {
                     <Package className="h-5 w-5 text-gray-500" />
                     <span>My Orders</span>
                   </Link>
-                  <Link
-                    href="/wishlist"
-                    onClick={onClose}
-                    className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <Heart className="h-5 w-5 text-gray-500" />
-                    <span>Wishlist</span>
-                  </Link>
+                  {!isAdmin && (
+                    <Link
+                      href="/wishlist"
+                      onClick={onClose}
+                      className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100"
+                    >
+                      <Heart className="h-5 w-5 text-gray-500" />
+                      <span>Wishlist</span>
+                    </Link>
+                  )}
                 </nav>
               </div>
             )}

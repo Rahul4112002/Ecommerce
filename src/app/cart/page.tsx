@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -14,10 +15,19 @@ import { toast } from "sonner";
 
 export default function CartPage() {
   const router = useRouter();
+  const { data: session } = useSession();
   const { items, updateQuantity, removeItem, clearCart, getTotalItems, getTotalPrice } = useCartStore();
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [discount, setDiscount] = useState(0);
+
+  // Redirect admin users to admin dashboard
+  useEffect(() => {
+    if (session?.user?.role === "ADMIN") {
+      toast.error("Admin users cannot access the shopping cart");
+      router.push("/admin");
+    }
+  }, [session, router]);
 
   const subtotal = getTotalPrice();
   const shipping = subtotal > 999 ? 0 : 99;
