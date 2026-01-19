@@ -529,6 +529,7 @@ export default function CheckoutPage() {
                             </div>
 
                             <div className="space-y-3">
+                                {/* COD Option - Active */}
                                 <div
                                     onClick={() => setPaymentMethod("COD")}
                                     className={`p-4 border rounded-lg cursor-pointer transition-all ${paymentMethod === "COD"
@@ -547,40 +548,41 @@ export default function CheckoutPage() {
                                                 <Check className="w-3 h-3 text-white" />
                                             )}
                                         </div>
-                                        <div>
+                                        <div className="flex-1">
                                             <span className="font-medium">Cash on Delivery</span>
                                             <p className="text-sm text-muted-foreground">
                                                 Pay when your order arrives
                                             </p>
                                         </div>
+                                        <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
+                                            Available
+                                        </span>
                                     </div>
                                 </div>
 
+                                {/* Online Payment - Disabled with Coming Soon */}
                                 <div
-                                    onClick={() => setPaymentMethod("RAZORPAY")}
-                                    className={`p-4 border rounded-lg cursor-pointer transition-all ${paymentMethod === "RAZORPAY"
-                                        ? "border-primary bg-primary/5 ring-1 ring-primary"
-                                        : "border-gray-200 hover:border-gray-300"
-                                        }`}
+                                    className="p-4 border rounded-lg border-gray-200 bg-gray-50/50 cursor-not-allowed opacity-60"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div
-                                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === "RAZORPAY"
-                                                ? "border-primary bg-primary"
-                                                : "border-gray-300"
-                                                }`}
-                                        >
-                                            {paymentMethod === "RAZORPAY" && (
-                                                <Check className="w-3 h-3 text-white" />
-                                            )}
-                                        </div>
-                                        <div>
-                                            <span className="font-medium">Pay Online</span>
-                                            <p className="text-sm text-muted-foreground">
+                                        <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
+                                        <div className="flex-1">
+                                            <span className="font-medium text-gray-500">Pay Online</span>
+                                            <p className="text-sm text-gray-400">
                                                 Credit/Debit Card, UPI, Net Banking
                                             </p>
                                         </div>
+                                        <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full font-medium">
+                                            Coming Soon
+                                        </span>
                                     </div>
+                                </div>
+
+                                {/* WhatsApp Order Notice */}
+                                <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                                    <p className="text-sm text-green-800">
+                                        💬 <strong>Prefer WhatsApp?</strong> You can also place order via WhatsApp from your cart!
+                                    </p>
                                 </div>
                             </div>
                         </div>
