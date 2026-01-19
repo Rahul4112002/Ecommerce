@@ -13,6 +13,18 @@ import { formatPrice } from "@/lib/helpers";
 import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, MessageCircle, Tag } from "lucide-react";
 import { toast } from "sonner";
 
+interface UserAddress {
+  id: string;
+  name: string;
+  phone: string;
+  address: string;
+  landmark?: string;
+  city: string;
+  state: string;
+  pincode: string;
+  type: string;
+}
+
 export default function CartPage() {
   const router = useRouter();
   const { data: session } = useSession();
@@ -20,6 +32,7 @@ export default function CartPage() {
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [discount, setDiscount] = useState(0);
+  const [userAddress, setUserAddress] = useState<UserAddress | null>(null);
 
   // Redirect admin users to admin dashboard
   useEffect(() => {
@@ -28,6 +41,27 @@ export default function CartPage() {
       router.push("/admin");
     }
   }, [session, router]);
+
+  // Fetch user's default address for WhatsApp order
+  useEffect(() => {
+    if (session?.user?.id) {
+      fetchUserAddress();
+    }
+  }, [session]);
+
+  const fetchUserAddress = async () => {
+    try {
+      const res = await fetch("/api/address");
+      const data = await res.json();
+      if (data.addresses && data.addresses.length > 0) {
+        // Get default address or first address
+        const defaultAddr = data.addresses.find((a: UserAddress) => a.type === "HOME") || data.addresses[0];
+        setUserAddress(defaultAddr);
+      }
+    } catch (error) {
+      console.error("Failed to fetch address:", error);
+    }
+  };
 
   const subtotal = getTotalPrice();
   const shipping = subtotal > 999 ? 0 : 99;
@@ -61,18 +95,60 @@ export default function CartPage() {
   };
 
   const handleWhatsAppOrder = () => {
-    const itemsList = items
-      .map((item) => `• ${item.name}${item.color ? ` (${item.color})` : ""} x ${item.quantity} - ${formatPrice(item.price * item.quantity)}`)
-      .join("\n");
+    // Format order date
+    const orderDate = new Date().toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
+    // Format items with details
+    const itemsList = items
+      .map((item, index) =>
+        `${index + 1}. *${item.name}*\n` +
+        `   ${item.color ? `Color: ${item.color}\n   ` : ""}` +
+        `Qty: ${item.quantity} | Price: ${formatPrice(item.price)} | Total: ${formatPrice(item.price * item.quantity)}\n` +
+        `   🔗 ${item.image}`
+      )
+      .join("\n\n");
+
+    // Customer details section
+    const customerInfo = session?.user
+      ? `👤 *Customer Details:*\n` +
+      `Name: ${session.user.name || "Not provided"}\n` +
+      `Email: ${session.user.email || "Not provided"}`
+      : "👤 *Customer:* Guest User";
+
+    // Address section
+    const addressInfo = userAddress
+      ? `\n\n📍 *Delivery Address:*\n` +
+      `${userAddress.name}\n` +
+      `📞 ${userAddress.phone}\n` +
+      `${userAddress.address}${userAddress.landmark ? `, ${userAddress.landmark}` : ""}\n` +
+      `${userAddress.city}, ${userAddress.state} - ${userAddress.pincode}`
+      : "\n\n📍 *Delivery Address:* Not saved (Please ask customer)";
+
+    // Build complete message
     const message = encodeURIComponent(
-      `Hi! I'd like to place an order:\n\n` +
+      `🛒 *NEW ORDER REQUEST*\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `📅 Date: ${orderDate}\n\n` +
+      `${customerInfo}` +
+      `${addressInfo}\n\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `📦 *ORDER ITEMS:*\n\n` +
       `${itemsList}\n\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `💰 *ORDER SUMMARY:*\n` +
       `Subtotal: ${formatPrice(subtotal)}\n` +
-      `${discount > 0 ? `Discount: -${formatPrice(discount)}\n` : ""}` +
-      `Shipping: ${shipping === 0 ? "FREE" : formatPrice(shipping)}\n` +
-      `*Total: ${formatPrice(total)}*\n\n` +
-      `Please confirm my order.`
+      `${discount > 0 ? `Discount: -${formatPrice(discount)} ✨\n` : ""}` +
+      `Shipping: ${shipping === 0 ? "FREE 🎉" : formatPrice(shipping)}\n` +
+      `*TOTAL: ${formatPrice(total)}*\n\n` +
+      `💳 *Payment Method:* Cash on Delivery (COD)\n\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `✅ Please confirm this order!`
     );
 
     window.open(`https://wa.me/918828489397?text=${message}`, "_blank");
