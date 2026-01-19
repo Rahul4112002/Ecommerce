@@ -126,6 +126,38 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
         }
     };
 
+    const [cancelling, setCancelling] = useState(false);
+
+    const handleCancelOrder = async () => {
+        if (!confirm("Are you sure you want to cancel this order? This action cannot be undone.")) {
+            return;
+        }
+
+        setCancelling(true);
+        try {
+            const res = await fetch(`/api/orders/${id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "cancel" }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                alert(data.error || "Failed to cancel order");
+                return;
+            }
+
+            alert("Order cancelled successfully!");
+            fetchOrder(); // Refresh order data
+        } catch (error) {
+            console.error("Failed to cancel order:", error);
+            alert("Failed to cancel order. Please try again.");
+        } finally {
+            setCancelling(false);
+        }
+    };
+
     if (loading) {
         return (
             <div className="space-y-6">
@@ -377,7 +409,13 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
                     <Button variant="outline">Write a Review</Button>
                 )}
                 {(order.status === "PENDING" || order.status === "CONFIRMED") && (
-                    <Button variant="destructive">Cancel Order</Button>
+                    <Button
+                        variant="destructive"
+                        onClick={handleCancelOrder}
+                        disabled={cancelling}
+                    >
+                        {cancelling ? "Cancelling..." : "Cancel Order"}
+                    </Button>
                 )}
             </div>
         </div>

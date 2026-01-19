@@ -119,3 +119,100 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         );
     }
 }
+
+// PATCH - Cancel order (user can cancel their own order)
+export async function PATCH(request: NextRequest, { params }: RouteParams) {
+    try {
+        const session = await getServerSession(authOptions);
+        const { id } = await params;
+
+        if (!session?.user?.id) {
+            return NextResponse.json(
+                { error: "Unauthorized" },
+                { status: 401 }
+            );
+        }
+
+        const body = await request.json();
+        const { action } = body;
+
+        if (action !== "cancel") {
+            return NextResponse.json(
+                { error: "Invalid action" },
+                { status: 400 }
+            );
+        }
+
+        // Find the order and verify ownership
+        const order = await db.order.findFirst({
+            where: {
+                id,
+                userId: session.user.id
+            },
+            include: {
+                items: true,
+            },
+        });
+
+        if (!order) {
+            return NextResponse.json(
+                { error: "Order not found" },
+                { status: 404 }
+            );
+        }
+
+        // Only allow cancellation for PENDING or CONFIRMED orders
+        if (!["PENDING", "CONFIRMED"].includes(order.status)) {
+            return NextResponse.json(
+                { error: "Order cannot be cancelled at this stage" },
+                { status: 400 }
+            );
+        }
+
+        // Cancel the order in a transaction
+        await db.$transaction(async (tx) => {
+            // Update order status
+            await tx.order.update({
+                where: { id },
+                data: {
+                    status: "CANCELLED",
+                    paymentStatus: order.paymentStatus === "PAID" ? "REFUND_PENDING" : "CANCELLED",
+                },
+            });
+
+            // Add tracking entry
+            await tx.orderTracking.create({
+                data: {
+                    orderId: id,
+                    status: "Order Cancelled",
+                    message: "Order was cancelled by customer",
+                },
+            });
+
+            // Restore stock
+            for (const item of order.items) {
+                if (item.variantId) {
+                    await tx.productVariant.update({
+                        where: { id: item.variantId },
+                        data: { stock: { increment: item.quantity } },
+                    });
+                }
+                await tx.product.update({
+                    where: { id: item.productId },
+                    data: { stock: { increment: item.quantity } },
+                });
+            }
+        });
+
+        return NextResponse.json({
+            success: true,
+            message: "Order cancelled successfully",
+        });
+    } catch (error) {
+        console.error("Order PATCH Error:", error);
+        return NextResponse.json(
+            { error: "Failed to cancel order" },
+            { status: 500 }
+        );
+    }
+}
