@@ -24,6 +24,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { useCartStore } from "@/lib/store/cart-store";
+import { getLensOptionsSummary } from "@/components/product/lens-customization-modal";
 import { formatPrice } from "@/lib/helpers";
 import { toast } from "sonner";
 import {
@@ -38,7 +39,9 @@ import {
     Home,
     Building2,
     MapPinned,
+    Glasses,
 } from "lucide-react";
+
 
 interface Address {
     id: string;
@@ -595,38 +598,49 @@ export default function CheckoutPage() {
 
                             {/* Items */}
                             <div className="space-y-4 max-h-64 overflow-y-auto mb-4">
-                                {items.map((item) => (
-                                    <div
-                                        key={`${item.productId}-${item.variantId}`}
-                                        className="flex gap-3"
-                                    >
-                                        <div className="relative w-16 h-16 bg-background rounded overflow-hidden shrink-0">
-                                            <Image
-                                                src={item.image}
-                                                alt={item.name}
-                                                fill
-                                                className="object-cover"
-                                            />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium line-clamp-1">
-                                                {item.name}
-                                            </p>
-                                            {item.color && (
-                                                <p className="text-xs text-muted-foreground">
-                                                    Color: {item.color}
+                                {items.map((item) => {
+                                    const itemPrice = item.price + (item.lensOptions?.totalLensPrice || 0);
+                                    const itemTotal = itemPrice * item.quantity;
+                                    return (
+                                        <div
+                                            key={`${item.productId}-${item.variantId}-${item.lensOptions?.lensType || 'none'}`}
+                                            className="flex gap-3"
+                                        >
+                                            <div className="relative w-16 h-16 bg-background rounded overflow-hidden shrink-0">
+                                                <Image
+                                                    src={item.image}
+                                                    alt={item.name}
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-sm font-medium line-clamp-1">
+                                                    {item.name}
                                                 </p>
-                                            )}
-                                            <p className="text-sm">
-                                                {formatPrice(item.price)} × {item.quantity}
-                                            </p>
+                                                {item.color && (
+                                                    <p className="text-xs text-muted-foreground">
+                                                        Color: {item.color}
+                                                    </p>
+                                                )}
+                                                {item.lensOptions && (
+                                                    <div className="flex items-center gap-1 text-xs text-primary mt-0.5">
+                                                        <Glasses className="w-3 h-3" />
+                                                        <span className="line-clamp-1">{getLensOptionsSummary(item.lensOptions)}</span>
+                                                    </div>
+                                                )}
+                                                <p className="text-sm">
+                                                    {formatPrice(itemPrice)} × {item.quantity}
+                                                </p>
+                                            </div>
+                                            <div className="text-sm font-medium">
+                                                {formatPrice(itemTotal)}
+                                            </div>
                                         </div>
-                                        <div className="text-sm font-medium">
-                                            {formatPrice(item.price * item.quantity)}
-                                        </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
+
 
                             <Separator className="my-4" />
 

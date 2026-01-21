@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useCartStore, CartItem } from "@/lib/store/cart-store";
+import { getLensOptionsSummary, LENS_TYPES, LENS_PACKAGES, LENS_THICKNESS } from "@/components/product/lens-customization-modal";
 import { formatPrice } from "@/lib/helpers";
-import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, MessageCircle, Tag } from "lucide-react";
+import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, MessageCircle, Tag, Glasses } from "lucide-react";
 import { toast } from "sonner";
 
 interface UserAddress {
@@ -118,14 +119,34 @@ export default function CartPage() {
       minute: "2-digit",
     });
 
-    // Format items with details
+    // Format items with details including lens options
     const itemsList = items
-      .map((item, index) =>
-        `${index + 1}. *${item.name}*\n` +
-        `   ${item.color ? `Color: ${item.color}\n   ` : ""}` +
-        `Qty: ${item.quantity} | Price: ${formatPrice(item.price)} | Total: ${formatPrice(item.price * item.quantity)}\n` +
-        `   🔗 ${item.image}`
-      )
+      .map((item, index) => {
+        const itemTotal = (item.price + (item.lensOptions?.totalLensPrice || 0)) * item.quantity;
+        let itemDetails = `${index + 1}. *${item.name}*\n` +
+          `   ${item.color ? `Color: ${item.color}\n   ` : ""}` +
+          `Qty: ${item.quantity} | Frame: ${formatPrice(item.price)}`;
+
+        if (item.lensOptions) {
+          const lensType = LENS_TYPES.find(l => l.id === item.lensOptions?.lensType)?.name || "";
+          const lensPkg = LENS_PACKAGES.find(p => p.id === item.lensOptions?.lensPackage)?.name || "";
+          const thickness = LENS_THICKNESS.find(t => t.id === item.lensOptions?.lensThickness)?.name || "";
+          itemDetails += `\n   🔹 Lens: ${lensType} • ${lensPkg} • ${thickness}`;
+          if (item.lensOptions.totalLensPrice > 0) {
+            itemDetails += ` (+${formatPrice(item.lensOptions.totalLensPrice)})`;
+          }
+          if (item.lensOptions.prescriptionOption === "later") {
+            itemDetails += `\n   📋 Prescription: Will send later`;
+          } else if (item.lensOptions.prescriptionOption === "upload") {
+            itemDetails += `\n   📋 Prescription: Will upload`;
+          }
+        }
+
+        itemDetails += `\n   Total: ${formatPrice(itemTotal)}`;
+        itemDetails += `\n   🔗 ${item.image}`;
+
+        return itemDetails;
+      })
       .join("\n\n");
 
     // Customer details section
@@ -206,7 +227,7 @@ export default function CartPage() {
             {/* Items */}
             {items.map((item) => (
               <CartItemRow
-                key={`${item.productId}-${item.variantId}`}
+                key={`${item.productId}-${item.variantId}-${item.lensOptions?.lensType || 'none'}`}
                 item={item}
                 onUpdateQuantity={updateQuantity}
                 onRemove={removeItem}
@@ -349,12 +370,15 @@ function CartItemRow({
   onRemove
 }: {
   item: CartItem;
-  onUpdateQuantity: (productId: string, variantId: string | undefined, quantity: number) => void;
-  onRemove: (productId: string, variantId: string | undefined) => void;
+  onUpdateQuantity: (productId: string, variantId: string | undefined, quantity: number, lensType?: string) => void;
+  onRemove: (productId: string, variantId: string | undefined, lensType?: string) => void;
 }) {
+  const itemTotalPrice = (item.price + (item.lensOptions?.totalLensPrice || 0)) * item.quantity;
+  const unitPrice = item.price + (item.lensOptions?.totalLensPrice || 0);
+
   return (
     <div className="bg-card border border-border rounded-lg shadow-sm p-4">
-      <div className="grid grid-cols-12 gap-4 items-center">
+      <div className="grid grid-cols-12 gap-4 items-start">
         {/* Product Info */}
         <div className="col-span-12 md:col-span-6 flex gap-4">
           <div className="relative w-20 h-20 bg-background rounded-md overflow-hidden shrink-0">
@@ -375,11 +399,28 @@ function CartItemRow({
             {item.color && (
               <p className="text-sm text-muted-foreground mt-1">Color: {item.color}</p>
             )}
+            {/* Lens Options Display */}
+            {item.lensOptions && (
+              <div className="mt-2 p-2 bg-muted/50 rounded-md">
+                <div className="flex items-center gap-1 text-xs text-primary font-medium mb-1">
+                  <Glasses className="w-3 h-3" />
+                  Lens Customization
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {getLensOptionsSummary(item.lensOptions)}
+                </p>
+                {item.lensOptions.totalLensPrice > 0 && (
+                  <p className="text-xs text-primary font-medium mt-1">
+                    +{formatPrice(item.lensOptions.totalLensPrice)}
+                  </p>
+                )}
+              </div>
+            )}
             <Button
               variant="ghost"
               size="sm"
               className="text-destructive hover:text-destructive p-0 h-auto mt-2 md:hidden"
-              onClick={() => onRemove(item.productId, item.variantId)}
+              onClick={() => onRemove(item.productId, item.variantId, item.lensOptions?.lensType)}
             >
               <Trash2 className="w-4 h-4 mr-1" />
               Remove
@@ -390,14 +431,14 @@ function CartItemRow({
         {/* Price */}
         <div className="col-span-4 md:col-span-2 text-center">
           <span className="md:hidden text-sm text-muted-foreground">Price: </span>
-          {formatPrice(item.price)}
+          {formatPrice(unitPrice)}
         </div>
 
         {/* Quantity */}
         <div className="col-span-4 md:col-span-2 flex justify-center">
           <div className="flex items-center border rounded-md">
             <button
-              onClick={() => onUpdateQuantity(item.productId, item.variantId, item.quantity - 1)}
+              onClick={() => onUpdateQuantity(item.productId, item.variantId, item.quantity - 1, item.lensOptions?.lensType)}
               className="p-2 hover:bg-muted/50"
               disabled={item.quantity <= 1}
             >
@@ -405,7 +446,7 @@ function CartItemRow({
             </button>
             <span className="px-3 py-1 min-w-10 text-center">{item.quantity}</span>
             <button
-              onClick={() => onUpdateQuantity(item.productId, item.variantId, item.quantity + 1)}
+              onClick={() => onUpdateQuantity(item.productId, item.variantId, item.quantity + 1, item.lensOptions?.lensType)}
               className="p-2 hover:bg-muted/50"
             >
               <Plus className="w-3 h-3" />
@@ -416,12 +457,12 @@ function CartItemRow({
         {/* Total */}
         <div className="col-span-4 md:col-span-2 text-right">
           <span className="md:hidden text-sm text-muted-foreground">Total: </span>
-          <span className="font-semibold">{formatPrice(item.price * item.quantity)}</span>
+          <span className="font-semibold">{formatPrice(itemTotalPrice)}</span>
           <Button
             variant="ghost"
             size="icon"
             className="text-destructive hover:text-destructive ml-2 hidden md:inline-flex"
-            onClick={() => onRemove(item.productId, item.variantId)}
+            onClick={() => onRemove(item.productId, item.variantId, item.lensOptions?.lensType)}
           >
             <Trash2 className="w-4 h-4" />
           </Button>

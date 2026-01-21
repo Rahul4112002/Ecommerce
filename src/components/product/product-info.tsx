@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { WishlistButton } from "@/components/wishlist-button";
 import { Separator } from "@/components/ui/separator";
-import { ShoppingCart, Share2, Truck, Shield, RotateCcw, MessageCircle, Settings } from "lucide-react";
+import { ShoppingCart, Share2, Truck, Shield, RotateCcw, MessageCircle, Settings, Glasses } from "lucide-react";
 import { useCartStore } from "@/lib/store/cart-store";
+import { LensCustomizationModal, LensOptions } from "@/components/product/lens-customization-modal";
 import { toast } from "sonner";
 import { formatPrice } from "@/lib/helpers";
 
@@ -51,8 +52,9 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const { data: session } = useSession();
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0] || null);
   const [quantity, setQuantity] = useState(1);
+  const [showLensModal, setShowLensModal] = useState(false);
+  const [pendingAction, setPendingAction] = useState<"cart" | "buy" | "whatsapp" | null>(null);
   const isAdmin = session?.user?.role === "ADMIN";
-
 
   const addItem = useCartStore((state) => state.addItem);
 
@@ -64,7 +66,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const inStock = selectedVariant ? selectedVariant.stock > 0 : product.stock > 0;
   const stockCount = selectedVariant?.stock || product.stock;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (lensOptions?: LensOptions) => {
     addItem({
       productId: product.id,
       variantId: selectedVariant?.id,
@@ -73,23 +75,39 @@ export function ProductInfo({ product }: ProductInfoProps) {
       image: product.images[0]?.url || "/placeholder-product.jpg",
       color: selectedVariant?.color,
       quantity: quantity,
+      lensOptions: lensOptions,
     });
     toast.success("Added to cart!");
   };
 
-  const handleBuyNow = () => {
-    handleAddToCart();
-    window.location.href = "/cart";
+  const handleAddToCartClick = () => {
+    setPendingAction("cart");
+    setShowLensModal(true);
   };
 
-  const handleWhatsAppOrder = () => {
-    // Add product to cart first
-    handleAddToCart();
-    // Show message and redirect to cart for WhatsApp order (which has address validation)
-    toast.success("Product added to cart! Redirecting to complete your WhatsApp order...");
-    setTimeout(() => {
+  const handleBuyNowClick = () => {
+    setPendingAction("buy");
+    setShowLensModal(true);
+  };
+
+  const handleWhatsAppClick = () => {
+    setPendingAction("whatsapp");
+    setShowLensModal(true);
+  };
+
+  const handleLensConfirm = (lensOptions: LensOptions) => {
+    handleAddToCart(lensOptions);
+    setShowLensModal(false);
+
+    if (pendingAction === "buy") {
       window.location.href = "/cart";
-    }, 1000);
+    } else if (pendingAction === "whatsapp") {
+      toast.success("Product added to cart! Redirecting to complete your WhatsApp order...");
+      setTimeout(() => {
+        window.location.href = "/cart";
+      }, 1000);
+    }
+    setPendingAction(null);
   };
 
   const handleShare = async () => {
@@ -106,6 +124,19 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
   return (
     <div className="space-y-6">
+      {/* Lens Customization Modal */}
+      <LensCustomizationModal
+        isOpen={showLensModal}
+        onClose={() => {
+          setShowLensModal(false);
+          setPendingAction(null);
+        }}
+        onConfirm={handleLensConfirm}
+        productName={product.name}
+        productImage={product.images[0]?.url || "/placeholder-product.jpg"}
+        basePrice={currentPrice}
+      />
+
       {/* Breadcrumb */}
       <div className="text-sm text-muted-foreground">
         <Link href="/" className="hover:text-primary">Home</Link>
@@ -158,6 +189,15 @@ export function ProductInfo({ product }: ProductInfoProps) {
             <Badge variant="destructive">{discount}% OFF</Badge>
           </>
         )}
+      </div>
+
+      {/* Lens Customization Notice */}
+      <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 flex items-center gap-3">
+        <Glasses className="w-6 h-6 text-primary" />
+        <div>
+          <p className="font-medium text-sm">Lens Customization Available</p>
+          <p className="text-xs text-muted-foreground">Select your lens type, coating & thickness when adding to cart</p>
+        </div>
       </div>
 
       {/* Color Variants */}
@@ -224,7 +264,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
             <Button
               size="lg"
               className="flex-1 gap-2"
-              onClick={handleAddToCart}
+              onClick={handleAddToCartClick}
               disabled={!inStock}
             >
               <ShoppingCart className="w-5 h-5" />
@@ -234,7 +274,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
               size="lg"
               variant="secondary"
               className="flex-1"
-              onClick={handleBuyNow}
+              onClick={handleBuyNowClick}
               disabled={!inStock}
             >
               Buy Now
@@ -246,7 +286,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
             size="lg"
             variant="outline"
             className="w-full gap-2 border-green-500 text-green-600 hover:bg-green-50"
-            onClick={handleWhatsAppOrder}
+            onClick={handleWhatsAppClick}
           >
             <MessageCircle className="w-5 h-5" />
             Order via WhatsApp
