@@ -81,7 +81,15 @@ export async function GET(request: NextRequest) {
                 variant: item.variant
                     ? { color: item.variant.color, colorCode: item.variant.colorCode }
                     : null,
+                lensOptions: item.lensType ? {
+                    lensType: item.lensType,
+                    lensPackage: item.lensPackage,
+                    lensThickness: item.lensThickness,
+                    prescriptionOption: item.prescriptionOption,
+                    lensPrice: item.lensPrice ? Number(item.lensPrice) : 0,
+                } : null,
             })),
+
             address: order.address,
         }));
 
@@ -169,6 +177,11 @@ export async function POST(request: NextRequest) {
             variantId: string | null;
             quantity: number;
             price: number;
+            lensType: string | null;
+            lensPackage: string | null;
+            lensThickness: string | null;
+            prescriptionOption: string | null;
+            lensPrice: number | null;
         }[] = [];
 
         for (const item of items) {
@@ -201,14 +214,24 @@ export async function POST(request: NextRequest) {
                 );
             }
 
-            subtotal += price * item.quantity;
+            // Add lens price to item price if present
+            const lensPrice = item.lensOptions?.totalLensPrice || 0;
+            const totalItemPrice = price + lensPrice;
+
+            subtotal += totalItemPrice * item.quantity;
             orderItems.push({
                 productId: item.productId,
                 variantId: item.variantId || null,
                 quantity: item.quantity,
-                price,
+                price: totalItemPrice,
+                lensType: item.lensOptions?.lensType || null,
+                lensPackage: item.lensOptions?.lensPackage || null,
+                lensThickness: item.lensOptions?.lensThickness || null,
+                prescriptionOption: item.lensOptions?.prescriptionOption || null,
+                lensPrice: lensPrice > 0 ? lensPrice : null,
             });
         }
+
 
         // Apply coupon if provided
         let discount = 0;
@@ -278,8 +301,14 @@ export async function POST(request: NextRequest) {
                             variantId: item.variantId,
                             quantity: item.quantity,
                             price: item.price,
+                            lensType: item.lensType,
+                            lensPackage: item.lensPackage,
+                            lensThickness: item.lensThickness,
+                            prescriptionOption: item.prescriptionOption,
+                            lensPrice: item.lensPrice,
                         })),
                     },
+
                     tracking: {
                         create: {
                             status: "Order Placed",

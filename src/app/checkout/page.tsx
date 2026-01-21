@@ -218,8 +218,10 @@ export default function CheckoutPage() {
                     productId: item.productId,
                     variantId: item.variantId,
                     quantity: item.quantity,
+                    lensOptions: item.lensOptions || null,
                 })),
             };
+
 
             if (paymentMethod === "RAZORPAY") {
                 // Handle Razorpay payment

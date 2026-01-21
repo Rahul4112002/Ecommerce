@@ -19,6 +19,7 @@ import {
     CheckCircle,
     Clock,
     XCircle,
+    Glasses,
 } from "lucide-react";
 
 interface OrderDetailPageProps {
@@ -38,6 +39,13 @@ interface OrderItem {
     variant: {
         color: string;
         colorCode: string;
+    } | null;
+    lensOptions: {
+        lensType: string;
+        lensPackage: string;
+        lensThickness: string;
+        prescriptionOption: string;
+        lensPrice: number;
     } | null;
 }
 
@@ -248,6 +256,24 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
                                         <p className="text-sm text-muted-foreground mt-1">
                                             {formatPrice(item.price)} × {item.quantity}
                                         </p>
+                                        {/* Lens Options Display */}
+                                        {item.lensOptions && (
+                                            <div className="mt-2 p-2 bg-primary/5 border border-primary/20 rounded-md">
+                                                <div className="flex items-center gap-1 text-xs text-primary font-medium mb-1">
+                                                    <Glasses className="w-3 h-3" />
+                                                    Lens Customization
+                                                </div>
+                                                <div className="text-xs text-muted-foreground space-y-0.5">
+                                                    <p>Type: {item.lensOptions.lensType?.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</p>
+                                                    <p>Package: {item.lensOptions.lensPackage?.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</p>
+                                                    <p>Thickness: {item.lensOptions.lensThickness?.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</p>
+                                                    <p>Prescription: {item.lensOptions.prescriptionOption === 'later' ? 'Will send later' : item.lensOptions.prescriptionOption === 'upload' ? 'Will upload' : 'None'}</p>
+                                                    {item.lensOptions.lensPrice > 0 && (
+                                                        <p className="text-primary font-medium">Lens Cost: {formatPrice(item.lensOptions.lensPrice)}</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="text-right">
                                         <p className="font-semibold">{formatPrice(item.total)}</p>
