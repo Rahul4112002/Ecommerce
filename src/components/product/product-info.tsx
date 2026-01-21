@@ -99,16 +99,16 @@ export function ProductInfo({ product }: ProductInfoProps) {
     handleAddToCart(lensOptions);
     setShowLensModal(false);
 
-    if (pendingAction === "buy") {
-      window.location.href = "/cart";
-    } else if (pendingAction === "whatsapp") {
+    // Always redirect to cart after adding item with lens customization
+    if (pendingAction === "whatsapp") {
       toast.success("Product added to cart! Redirecting to complete your WhatsApp order...");
-      setTimeout(() => {
-        window.location.href = "/cart";
-      }, 1000);
     }
+
+    // Redirect to cart page
+    window.location.href = "/cart";
     setPendingAction(null);
   };
+
 
   const handleShare = async () => {
     try {
