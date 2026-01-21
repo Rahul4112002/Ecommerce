@@ -34,13 +34,13 @@ const productSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   slug: z.string().min(3, "Slug must be at least 3 characters").regex(/^[a-z0-9-]+$/, "Slug can only contain lowercase letters, numbers, and hyphens"),
   description: z.string().min(10, "Description must be at least 10 characters"),
-  shortDescription: z.string().optional(),
+
   price: z.coerce.number().positive("Price must be positive"),
   comparePrice: z.coerce.number().positive().optional().or(z.literal("")),
   sku: z.string().optional(),
   stock: z.coerce.number().int().min(0, "Stock cannot be negative"),
   categoryId: z.string().min(1, "Please select a category"),
-  brandId: z.string().optional(),
+
   gender: z.enum(["MEN", "WOMEN", "KIDS", "UNISEX"]),
   frameShape: z.string().optional(),
   frameMaterial: z.string().optional(),
@@ -79,13 +79,13 @@ export function ProductForm({ categories, brands, initialData }: ProductFormProp
       name: "",
       slug: "",
       description: "",
-      shortDescription: "",
+
       price: 0,
       comparePrice: "",
       sku: "",
       stock: 0,
       categoryId: "",
-      brandId: "",
+
       gender: "UNISEX",
       frameShape: "",
       frameMaterial: "",
@@ -206,19 +206,7 @@ export function ProductForm({ categories, brands, initialData }: ProductFormProp
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="shortDescription"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Short Description</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Brief description for product cards" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+
               </CardContent>
             </Card>
 
@@ -445,11 +433,8 @@ export function ProductForm({ categories, brands, initialData }: ProductFormProp
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {categories.map((category) => (
-                            <SelectItem key={category.id} value={category.id}>
-                              {category.name}
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="eyeglasses">Eyeglasses</SelectItem>
+                          <SelectItem value="sunglasses">Sunglasses</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -457,30 +442,7 @@ export function ProductForm({ categories, brands, initialData }: ProductFormProp
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="brandId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Brand</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select brand" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {brands.map((brand) => (
-                            <SelectItem key={brand.id} value={brand.id}>
-                              {brand.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+
 
                 <FormField
                   control={form.control}
