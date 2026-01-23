@@ -13,6 +13,7 @@ export function HeroSection() {
           loop
           muted
           playsInline
+          preload="auto"
           className="absolute top-0 left-0 w-full h-full object-cover"
           style={{
             minWidth: '100%',
@@ -23,7 +24,15 @@ export function HeroSection() {
             objectPosition: 'center center',
           }}
         >
-          <source src="/A_premium_matteblack_1080p_202601151252.mp4" type="video/mp4" />
+          {/* Cloudinary optimized video - auto compressed to ~1-1.5 MB */}
+          <source
+            src="https://res.cloudinary.com/dboupdant/video/upload/q_auto:good,w_1280,f_auto,vc_auto/v1769154952/A_premium_matteblack_1080p_202601151252_h3vq0z.webm"
+            type="video/webm"
+          />
+          <source
+            src="https://res.cloudinary.com/dboupdant/video/upload/q_auto:good,w_1280,f_auto/v1769154952/A_premium_matteblack_1080p_202601151252_h3vq0z.mp4"
+            type="video/mp4"
+          />
         </video>
 
         {/* Dark overlay to ensure text is visible */}
